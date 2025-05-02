@@ -1,0 +1,59 @@
+name: "\U0001F41B Bug Report"
+description: Report a bug in Pineflow.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description and Expected behavior
+      description: |
+        What is the problem, question, or error?
+
+        A clear and concise description of what the bug is.
+      placeholder: |
+        - I'm trying to use the `pineflow` library to do X.
+
+        - I expect to see Y.
+
+        - Instead, it does Z.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    validations:
+      required: true
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Please add a self-contained, minimal, reproducible, example.
+        
+        If a maintainer can copy it, run it, and see it right away, there's a much higher chance that you'll be able to get help.
+        
+        **Important!** 
+        
+        * Reduce your code to the minimum required to reproduce the issue if possible. This makes it much easier for others to help you.
+      placeholder: |
+        Steps to reproduce the behavior
+  - type: textarea
+    id: error
+    validations:
+      required: false
+    attributes:
+      label: Error Message and Stack Trace
+      description: |
+        If you are reporting an error, please include the full error message and stack trace.
+      placeholder: |
+        Exception + full stack trace
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: |
+        Please share your system info with us. Do NOT skip this step.
+        
+        Python version: [e.g. v3.11.9]
+        Pineflow version: [e.g. v0.6.1]
+    validations:
+      required: true
+      

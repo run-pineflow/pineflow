@@ -1,0 +1,30 @@
+name: "Feature Request"
+description: Suggest an idea
+title: "[Feature Request]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: |
+        Describe the functional changes that would have to be made.
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    validations:
+      required: true
+    attributes:
+      label: Motivation
+      description: |
+        Describe the context, the use-case and the advantages of the feature request.
+  - type: textarea
+    id: implementation
+    validations:
+      required: false
+    attributes:
+      label: Feature Implementation
+      description: |
+        Optionally describe the technical changes to be made.
+        
