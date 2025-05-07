@@ -531,7 +531,7 @@ class WatsonxExternalPromptMonitor:
     )
     def add_payload_records(self, payload_records: List[dict], subscription_id: str) -> None:
         """DEPRECATED: use 'store_payload_records'."""
-        return self.store_payload_records(payload_records, subscription_id)  
+        return self.store_payload_records(payload_records, subscription_id)
                      
     def store_payload_records(
         self, 
@@ -1484,13 +1484,20 @@ class WatsonxCustomMetric:
         return run.update(monitor_instance_id=monitor_instance_id, monitoring_run_id=monitor_run_id, json_patch_operation=patch_payload).result
     
     # ## Local custom metrics methods (transaction/record level metrics)
-    def add_transaction_metric(
+    @deprecated(
+        version="0.6.12",
+        reason="'add_transaction_metric' is deprecated and will be removed in next release, use 'add_metric_definition_local'.",
+    )
+    def add_transaction_metric(self, name: str, monitor_metrics: List[WatsonxTransactionMetric], subscription_id: str):
+        return self.add_metric_definition_local(name, monitor_metrics, subscription_id)
+    
+    def add_metric_definition_local(
         self,
         name: str,
         monitor_metrics: List[WatsonxTransactionMetric],
         subscription_id: str
         ):
-        """Create custom metric definition to compute metrics at transaction level to IBM watsonx.governance.
+        """Create custom metric definition to compute metrics at local (transaction) level to IBM watsonx.governance.
         
         Args:
             name (str): Name of custom transaction metric group.
@@ -1540,16 +1547,27 @@ class WatsonxCustomMetric:
             background_mode=False
        ).result.metadata.id
 
+    @deprecated(
+        version="0.6.12",
+        reason="'store_metric_records' is deprecated and will be removed in next release, use 'store_payload_records'.",
+    )
     def store_metric_records(
         self,
         custom_transaction_metric_id: str,
         records_request: List[Dict]
         ):
-        """Stores custom metrics records (transaction/record level).
+        return self.store_payload_records(custom_transaction_metric_id, records_request)
+    
+    def store_payload_records(
+        self,
+        custom_transaction_metric_id: str,
+        records_request: List[Dict]
+        ):
+        """Stores custom metrics to payload records (transaction/record level).
         
         Args:
             custom_transaction_metric_id (str): Unique custom transaction metric ID.
-            records_request (str): 
+            records_request (List[Dict]): 
         """
         return self._wos_client.data_sets.store_records(
             data_set_id=custom_transaction_metric_id, 
