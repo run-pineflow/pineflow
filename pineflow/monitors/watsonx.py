@@ -1515,9 +1515,9 @@ class WatsonxCustomMetric:
             subscription_id (str): watsonx.governance subscription ID.
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
+            LocationTableName,
             SparkStruct,
             SparkStructFieldPrimitive,
-            LocationTableName,
             Target,
         )
         target = Target(target_id=subscription_id, target_type="subscription")
