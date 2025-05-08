@@ -33,7 +33,6 @@ nltk = "^3.8.1"
 tiktoken = "^0.7.0"
 certifi = "^2025.1.31"
 deprecated = "^1.2.18"
-pandas = "^2.1.4"
 
 [tool.poetry.group.dev.dependencies]
 ruff="^0.6.8"

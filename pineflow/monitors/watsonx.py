@@ -7,7 +7,6 @@ import warnings
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import certifi
-import pandas as pd
 from deprecated import deprecated
 from pydantic.v1 import BaseModel
 
@@ -1039,8 +1038,8 @@ class WatsonxPromptMonitoring(WatsonxPromptMonitor):
         super().__init__(*args, **kwargs)
 
 # Supporting class
-class WatsonxTransactionMetric(BaseModel):
-    """Provides watsonx.governance transaction/local monitor metric definition.
+class WatsonxLocalMonitorMetric(BaseModel):
+    """Provides watsonx.governance local monitor metric definition.
      
     Args:
         name (str): Name of metric.
@@ -1058,6 +1057,17 @@ class WatsonxTransactionMetric(BaseModel):
             "type": self.data_type,
             "nullable": self.nullable
             }
+
+# DEPRECATED remove in next release
+# Supporting class
+class WatsonxTransactionMetric(WatsonxLocalMonitorMetric):
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "'WatsonxTransactionMetric' is deprecated and will be removed. Use 'WatsonxLocalMonitorMetric' instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        super().__init__(*args, **kwargs)
 
 # Supporting class        
 class WatsonxMonitorMetric(BaseModel):
@@ -1294,11 +1304,11 @@ class WatsonxCustomMetric:
         json_data = self._wos_client.data_sets.get_list_of_records(data_set_id=data_set_id,
                                                                    format="list").result
         
-        fields = json_data["records"][0]["fields"]
-        values = json_data["records"][0]["values"]
-    
-        return pd.DataFrame(values, columns = fields)
-    
+        if not json_data.get("records"):
+            return None
+        
+        return json_data["records"][0]
+
     def _get_existing_data_mart(self):
         data_marts = self._wos_client.data_marts.list().result.data_marts
         if len(data_marts) == 0:
@@ -1486,27 +1496,28 @@ class WatsonxCustomMetric:
     # ## Local custom metrics methods (transaction/record level metrics)
     @deprecated(
         version="0.6.12",
-        reason="'add_transaction_metric' is deprecated and will be removed in next release, use 'add_metric_definition_local'.",
+        reason="'add_transaction_metric' is deprecated and will be removed in next release, use 'add_local_metric_definition'.",
     )
-    def add_transaction_metric(self, name: str, monitor_metrics: List[WatsonxTransactionMetric], subscription_id: str):
+    def add_transaction_metric(self, name: str, monitor_metrics: List[WatsonxLocalMonitorMetric], subscription_id: str):
         return self.add_metric_definition_local(name, monitor_metrics, subscription_id)
-    
-    def add_metric_definition_local(
+
+    def add_local_metric_definition(
         self,
         name: str,
-        monitor_metrics: List[WatsonxTransactionMetric],
+        monitor_metrics: List[WatsonxLocalMonitorMetric],
         subscription_id: str
         ):
         """Create custom metric definition to compute metrics at local (transaction) level to IBM watsonx.governance.
         
         Args:
             name (str): Name of custom transaction metric group.
-            monitor_metrics (List[WatsonxTransactionMetric]): 
+            monitor_metrics (List[WatsonxLocalMonitorMetric]): 
             subscription_id (str): watsonx.governance subscription ID.
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             SparkStruct,
             SparkStructFieldPrimitive,
+            LocationTableName,
             Target,
         )
         target = Target(target_id=subscription_id, target_type="subscription")
@@ -1544,7 +1555,8 @@ class WatsonxCustomMetric:
             type="custom",
             data_schema=data_schema,
             data_mart_id=data_mart_id,
-            background_mode=False
+            location=LocationTableName(table_name=name.lower().replace(" ", "_") + "_" + str(uuid.uuid4())[:8]),
+            background_mode=True
        ).result.metadata.id
 
     @deprecated(
@@ -1553,22 +1565,25 @@ class WatsonxCustomMetric:
     )
     def store_metric_records(
         self,
-        custom_transaction_metric_id: str,
+        custom_local_metric_id: str,
         records_request: List[Dict]
         ):
-        return self.store_payload_records(custom_transaction_metric_id, records_request)
+        return self.store_payload_records(custom_local_metric_id, records_request)
     
     def store_payload_records(
         self,
-        custom_transaction_metric_id: str,
+        custom_local_metric_id: str,
         records_request: List[Dict]
         ):
         """Stores custom metrics to payload records (transaction/record level).
         
         Args:
-            custom_transaction_metric_id (str): Unique custom transaction metric ID.
+            custom_local_metric_id (str): Unique custom transaction metric ID.
             records_request (List[Dict]): 
         """
         return self._wos_client.data_sets.store_records(
-            data_set_id=custom_transaction_metric_id, 
+            data_set_id=custom_local_metric_id, 
             request_body=records_request).result
+
+    def list_local_metrics(self, custom_local_metric_id: str):
+        return self._get_dataset_data(custom_local_metric_id)
