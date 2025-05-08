@@ -24,7 +24,7 @@ Custom Metrics
 .. autoclass:: pineflow.monitors.watsonx.WatsonxCustomMetric
     :members:
 
-Credentials Classes
+Credentials
 ---------------------
 
 .. autoclass:: pineflow.monitors.watsonx.CloudPakforDataCredentials
@@ -33,7 +33,7 @@ Credentials Classes
 .. autoclass:: pineflow.monitors.watsonx.IntegratedSystemCredentials
     :members:
 
-Helpers
+Supporting Classes
 ---------------------
 
 .. autoclass:: pineflow.monitors.watsonx.WatsonxMonitorMetric
@@ -42,5 +42,5 @@ Helpers
 .. autoclass:: pineflow.monitors.watsonx.WatsonxMetricRequest
     :members:
 
-.. autoclass:: pineflow.monitors.watsonx.WatsonxTransactionMetric
+.. autoclass:: pineflow.monitors.watsonx.WatsonxLocalMonitorMetric
     :members:

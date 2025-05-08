@@ -1586,4 +1586,9 @@ class WatsonxCustomMetric:
             request_body=records_request).result
 
     def list_local_metrics(self, custom_local_metric_id: str):
+        """List records from custom local metric definition.
+        
+        Args:
+            custom_local_metric_id (str): Unique custom transaction metric ID.
+        """
         return self._get_dataset_data(custom_local_metric_id)
