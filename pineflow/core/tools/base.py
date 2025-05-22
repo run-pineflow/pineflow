@@ -1,7 +1,7 @@
 import re
-
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Literal
+
 from pydantic.v1 import BaseModel, validator
 
 
@@ -21,9 +21,9 @@ class BaseTool(ABC, BaseModel):
     description: str
     input_schema: Dict[str, ToolInputSchema]
      
-    @validator('name')
+    @validator("name")
     def _validate_name(cls, v):
-        if not re.match(r'^[A-Za-z0-9_]+$', v):
+        if not re.match(r"^[A-Za-z0-9_]+$", v):
             raise ValueError("Invalid name: only letters, digits, and underscores are allowed. No spaces or special characters.")
         return v
 
