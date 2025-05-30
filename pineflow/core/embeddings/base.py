@@ -6,7 +6,7 @@ import numpy as np
 from deprecated import deprecated
 
 from pineflow.core.document.schema import Document, TransformerComponent
-from pineflow.core.utils.pairwise import cosine_similarity
+from pineflow.core.utilities.pairwise import cosine_similarity
 
 Embedding = List[float]
 

@@ -1,7 +1,7 @@
-from typing import Literal
-from sqlalchemy import text, inspect
+from sqlalchemy import text
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import SQLAlchemyError
+
 
 class SQLAlchemyDatabase:
     """
@@ -18,14 +18,11 @@ class SQLAlchemyDatabase:
         self, 
         query: str):
         """Executes SQL query with SQLAlchemy."""
-        
         with self._engine.connect() as conn:
             cursor = conn.execute(text(query))
                 
             if cursor.returns_rows:
-                result = [x._asdict() for x in cursor.fetchall()]
-
-                return result
+                return [x._asdict() for x in cursor.fetchall()]
                 
         return []
 

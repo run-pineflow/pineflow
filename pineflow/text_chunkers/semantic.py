@@ -7,7 +7,7 @@ from pydantic.v1 import BaseModel
 from pineflow.core.document import Document
 from pineflow.core.embeddings import BaseEmbedding
 from pineflow.core.text_chunkers.base import BaseTextChunker
-from pineflow.core.utils.pairwise import cosine_similarity
+from pineflow.core.utilities.pairwise import cosine_similarity
 
 
 class SemanticChunker(BaseTextChunker, BaseModel):
