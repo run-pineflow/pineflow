@@ -66,7 +66,7 @@ def _convert_payload_format(records: List[dict], feature_fields: List[str]) -> L
 
 
 class CloudPakforDataCredentials:
-    """Encapsulate passed credentials for CloudPakforData.
+    """Encapsulate passed credentials for IBM Cloud Pak for Data.
 
     Args:
         url (str): Host URL of Cloud Pak for Data environment.
@@ -193,21 +193,21 @@ class WatsonxExternalPromptMonitor:
 
     .. code-block:: python
 
-        from pineflow.monitors import WatsonxExternalPromptMonitor, CloudPakforDataCredentials
+        from pineflow.monitors.watsonx import WatsonxExternalPromptMonitor, CloudPakforDataCredentials
 
         # watsonx.governance (IBM Cloud)
-        detached_watsonx_monitor = WatsonxExternalPromptMonitor(api_key="your_api_key", 
-                                                                space_id="your_space_id")
+        wxgov_client = WatsonxExternalPromptMonitor(api_key="API_KEY", 
+                                                    space_id="SPACE_ID")
                                                                
         # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(url="your_cpd_url", 
-                                               username="your_username", 
-                                               password="your_password",
+        cpd_creds = CloudPakforDataCredentials(url="CPD_URL", 
+                                               username="USERNAME", 
+                                               password="PASSWORD",
                                                version="5.0", 
                                                instance_id="openshift")
         
-        detached_watsonx_monitor = WatsonxExternalPromptMonitor(space_id="your_space_id"
-                                                                cpd_creds=cpd_creds)
+        wxgov_client = WatsonxExternalPromptMonitor(space_id="SPACE_ID"
+                                                    cpd_creds=cpd_creds)
     """
     
     def __init__(self,
@@ -639,21 +639,21 @@ class WatsonxPromptMonitor:
 
     .. code-block:: python
 
-        from pineflow.monitors import WatsonxPromptMonitor, CloudPakforDataCredentials
+        from pineflow.monitors.watsonx import WatsonxPromptMonitor, CloudPakforDataCredentials
 
         # watsonx.governance (IBM Cloud)
-        watsonx_monitor = WatsonxPromptMonitor(api_key="your_api_key", 
-                                               space_id="your_space_id")
+        wxgov_client = WatsonxPromptMonitor(api_key="API_KEY", 
+                                            space_id="SPACE_ID")
         
         # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(url="your_cpd_url", 
-                                               username="your_username", 
-                                               password="your_password",
+        cpd_creds = CloudPakforDataCredentials(url="CPD_URL", 
+                                               username="USERNAME", 
+                                               password="PASSWORD",
                                                version="5.0", 
                                                instance_id="openshift")
         
-        watsonx_monitor = WatsonxPromptMonitor(space_id="your_space_id"
-                                               cpd_creds=cpd_creds)                                            
+        wxgov_client = WatsonxPromptMonitor(space_id="SPACE_ID"
+                                            cpd_creds=cpd_creds)                                            
     """
     
     def __init__(self,
@@ -1039,12 +1039,20 @@ class WatsonxPromptMonitoring(WatsonxPromptMonitor):
 
 # Supporting class
 class WatsonxLocalMonitorMetric(BaseModel):
-    """Provides watsonx.governance local monitor metric definition.
+    """Provides IBM watsonx.governance local monitor metric definition.
      
     Args:
         name (str): Name of metric.
         data_type (str): Currently supports "string", "integer", "double", "timestamp".
         nullable (bool):
+        
+    **Example**
+
+    .. code-block:: python
+
+        from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
+
+        WatsonxLocalMonitorMetric(name="context_judge_quality", data_type="double")
     """
     
     name: str
@@ -1071,11 +1079,20 @@ class WatsonxTransactionMetric(WatsonxLocalMonitorMetric):
 
 # Supporting class        
 class WatsonxMonitorMetric(BaseModel):
-    """Provides watsonx.governance global monitor metric definition.
+    """Provides IBM watsonx.governance global monitor metric definition.
      
     Args:
         name (str): Name of metric.
         applies_to (List[str]): Currently supports "summarization", "generation", "question_answering", "extraction" "retrieval_augmented_generation".
+
+    **Example**
+
+    .. code-block:: python
+
+        from pineflow.monitors.watsonx import WatsonxMonitorMetric
+
+        WatsonxMonitorMetric(name="context_judge_quality", 
+                            applies_to=["retrieval_augmented_generation", "summarization"])
     """
     
     name: str
@@ -1093,11 +1110,20 @@ class WatsonxMonitorMetric(BaseModel):
 
 # Supporting class
 class WatsonxMetricRequest(BaseModel):
-    """Initialize a WatsonxMetricRequest object.
+    """Initialize a WatsonxMetricRequest object. Used to publish custom metrics.
      
     Args:
         metrics (List[dict]):  Metrics grouped for a single measurement.
         run_id (str, optional): ID of the monitoring run which produced the measurement.
+        
+    **Example**
+
+    .. code-block:: python
+
+        from pineflow.monitors.watsonx import WatsonxMetricRequest
+
+        WatsonxMetricRequest(metrics=[{"context_judge_quality": 0.914}], 
+                            run_id="RUN_ID")
     """
     
     timestamp: datetime.datetime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
@@ -1105,7 +1131,8 @@ class WatsonxMetricRequest(BaseModel):
     run_id: Optional[str] = None
     
     def __init__(
-        self, metrics: List[dict],
+        self, 
+        metrics: List[dict],
         run_id: Optional[str] = None
         ) -> None:
         
@@ -1128,8 +1155,26 @@ class WatsonxCustomMetric:
     
     Args:
         api_key (str): IBM watsonx.governance API key.
-        region (str, optional): Region where the watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``
-        cpd_creds (CloudPakforDataCredentials, optional): Cloud Pak for Data environment details.
+        region (str, optional): Region where the IBM watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``
+        cpd_creds (CloudPakforDataCredentials, optional): IBM Cloud Pak for Data environment details.
+        
+    **Example**
+
+    .. code-block:: python
+
+        from pineflow.monitors.watsonx import WatsonxCustomMetric, CloudPakforDataCredentials
+
+        # watsonx.governance (IBM Cloud)
+        wxgov_client = WatsonxCustomMetric(api_key="API_KEY")
+        
+        # watsonx.governance (cp4d)
+        cpd_creds = CloudPakforDataCredentials(url="CPD_URL", 
+                                               username="USERNAME", 
+                                               password="PASSWORD",
+                                               version="5.0", 
+                                               instance_id="openshift")
+        
+        wxgov_client = WatsonxCustomMetric(cpd_creds=cpd_creds)
     """
     
     def __init__(
@@ -1353,7 +1398,20 @@ class WatsonxCustomMetric:
             schedule (bool): Enable or disable the scheduler. Defaults to False.
             integrated_system_url (str): URL of external metric.
             integrated_system_credentials (IntegratedSystemCredentials): Integrated system credentials.
+            
+        **Example**
 
+        .. code-block:: python
+            from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials
+        
+            wxgov_client.add_metric_definition(
+                name="Custom Metric - Custom LLM Quality",
+                monitor_metrics=[WatsonxMonitorMetric(name="context_judge_quality", 
+                                                    applies_to=["retrieval_augmented_generation", "summarization"])],
+                integrated_system_url="IS_URL", # endpoint to compute metric
+                integrated_system_credentials=IntegratedSystemCredentials(auth_type="basic", 
+                                                                        username="USERNAME", 
+                                                                        password="PASSWORD"))
         """
         integrated_system_id = self._add_integrated_system(integrated_system_credentials,
                                                            name,
@@ -1388,6 +1446,16 @@ class WatsonxCustomMetric:
             integrated_system_id (str): 
             monitor_definition_id (str): The Custom Metric monitor instance ID.
             subscription_id (str):
+            
+        **Example**
+
+        .. code-block:: python
+        
+            wxgov_client.add_monitor_instance(
+                integrated_system_id="019667ca-5687-7838-8d29-4ff70c2b36b0",
+                monitor_definition_id="custom_llm_quality",
+                subscription_id="0195e95d-03a4-7000-b954-b607db10fe9e"
+                )
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import Target
         
@@ -1462,6 +1530,16 @@ class WatsonxCustomMetric:
             monitor_instance_id (str): Unique monitor instance ID.
             monitor_run_id (str): 
             records_request (List[WatsonxMetricRequest]):
+
+        **Example**
+
+        .. code-block:: python
+            from pineflow.monitors.watsonx import WatsonxMetricRequest
+            
+            wxgov_client.publish_metrics(
+                monitor_instance_id="01966801-f9ee-7248-a706-41de00a8a998",
+                monitor_run_id="RUN_ID",
+                records_request=[WatsonxMetricRequest(metrics=[{"context_judge_quality": 0.914}]])
         """
         # START deprecated params message
         if measurements_request is not None:
@@ -1513,6 +1591,16 @@ class WatsonxCustomMetric:
             name (str): Name of custom transaction metric group.
             monitor_metrics (List[WatsonxLocalMonitorMetric]): 
             subscription_id (str): watsonx.governance subscription ID.
+            
+        **Example**
+
+        .. code-block:: python
+            from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
+            
+            wxgov_client.add_local_metric_definition(
+                name="Custom LLM Local Metric", 
+                subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
+                monitor_metrics=[WatsonxLocalMonitorMetric(name="context_judge_quality", data_type="double")])
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             LocationTableName,
@@ -1580,6 +1668,17 @@ class WatsonxCustomMetric:
         Args:
             custom_local_metric_id (str): Unique custom transaction metric ID.
             records_request (List[Dict]): 
+
+        **Example**
+
+        .. code-block:: python
+
+            wxgov_client.store_payload_records(
+                custom_local_metric_id="0196ad39-1b75-7e77-bddb-cc5393d575c2",
+                records_request=[{"scoring_id": "123-123", 
+                      "run_id": "RUN_ID",
+                      "computed_on": "payload",
+                      "context_judge_quality": 0.786}])
         """
         return self._wos_client.data_sets.store_records(
             data_set_id=custom_local_metric_id, 
@@ -1590,5 +1689,11 @@ class WatsonxCustomMetric:
         
         Args:
             custom_local_metric_id (str): Unique custom transaction metric ID.
+            
+        **Example**
+
+        .. code-block:: python
+        
+            wxgov_client.list_local_metrics(custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3")
         """
         return self._get_dataset_data(custom_local_metric_id)
