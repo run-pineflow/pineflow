@@ -1077,12 +1077,37 @@ class WatsonxTransactionMetric(WatsonxLocalMonitorMetric):
         )
         super().__init__(*args, **kwargs)
 
+# Supporting class
+class WatsonxMetricThreshold(BaseModel):
+    """
+    Args:
+        threshold_type (str): Threshold type. `lower_limit` or `upper_limit`.
+        default (float): Metric thresholds.
+
+    **Example**
+
+    .. code-block:: python
+
+        from pineflow.monitors.watsonx import WatsonxMetricThreshold
+
+        WatsonxMetricThreshold(threshold_type="lower_limit", default=0.8)
+    """
+    threshold_type: Literal["lower_limit", "upper_limit"]
+    default: float = None
+    
+    def to_dict(self) -> Dict:
+        return {
+            "type": self.threshold_type,
+            "default": self.default
+            }
+
 # Supporting class        
 class WatsonxMonitorMetric(BaseModel):
     """Provides IBM watsonx.governance global monitor metric definition.
      
     Args:
         name (str): Name of metric.
+        thresholds (List[WatsonxMetricThreshold]): Metric thresholds.
         applies_to (List[str]): Currently supports "summarization", "generation", "question_answering", "extraction" "retrieval_augmented_generation".
 
     **Example**
@@ -1096,17 +1121,24 @@ class WatsonxMonitorMetric(BaseModel):
     """
     
     name: str
+    thresholds: Optional[List[WatsonxMetricThreshold]] = None
     applies_to: List[Literal["summarization", "generation", "question_answering", "extraction", "retrieval_augmented_generation"]]
     
     def to_dict(self) -> Dict:
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             ApplicabilitySelection,
+            MetricThreshold
         )
         
-        return {
-            "name": self.name, 
-            "applies_to": ApplicabilitySelection(problem_type=self.applies_to) 
+        monitor_metric = {
+            "name": self.name,
+            "applies_to": ApplicabilitySelection(problem_type=self.applies_to),
             }
+        
+        if self.thresholds is not None: 
+            monitor_metric["thresholds"] = [MetricThreshold(**threshold.to_dict()) for threshold in self.thresholds]
+            
+        return monitor_metric
 
 # Supporting class
 class WatsonxMetricRequest(BaseModel):
@@ -1276,7 +1308,7 @@ class WatsonxCustomMetric:
             schedule = _monitor_schedule,
             applies_to=ApplicabilitySelection(input_data_type=["unstructured_text"]), 
             monitor_runtime = _monitor_runtime, 
-            background_mode=False).result
+            background_mode=True).result
         
         return custom_monitor_details.metadata.id
     
@@ -1431,8 +1463,8 @@ class WatsonxCustomMetric:
                     }
                 }
             ]
-
-        return self._wos_client.integrated_systems.update(integrated_system_id, payload).result
+   
+        return {"integrated_system_id": integrated_system_id, "monitor_definition_id": external_monitor_id }
 
     def add_monitor_instance(
         self,
