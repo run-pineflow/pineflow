@@ -1118,8 +1118,8 @@ class WatsonxMonitorMetric(BaseModel):
      
     Args:
         name (str): Name of metric.
-        thresholds (List[WatsonxMetricThreshold]): Metric thresholds.
         applies_to (List[str]): Currently supports "summarization", "generation", "question_answering", "extraction" "retrieval_augmented_generation".
+        thresholds (List[WatsonxMetricThreshold]): Metric thresholds.
 
     **Example**
 
@@ -1129,13 +1129,14 @@ class WatsonxMonitorMetric(BaseModel):
 
         WatsonxMonitorMetric(
             name="context_judge_quality", 
-            applies_to=["retrieval_augmented_generation", "summarization"]
+            applies_to=["retrieval_augmented_generation", "summarization"],
+            thresholds=[WatsonxMetricThreshold(threshold_type="lower_limit", default_value=0.75)]
             )
     """
     
     name: str
-    thresholds: Optional[List[WatsonxMetricThreshold]] = None
     applies_to: List[Literal["summarization", "generation", "question_answering", "extraction", "retrieval_augmented_generation"]]
+    thresholds: Optional[List[WatsonxMetricThreshold]] = None
     
     def to_dict(self) -> Dict:
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
@@ -1664,8 +1665,8 @@ class WatsonxCustomMetric:
                 subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
                 monitor_metrics=[WatsonxLocalMonitorMetric(
                     name="context_judge_quality", 
-                    data_type="double")]
-                    )
+                    data_type="double")
+                    ])
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             LocationTableName,
