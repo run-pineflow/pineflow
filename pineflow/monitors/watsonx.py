@@ -1092,6 +1092,7 @@ class WatsonxMetricThreshold(BaseModel):
 
         WatsonxMetricThreshold(threshold_type="lower_limit", default=0.8)
     """
+
     threshold_type: Literal["lower_limit", "upper_limit"]
     default: float = None
     
@@ -1127,7 +1128,7 @@ class WatsonxMonitorMetric(BaseModel):
     def to_dict(self) -> Dict:
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             ApplicabilitySelection,
-            MetricThreshold
+            MetricThreshold,
         )
         
         monitor_metric = {
@@ -1463,6 +1464,8 @@ class WatsonxCustomMetric:
                     }
                 }
             ]
+        
+        self._wos_client.integrated_systems.update(integrated_system_id, payload)
    
         return {"integrated_system_id": integrated_system_id, "monitor_definition_id": external_monitor_id }
 
