@@ -1082,7 +1082,7 @@ class WatsonxMetricThreshold(BaseModel):
     """
     Args:
         threshold_type (str): Threshold type. `lower_limit` or `upper_limit`.
-        default (float): Metric thresholds.
+        default_value (float): Metric thresholds.
 
     **Example**
 
@@ -1094,12 +1094,12 @@ class WatsonxMetricThreshold(BaseModel):
     """
 
     threshold_type: Literal["lower_limit", "upper_limit"]
-    default: float = None
+    default_value: float = None
     
     def to_dict(self) -> Dict:
         return {
             "type": self.threshold_type,
-            "default": self.default
+            "default": self.default_value
             }
 
 # Supporting class        
@@ -1435,12 +1435,13 @@ class WatsonxCustomMetric:
         **Example**
 
         .. code-block:: python
-            from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials
+            from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
         
             wxgov_client.add_metric_definition(
                 name="Custom Metric - Custom LLM Quality",
                 monitor_metrics=[WatsonxMonitorMetric(name="context_judge_quality", 
-                                                    applies_to=["retrieval_augmented_generation", "summarization"])],
+                                                    applies_to=["retrieval_augmented_generation", "summarization"],
+                                                    thresholds=[WatsonxMetricThreshold(threshold_type="lower_limit", default=0.75)])],
                 integrated_system_url="IS_URL", # endpoint to compute metric
                 integrated_system_credentials=IntegratedSystemCredentials(auth_type="basic", 
                                                                         username="USERNAME", 
