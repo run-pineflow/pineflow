@@ -394,7 +394,7 @@ class WatsonxExternalPromptMonitor:
 
         .. code-block:: python
 
-            detached_watsonx_monitor.create_prompt_monitor(name="Detached prompt (model AWS Anthropic)",
+            wxgov_client.create_prompt_monitor(name="Detached prompt (model AWS Anthropic)",
                                                     model_id="anthropic.claude-v2",
                                                     task_id="retrieval_augmented_generation",
                                                     detached_model_provider="AWS Bedrock",
@@ -548,7 +548,7 @@ class WatsonxExternalPromptMonitor:
 
         .. code-block:: python
 
-            detached_watsonx_monitor.store_payload_records(records_request=[{"context1": "value_context1",
+            wxgov_client.store_payload_records(records_request=[{"context1": "value_context1",
                                                     "context2": "value_context1",
                                                     "input_query": "What's Pineflow?",
                                                     "input_token_count": 25,
@@ -818,7 +818,7 @@ class WatsonxPromptMonitor:
 
         .. code-block:: python
 
-            watsonx_monitor.create_prompt_monitor(name="IBM prompt template",
+            wxgov_client.create_prompt_monitor(name="IBM prompt template",
                                                     model_id="ibm/granite-3-2b-instruct",
                                                     task_id="retrieval_augmented_generation",
                                                     prompt_variables=["context1", "context2", "input_query"],
@@ -962,7 +962,7 @@ class WatsonxPromptMonitor:
 
         .. code-block:: python
 
-            watsonx_monitor.store_payload_records(records_request=[{"context1": "value_context1",
+            wxgov_client.store_payload_records(records_request=[{"context1": "value_context1",
                                                     "context2": "value_context1",
                                                     "input_query": "What's Pineflow?",
                                                     "input_token_count": 25,
@@ -1435,6 +1435,7 @@ class WatsonxCustomMetric:
         **Example**
 
         .. code-block:: python
+        
             from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
         
             wxgov_client.add_metric_definition(
@@ -1570,6 +1571,7 @@ class WatsonxCustomMetric:
         **Example**
 
         .. code-block:: python
+        
             from pineflow.monitors.watsonx import WatsonxMetricRequest
             
             wxgov_client.publish_metrics(
@@ -1631,6 +1633,7 @@ class WatsonxCustomMetric:
         **Example**
 
         .. code-block:: python
+        
             from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
             
             wxgov_client.add_local_metric_definition(
