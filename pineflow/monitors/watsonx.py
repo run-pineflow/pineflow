@@ -200,11 +200,12 @@ class WatsonxExternalPromptMonitor:
                                                     space_id="SPACE_ID")
                                                                
         # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(url="CPD_URL", 
-                                               username="USERNAME", 
-                                               password="PASSWORD",
-                                               version="5.0", 
-                                               instance_id="openshift")
+        cpd_creds = CloudPakforDataCredentials(
+            url="CPD_URL", 
+            username="USERNAME", 
+            password="PASSWORD",
+            version="5.0", 
+            instance_id="openshift")
         
         wxgov_client = WatsonxExternalPromptMonitor(space_id="SPACE_ID"
                                                     cpd_creds=cpd_creds)
@@ -646,11 +647,12 @@ class WatsonxPromptMonitor:
                                             space_id="SPACE_ID")
         
         # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(url="CPD_URL", 
-                                               username="USERNAME", 
-                                               password="PASSWORD",
-                                               version="5.0", 
-                                               instance_id="openshift")
+        cpd_creds = CloudPakforDataCredentials(
+            url="CPD_URL", 
+            username="USERNAME", 
+            password="PASSWORD",
+            version="5.0", 
+            instance_id="openshift")
         
         wxgov_client = WatsonxPromptMonitor(space_id="SPACE_ID"
                                             cpd_creds=cpd_creds)                                            
@@ -1201,11 +1203,12 @@ class WatsonxCustomMetric:
         wxgov_client = WatsonxCustomMetric(api_key="API_KEY")
         
         # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(url="CPD_URL", 
-                                               username="USERNAME", 
-                                               password="PASSWORD",
-                                               version="5.0", 
-                                               instance_id="openshift")
+        cpd_creds = CloudPakforDataCredentials(
+            url="CPD_URL", 
+            username="USERNAME", 
+            password="PASSWORD",
+            version="5.0", 
+            instance_id="openshift")
         
         wxgov_client = WatsonxCustomMetric(cpd_creds=cpd_creds)
     """
@@ -1440,13 +1443,19 @@ class WatsonxCustomMetric:
         
             wxgov_client.add_metric_definition(
                 name="Custom Metric - Custom LLM Quality",
-                monitor_metrics=[WatsonxMonitorMetric(name="context_judge_quality", 
-                                                    applies_to=["retrieval_augmented_generation", "summarization"],
-                                                    thresholds=[WatsonxMetricThreshold(threshold_type="lower_limit", default=0.75)])],
+                monitor_metrics=[WatsonxMonitorMetric(
+                    name="context_judge_quality", 
+                    applies_to=["retrieval_augmented_generation", "summarization"],
+                    thresholds=[WatsonxMetricThreshold(
+                        threshold_type="lower_limit", 
+                        default=0.75)])
+                        ],
                 integrated_system_url="IS_URL", # endpoint to compute metric
-                integrated_system_credentials=IntegratedSystemCredentials(auth_type="basic", 
-                                                                        username="USERNAME", 
-                                                                        password="PASSWORD"))
+                integrated_system_credentials=IntegratedSystemCredentials(
+                    auth_type="basic", 
+                    username="USERNAME", 
+                    password="PASSWORD")
+                    )
         """
         integrated_system_id = self._add_integrated_system(integrated_system_credentials,
                                                            name,
@@ -1577,7 +1586,9 @@ class WatsonxCustomMetric:
             wxgov_client.publish_metrics(
                 monitor_instance_id="01966801-f9ee-7248-a706-41de00a8a998",
                 monitor_run_id="RUN_ID",
-                records_request=[WatsonxMetricRequest(metrics=[{"context_judge_quality": 0.914}]])
+                records_request=[WatsonxMetricRequest(
+                    metrics=[{"context_judge_quality": 0.914}]]
+                    )
         """
         # START deprecated params message
         if measurements_request is not None:
@@ -1639,7 +1650,10 @@ class WatsonxCustomMetric:
             wxgov_client.add_local_metric_definition(
                 name="Custom LLM Local Metric", 
                 subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
-                monitor_metrics=[WatsonxLocalMonitorMetric(name="context_judge_quality", data_type="double")])
+                monitor_metrics=[WatsonxLocalMonitorMetric(
+                    name="context_judge_quality", 
+                    data_type="double")]
+                    )
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             LocationTableName,
@@ -1733,6 +1747,7 @@ class WatsonxCustomMetric:
 
         .. code-block:: python
         
-            wxgov_client.list_local_metrics(custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3")
+            wxgov_client.list_local_metrics(
+                custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3")
         """
         return self._get_dataset_data(custom_local_metric_id)
