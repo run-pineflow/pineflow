@@ -196,8 +196,9 @@ class WatsonxExternalPromptMonitor:
         from pineflow.monitors.watsonx import WatsonxExternalPromptMonitor, CloudPakforDataCredentials
 
         # watsonx.governance (IBM Cloud)
-        wxgov_client = WatsonxExternalPromptMonitor(api_key="API_KEY", 
-                                                    space_id="SPACE_ID")
+        wxgov_client = WatsonxExternalPromptMonitor(
+            api_key="API_KEY", 
+            space_id="SPACE_ID")
                                                                
         # watsonx.governance (cp4d)
         cpd_creds = CloudPakforDataCredentials(
@@ -207,8 +208,9 @@ class WatsonxExternalPromptMonitor:
             version="5.0", 
             instance_id="openshift")
         
-        wxgov_client = WatsonxExternalPromptMonitor(space_id="SPACE_ID"
-                                                    cpd_creds=cpd_creds)
+        wxgov_client = WatsonxExternalPromptMonitor(
+            space_id="SPACE_ID"
+            cpd_creds=cpd_creds)
     """
     
     def __init__(self,
@@ -395,16 +397,17 @@ class WatsonxExternalPromptMonitor:
 
         .. code-block:: python
 
-            wxgov_client.create_prompt_monitor(name="Detached prompt (model AWS Anthropic)",
-                                                    model_id="anthropic.claude-v2",
-                                                    task_id="retrieval_augmented_generation",
-                                                    detached_model_provider="AWS Bedrock",
-                                                    detached_model_name="Anthropic Claude 2.0",
-                                                    detached_model_url="https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-claude.html",
-                                                    prompt_variables=["context1", "context2", "input_query"],
-                                                    input_text="Prompt text to be given",
-                                                    context_fields=["context1", "context2"],
-                                                    question_field="input_query")
+            wxgov_client.create_prompt_monitor(
+                name="Detached prompt (model AWS Anthropic)",
+                model_id="anthropic.claude-v2",
+                task_id="retrieval_augmented_generation",
+                detached_model_provider="AWS Bedrock",
+                detached_model_name="Anthropic Claude 2.0",
+                detached_model_url="https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-claude.html",
+                prompt_variables=["context1", "context2", "input_query"],
+                input_text="Prompt text to be given",
+                context_fields=["context1", "context2"],
+                question_field="input_query")
             
         """
         prompt_metadata = locals()
@@ -549,12 +552,13 @@ class WatsonxExternalPromptMonitor:
 
         .. code-block:: python
 
-            wxgov_client.store_payload_records(records_request=[{"context1": "value_context1",
-                                                    "context2": "value_context1",
-                                                    "input_query": "What's Pineflow?",
-                                                    "input_token_count": 25,
-                                                    "generated_token_count": 150}], 
-                                            subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0")
+            wxgov_client.store_payload_records(
+                records_request=[{"context1": "value_context1",
+                    "context2": "value_context1",
+                    "input_query": "What's Pineflow?",
+                    "input_token_count": 25,
+                    "generated_token_count": 150}], 
+                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0")
         """
         # START deprecated params message
         if payload_records is not None:
@@ -643,8 +647,9 @@ class WatsonxPromptMonitor:
         from pineflow.monitors.watsonx import WatsonxPromptMonitor, CloudPakforDataCredentials
 
         # watsonx.governance (IBM Cloud)
-        wxgov_client = WatsonxPromptMonitor(api_key="API_KEY", 
-                                            space_id="SPACE_ID")
+        wxgov_client = WatsonxPromptMonitor(
+            api_key="API_KEY", 
+            space_id="SPACE_ID")
         
         # watsonx.governance (cp4d)
         cpd_creds = CloudPakforDataCredentials(
@@ -654,8 +659,9 @@ class WatsonxPromptMonitor:
             version="5.0", 
             instance_id="openshift")
         
-        wxgov_client = WatsonxPromptMonitor(space_id="SPACE_ID"
-                                            cpd_creds=cpd_creds)                                            
+        wxgov_client = WatsonxPromptMonitor(
+            space_id="SPACE_ID"
+            cpd_creds=cpd_creds)                                            
     """
     
     def __init__(self,
@@ -820,13 +826,14 @@ class WatsonxPromptMonitor:
 
         .. code-block:: python
 
-            wxgov_client.create_prompt_monitor(name="IBM prompt template",
-                                                    model_id="ibm/granite-3-2b-instruct",
-                                                    task_id="retrieval_augmented_generation",
-                                                    prompt_variables=["context1", "context2", "input_query"],
-                                                    input_text="Prompt text to be given",
-                                                    context_fields=["context1", "context2"],
-                                                    question_field="input_query")
+            wxgov_client.create_prompt_monitor(
+                name="IBM prompt template",
+                model_id="ibm/granite-3-2b-instruct",
+                task_id="retrieval_augmented_generation",
+                prompt_variables=["context1", "context2", "input_query"],
+                input_text="Prompt text to be given",
+                context_fields=["context1", "context2"],
+                question_field="input_query")
             
         """
         prompt_metadata = locals()
@@ -964,12 +971,13 @@ class WatsonxPromptMonitor:
 
         .. code-block:: python
 
-            wxgov_client.store_payload_records(records_request=[{"context1": "value_context1",
-                                                    "context2": "value_context1",
-                                                    "input_query": "What's Pineflow?",
-                                                    "input_token_count": 25,
-                                                    "generated_token_count": 150}], 
-                                            subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0")
+            wxgov_client.store_payload_records(
+                records_request=[{"context1": "value_context1",
+                    "context2": "value_context1",
+                    "input_query": "What's Pineflow?",
+                    "input_token_count": 25,
+                    "generated_token_count": 150}], 
+                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0")
         """
         # START deprecated params message
         if payload_records is not None:
@@ -1119,8 +1127,10 @@ class WatsonxMonitorMetric(BaseModel):
 
         from pineflow.monitors.watsonx import WatsonxMonitorMetric
 
-        WatsonxMonitorMetric(name="context_judge_quality", 
-                            applies_to=["retrieval_augmented_generation", "summarization"])
+        WatsonxMonitorMetric(
+            name="context_judge_quality", 
+            applies_to=["retrieval_augmented_generation", "summarization"]
+            )
     """
     
     name: str
@@ -1157,8 +1167,10 @@ class WatsonxMetricRequest(BaseModel):
 
         from pineflow.monitors.watsonx import WatsonxMetricRequest
 
-        WatsonxMetricRequest(metrics=[{"context_judge_quality": 0.914}], 
-                            run_id="RUN_ID")
+        WatsonxMetricRequest(
+            metrics=[{"context_judge_quality": 0.914}], 
+            run_id="RUN_ID"
+            )
     """
     
     timestamp: datetime.datetime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
@@ -1587,8 +1599,8 @@ class WatsonxCustomMetric:
                 monitor_instance_id="01966801-f9ee-7248-a706-41de00a8a998",
                 monitor_run_id="RUN_ID",
                 records_request=[WatsonxMetricRequest(
-                    metrics=[{"context_judge_quality": 0.914}]]
-                    )
+                    metrics=[{"context_judge_quality": 0.914}]
+                    ])
         """
         # START deprecated params message
         if measurements_request is not None:
@@ -1731,7 +1743,8 @@ class WatsonxCustomMetric:
                 records_request=[{"scoring_id": "123-123", 
                       "run_id": "RUN_ID",
                       "computed_on": "payload",
-                      "context_judge_quality": 0.786}])
+                      "context_judge_quality": 0.786}]
+                    )
         """
         return self._wos_client.data_sets.store_records(
             data_set_id=custom_local_metric_id, 
