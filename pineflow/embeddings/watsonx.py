@@ -26,7 +26,7 @@ class WatsonxEmbedding(BaseModel, BaseEmbedding):
 
     .. code-block:: python
 
-        from pineflow.embeddings import WatsonxEmbedding
+        from pineflow.embeddings.watsonx import WatsonxEmbedding
 
         watsonx_embedding = WatsonxEmbedding(api_key="your_api_key",
                                          url="your_instance_url",

@@ -21,8 +21,8 @@ class ChromaVectorStore(BaseVectorStore):
 
     .. code-block:: python
 
-        from pineflow.embeddings import HuggingFaceEmbedding
-        from pineflow.vector_stores import ChromaVectorStore
+        from pineflow.embeddings.huggingface import HuggingFaceEmbedding
+        from pineflow.vector_stores.chroma import ChromaVectorStore
 
         embedding = HuggingFaceEmbedding()
         vector_db = ChromaVectorStore(embed_model=embedding)

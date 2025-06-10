@@ -7,19 +7,18 @@ from pineflow.core.embeddings import BaseEmbedding, Embedding
 
 
 class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
-    """HuggingFace sentence_transformers embedding models.
+    """HuggingFace `sentence_transformers` embedding models.
 
     Args:
         model_name (str): Hugging Face model to be used. Defaults to ``sentence-transformers/all-MiniLM-L6-v2``.
-        device (str, optional): Device to run the model on. Currently supports "cpu" and "cuda". Defaults to ``cpu``.
+        device (str, optional): Device to run the model on. Supports ``cpu`` and ``cuda``. Defaults to ``cpu``.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.embeddings.huggingface import HuggingFaceEmbedding
 
-        from pineflow.embeddings import HuggingFaceEmbedding
-
-        embedding = HuggingFaceEmbedding()
+            embedding = HuggingFaceEmbedding()
     """
 
     model_name: str = "sentence-transformers/all-MiniLM-L6-v2"
@@ -37,13 +36,14 @@ class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
         """Compute embedding for a text.
 
         Args:
-            query (str): Input query to compute embedding.
+            query (str): Input query to compute the embedding.
 
-        **Example**
+        Example:
+            .. code-block:: python
 
-        .. code-block:: python
-
-            embedded_query = embedding.get_text_embedding("Pineflow is a data framework to load any data in one line of code and connect with AI applications.")
+                embedded_query = embedding.get_text_embedding(
+                    "Pineflow is a data framework to load any data in one line of code and connect with AI applications."
+                )
         """
         return self.get_texts_embedding([query])[0]
 

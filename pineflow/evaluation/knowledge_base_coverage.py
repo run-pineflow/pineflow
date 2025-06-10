@@ -20,7 +20,7 @@ class KnowledgeBaseCoverageEvaluator(BaseModel):
 
     .. code-block:: python
 
-        from pineflow.embeddings import HuggingFaceEmbedding
+        from pineflow.embeddings.huggingface import HuggingFaceEmbedding
         from pineflow.evaluation import KnowledgeBaseCoverage
 
         embedding = HuggingFaceEmbedding()

@@ -24,7 +24,7 @@ class WatsonDiscoveryRetriever:
 
     .. code-block:: python
 
-        from pineflow.retrievers import WatsonDiscoveryRetriever
+        from pineflow.retrievers.watson_discovery import WatsonDiscoveryRetriever
 
         doc_retriever = WatsonDiscoveryRetriever(url="your_url",
                                                 api_key="your_api_key",

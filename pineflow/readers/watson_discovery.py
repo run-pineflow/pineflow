@@ -26,7 +26,7 @@ class WatsonDiscoveryReader(BaseReader):
 
     .. code-block:: python
 
-        from pineflow.readers import WatsonDiscoveryReader
+        from pineflow.readers.watson_discovery import WatsonDiscoveryReader
 
         discovery_reader = WatsonDiscoveryReader(url="your_url",
                                           api_key="your_api_key",

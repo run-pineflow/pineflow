@@ -22,7 +22,7 @@ class S3Reader(BaseReader):
 
     .. code-block:: python
 
-        from pineflow.readers import S3Reader
+        from pineflow.readers.s3 import S3Reader
 
         s3_reader = S3Reader(bucket="your_bucket",
                      ibm_api_key_id="your_api_key",

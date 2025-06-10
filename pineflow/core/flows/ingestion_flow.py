@@ -7,19 +7,19 @@ from pineflow.core.vector_stores.base import BaseVectorStore
 
 
 class IngestionFlow():
-    """An ingestion flow.
+    """An ingestion flow for processing and storing data.
 
     Args:
-        transformers: Transformers to apply to the data.
-        readers (BaseReader, optional): Reader to use to ingest data.
-        vector_store (BaseVectorStore, optional): Vector store to use to store the data.
+        transformers (list): A list of transformers to apply to the data.
+        readers (BaseReader, optional): Reader to use for ingesting data.
+        vector_store (BaseVectorStore, optional): Vector store to use for storing the data.
 
     Example:
         .. code-block:: python
 
             from pineflow.core.flows import IngestionFlow
             from pineflow.text_chunkers import TokenTextChunker
-            from pineflow.embeddings import HuggingFaceEmbedding
+            from pineflow.embeddings.huggingface import HuggingFaceEmbedding
 
             ingestion_flow = IngestionFlow(
                 transformers=[
