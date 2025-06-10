@@ -14,20 +14,19 @@ class IngestionFlow():
         readers (BaseReader, optional): Reader to use to ingest data.
         vector_store (BaseVectorStore, optional): Vector store to use to store the data.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.core.flows import IngestionFlow
+            from pineflow.text_chunkers import TokenTextChunker
+            from pineflow.embeddings import HuggingFaceEmbedding
 
-        from pineflow.core.flows import IngestionFlow
-        from pineflow.text_chunkers import TokenTextChunker
-        from pineflow.embeddings import HuggingFaceEmbedding
-
-        
-        ingestion_flow = IngestionFlow(transformers= [
-            TokenTextChunker(), 
-            HuggingFaceEmbedding(model_name="intfloat/multilingual-e5-small"),
-            ]
-        )
+            ingestion_flow = IngestionFlow(
+                transformers=[
+                    TokenTextChunker(),
+                    HuggingFaceEmbedding(model_name="intfloat/multilingual-e5-small"),
+                ]
+            )
     """
 
     def __init__(self, 

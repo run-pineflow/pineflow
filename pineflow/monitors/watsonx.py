@@ -65,7 +65,7 @@ def _convert_payload_format(records: List[dict], feature_fields: List[str]) -> L
         return payload_data
 
 
-class CloudPakforDataCredentials:
+class CloudPakforDataCredentials(BaseModel):
     """Encapsulates the credentials required for IBM Cloud Pak for Data.
     
     Args:
@@ -79,36 +79,44 @@ class CloudPakforDataCredentials:
         disable_ssl_verification (bool, optional): Indicates whether to disable SSL certificate verification. Defaults to `True`.
     """
     
+    url: str
+    api_key: Optional[str] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+    bedrock_url: Optional[str] = None
+    instance_id: Optional[Literal["icp","openshift"]] = None
+    version: Optional[str] = None
+    disable_ssl_verification: bool = True
+    
     def __init__(
         self,
         url: str,
-        api_key: str = None,
-        username: str = None,
-        password: str = None,
-        bedrock_url: str = None,
-        instance_id: Literal["icp","openshift"] = None,
-        version: str = None,
+        api_key: Optional[str] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        bedrock_url: Optional[str] = None,
+        instance_id: Optional[Literal["icp","openshift"]] = None,
+        version: Optional[str] = None,
         disable_ssl_verification: bool = True
         ) -> None:
         
-        self.url = url
-        self.api_key = api_key
-        self.username = username
-        self.api_key = api_key
-        self.password = password
-        self.bedrock_url = bedrock_url
-        self.instance_id = instance_id
-        self.api_key = api_key
-        self.version = version
-        self.disable_ssl_verification = disable_ssl_verification
+        super().__init__(
+            url=url,
+            api_key=api_key,
+            username=username,
+            password=password,
+            bedrock_url=bedrock_url,
+            instance_id=instance_id,
+            version=version,
+            disable_ssl_verification=disable_ssl_verification)
         
     def to_dict(self) -> dict[str, Any]:
-        data = dict([(k, v) for k, v in self.__dict__.items()])
+        cpd_creds = dict([(k, v) for k, v in self.__dict__.items()])
         
-        if "instance_id" in data and self.instance_id.lower() not in ["icp","openshift"]:
-            data.pop("instance_id")
+        if "instance_id" in cpd_creds and self.instance_id.lower() not in ["icp","openshift"]:
+            cpd_creds.pop("instance_id")
         
-        return data
+        return cpd_creds
 
 class IntegratedSystemCredentials(BaseModel):
     """Encapsulates the credentials for an Integrated System based on the authentication type.
@@ -1078,12 +1086,12 @@ class WatsonxLocalMonitorMetric(BaseModel):
     data_type: Literal["string", "integer", "double", "timestamp"]
     nullable: bool = True
     
-    def _to_dict(self) -> Dict:        
+    def to_dict(self) -> Dict:        
         return {
             "name": self.name, 
             "type": self.data_type,
             "nullable": self.nullable
-            }
+        }
 
 # DEPRECATED remove in next release
 # Supporting class
@@ -1119,7 +1127,7 @@ class WatsonxMetricThreshold(BaseModel):
         return {
             "type": self.threshold_type,
             "default": self.default_value
-            }
+        }
 
 # Supporting class        
 class WatsonxMonitorMetric(BaseModel):
@@ -1158,7 +1166,7 @@ class WatsonxMonitorMetric(BaseModel):
             "applies_to": ApplicabilitySelection(problem_type=self.applies_to),
             }
         
-        if self.thresholds is not None: 
+        if self.thresholds is not None:
             monitor_metric["thresholds"] = [MetricThreshold(**threshold.to_dict()) for threshold in self.thresholds]
             
         return monitor_metric
@@ -1177,8 +1185,7 @@ class WatsonxMetricRequest(BaseModel):
             from pineflow.monitors.watsonx import WatsonxMetricRequest
 
             WatsonxMetricRequest(
-                metrics=[{"context_judge_quality": 0.914}], 
-                run_id="RUN_ID"
+                metrics=[{"context_judge_quality": 0.914}]
             )
     """
     
@@ -1186,14 +1193,13 @@ class WatsonxMetricRequest(BaseModel):
     metrics: List[dict]
     run_id: Optional[str] = None
     
-    def __init__(
-        self, 
-        metrics: List[dict],
-        run_id: Optional[str] = None
-        ) -> None:
+    def to_dict(self) -> Dict:
+        return {
+            "timestamp": self.timestamp,
+            "metrics": self.metrics,
+            "run_id": self.run_id
+        }
         
-        super().__init__(metrics=metrics,
-                run_id=run_id)
 
 # DEPRECATED remove in next release
 # Supporting class
@@ -1626,7 +1632,7 @@ class WatsonxCustomMetric:
         )
         
         for obj in records_request: obj.run_id = monitor_run_id # noqa: E701
-        records_request = [MonitorMeasurementRequest(**obj.dict()) for obj in records_request]
+        records_request = [MonitorMeasurementRequest(**obj.to_dict()) for obj in records_request]
         
         self._wos_client.monitor_instances.add_measurements(
             monitor_instance_id=monitor_instance_id,
@@ -1682,7 +1688,7 @@ class WatsonxCustomMetric:
         )
         target = Target(target_id=subscription_id, target_type="subscription")
         data_mart_id = self._get_existing_data_mart()
-        monitor_metrics = [SparkStructFieldPrimitive(**metric._to_dict()) for metric in monitor_metrics]
+        monitor_metrics = [SparkStructFieldPrimitive(**metric.to_dict()) for metric in monitor_metrics]
         
         schema_fields = [
             SparkStructFieldPrimitive(
