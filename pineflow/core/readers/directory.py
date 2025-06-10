@@ -62,13 +62,13 @@ class DirectoryReader(BaseReader):
                 loader_cls = self.file_loader.get(extension)
                 if loader_cls:
                     try:
-                        #TO-DO add `file_reader_kwargs`
+                        #TODO add `file_reader_kwargs`
                         doc = loader_cls().load_data(file_dir)
                         documents.extend(doc)
                     except Exception as e:
                         raise f"Error reading {file_dir}: {e}"
                 else:
-                    #TO-DO add `unstructured file` support
+                    #TODO add `unstructured file` support
                     raise f"Unsupported file type: {extension}"
 
         return documents
