@@ -18,11 +18,17 @@ def _loading_default_supported_readers():
 
 
 class DirectoryReader(BaseReader):
-    """Simple directory reader.
+    """Directory reader.
+
+    Reads files from a directory, optionally filtering by file extension and
+    allowing recursive directory traversal.
 
     Args:
-        required_exts: (List[str], optional): List of file extensions to only load files with those extensions.
-        recursive (str, optional): Whether to recursively search for files. Defaults to ``False``.
+        required_exts (List[str], optional): List of file extensions to filter by.
+            Only files with these extensions will be loaded. Defaults to ``None`` (no filtering).
+        recursive (bool, optional): Whether to recursively search subdirectories for files.
+            Defaults to ``False``.
+
     """
     
     required_exts: List[str] = [".pdf", ".docx", ".html"]
@@ -31,9 +37,12 @@ class DirectoryReader(BaseReader):
 
     def load_data(self, input_dir: str) -> List[Document]:
         """Loads data from the specified directory.
-        
+
         Args:
             input_dir (str): Directory path from which to load the documents.
+
+        Returns:
+            List[Document]: A list of documents loaded from the directory.
         """
         if not os.path.isdir(input_dir):
             raise ValueError(f"`{input_dir}` is not a valid directory.")

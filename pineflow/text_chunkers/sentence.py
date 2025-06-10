@@ -14,21 +14,20 @@ from pineflow.core.text_chunkers.utils import (
 
 
 class SentenceChunker(BaseTextChunker):
-    """Designed to split input text into smaller chunks,
-    particularly useful for processing large documents or texts, tries to keep sentences and paragraphs together.
+    """Designed to split input text into smaller chunks, particularly useful for processing
+    large documents or texts. Tries to keep sentences and paragraphs together.
 
     Args:
         chunk_size (int, optional): Size of each chunk. Default is ``512``.
         chunk_overlap (int, optional): Amount of overlap between chunks. Default is ``256``.
-        separator (str, optional): Separators used for splitting into words. Default is ``" "``
+        separator (str, optional): Separator used for splitting text. Default is ``" "``.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.text_chunkers import SentenceChunker
 
-        from pineflow.text_chunkers import SentenceChunker
-
-        text_chunker = SentenceChunker()
+            text_chunker = SentenceChunker()
     """
 
     def __init__(self,
@@ -58,15 +57,19 @@ class SentenceChunker(BaseTextChunker):
 
     def from_text(self, text: str) -> List[str]:
         """Split text into chunks.
-        
+
         Args:
             text (str): Input text to split.
 
-        **Example**
+        Returns:
+            List[str]: List of text chunks.
 
-        .. code-block:: python
+        Example:
+            .. code-block:: python
 
-            chunks = text_chunker.from_text("Pineflow is a data framework to load any data in one line of code and connect with AI applications.")
+                chunks = text_chunker.from_text(
+                    "Pineflow is a data framework to load any data in one line of code and connect with AI applications."
+                )
         """
         splits = self._split(text)
 
@@ -76,7 +79,10 @@ class SentenceChunker(BaseTextChunker):
         """Split documents into chunks.
 
         Args:
-            documents (List[Document]): List of `Document` objects to split.
+            documents (List[Document]): List of ``Document`` objects to split.
+
+        Returns:
+            List[Document]: List of chunked documents objects.
         """
         chunks = []
 

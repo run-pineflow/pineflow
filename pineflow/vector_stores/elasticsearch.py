@@ -14,15 +14,29 @@ class ElasticsearchVectorStore(BaseVectorStore):
 
     Args:
         index_name (str): Name of the Elasticsearch index.
-        url (str): Elasticsearch instance url.
-        embed_model (BaseEmbedding):
+        url (str): Elasticsearch instance URL.
+        embed_model (BaseEmbedding): Embedding model used to compute vectors.
         user (str, optional): Elasticsearch username.
         password (str, optional): Elasticsearch password.
         batch_size (int, optional): Batch size for bulk operations. Defaults to ``200``.
         ssl (bool, optional): Whether to use SSL. Defaults to ``False``.
-        distance_strategy (str, optional): Distance strategy for similarity search. Currently supports "cosine", "dot_product" and "l2_norm". Defaults to ``cosine``.
+        distance_strategy (str, optional): Distance strategy for similarity search.
+            Currently supports ``"cosine"``, ``"dot_product"``, and ``"l2_norm"``. Defaults to ``cosine``.
         text_field (str, optional): Name of the field containing text. Defaults to ``text``.
         vector_field (str, optional): Name of the field containing vector embeddings. Defaults to ``embedding``.
+
+    Example:
+        .. code-block:: python
+
+            from pineflow.embeddings.huggingface import HuggingFaceEmbedding
+            from pineflow.vector_stores.elasticsearch import ElasticsearchVectorStore
+
+            embedding = HuggingFaceEmbedding()
+            es_vector_store = ElasticsearchVectorStore(
+                index_name="pineflow-index",
+                url="http://localhost:9200",
+                embed_model=embedding
+            )
     """
 
     def __init__(self,
@@ -114,7 +128,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
         """Add documents to the Elasticsearch index.
 
         Args:
-            documents (List[Document]): List of `Document` objects to add to the index.
+            documents (List[Document]): List of documents to add to the index.
             create_index_if_not_exists (bool, optional): Whether to create the index if it doesn't exist. Defaults to ``True``.
         """
         if create_index_if_not_exists:
@@ -140,11 +154,14 @@ class ElasticsearchVectorStore(BaseVectorStore):
         return [doc.id_ for doc in documents]
 
     def search_documents(self, query: str, top_k: int = 4) -> List[DocumentWithScore]:
-        """Performs a similarity search for top-k most similar documents.
+        """Performs a similarity search for the top-k most similar documents.
 
         Args:
             query (str): Query text.
             top_k (int, optional): Number of top results to return. Defaults to ``4``.
+
+        Returns:
+            List[DocumentWithScore]: List of the most similar documents.
         """
         query_embedding = self._embed_model.get_text_embedding(query)
         #  TO-DO: Add elasticsearch `filter` option
@@ -186,7 +203,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
         """Delete documents from the Elasticsearch index.
 
         Args:
-            ids (List[str]): List of `Document` IDs to delete.
+            ids (List[str]): List of documents IDs to delete.
         """
         for id in ids:
             self._client.delete(index=self.index_name, id=id)

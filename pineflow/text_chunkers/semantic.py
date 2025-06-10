@@ -13,23 +13,23 @@ from pineflow.core.utils.pairwise import cosine_similarity
 class SemanticChunker(BaseTextChunker, BaseModel):
     """Python class designed to split text into chunks using semantic understanding.
 
-    Credit to Greg Kamradt's notebook: `5 Levels Of Text Splitting <https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb>`_.
+    Credit to Greg Kamradt's notebook:
+    `5 Levels Of Text Splitting <https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb>`_.
 
     Args:
-        embed_model (BaseEmbedding):
+        embed_model (BaseEmbedding): Embedding model used for semantic chunking.
         buffer_size (int, optional): Size of the buffer for semantic chunking. Default is ``1``.
         breakpoint_threshold_amount (int, optional): Threshold percentage for detecting breakpoints. Default is ``95``.
         device (str, optional): Device to use for processing. Currently supports "cpu" and "cuda". Default is ``cpu``.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.embeddings.huggingface import HuggingFaceEmbedding
+            from pineflow.text_chunkers import SemanticChunker
 
-        from pineflow.embeddings.huggingface import HuggingFaceEmbedding
-        from pineflow.text_chunkers import SemanticChunker
-
-        embedding = HuggingFaceEmbedding()
-        text_chunker = SemanticChunker(embed_model=embedding)
+            embedding = HuggingFaceEmbedding()
+            text_chunker = SemanticChunker(embed_model=embedding)
     """
 
     embed_model: BaseEmbedding
@@ -95,9 +95,12 @@ class SemanticChunker(BaseTextChunker, BaseModel):
         
     def from_text(self, text: str) -> List[str]:
         """Split text into chunks.
-        
+
         Args:
             text (str): Input text to split.
+
+        Returns:
+            List[str]: List of text chunks.
         """
         single_sentences_list = re.split(r"(?<=[.?!])\s+", text)
         distances, sentences = self._calculate_cosine_distances(single_sentences_list)
@@ -125,9 +128,12 @@ class SemanticChunker(BaseTextChunker, BaseModel):
         
     def from_documents(self, documents: List[Document]) -> List[Document]:
         """Split documents into chunks.
-        
+
         Args:
-            documents (List[Document]): List of `Document` objects to split.
+            documents (List[Document]): List of ``Document`` objects to split.
+
+        Returns:
+            List[Document]: List of chunked documents objects.
         """
         chunks = []
 

@@ -68,24 +68,28 @@ class WatsonxEmbedding(BaseModel, BaseEmbedding):
         self._client = WatsonxEmbeddings(**kwargs_params)
 
     def get_text_embedding(self, query: str) -> Embedding:
-        """Compute embedding for a text.
+        """Compute embedding for a single input text.
 
         Args:
-            query (str): Input query to compute embedding.
+            query (str): Input query string to compute the embedding for.
 
-        **Example**
+        Returns:
+            List[float]: The embedding vector corresponding to the input query.
 
-        .. code-block:: python
+        Example:
+            .. code-block:: python
 
-            embedded_query = watsonx_embedding.get_text_embedding("Pineflow is a data framework to load any data in one line of code and connect with AI applications.")
+                embedded_query = watsonx_embedding.get_text_embedding(
+                    "Pineflow is a data framework to load any data in one line of code and connect with AI applications."
+                )
         """
         return self.get_texts_embedding([query])[0]
 
     def get_texts_embedding(self, texts: List[str]) -> List[Embedding]:
-        """Compute embeddings for list of texts.
+        """Compute embeddings for a list of texts.
 
         Args:
-            texts (List[str]): List of text to compute embeddings.
+            texts (List[str]): A list of input strings for which to compute embeddings.
         """
         return self._client.embed_documents(texts)
 
@@ -93,7 +97,7 @@ class WatsonxEmbedding(BaseModel, BaseEmbedding):
         """Compute embeddings for a list of documents.
 
         Args:
-            documents (List[Document]): List of `Document` objects to compute embeddings.
+            documents (List[Document]): List of documents to compute embeddings.
         """
         texts = [document.get_content() for document in documents]
         embeddings = self.get_texts_embedding(texts)

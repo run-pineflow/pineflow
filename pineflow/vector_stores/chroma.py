@@ -13,19 +13,19 @@ class ChromaVectorStore(BaseVectorStore):
     """Chroma is the AI-native open-source vector database. Embeddings are stored within a ChromaDB collection.
 
     Args:
-        embed_model (BaseEmbedding):
+        embed_model (BaseEmbedding): Embedding model used to compute vectors.
         collection_name (str, optional): Name of the ChromaDB collection.
-        distance_strategy (str, optional): Distance strategy for similarity search. Currently supports "cosine", "ip" and "l2". Defaults to ``cosine``.
+        distance_strategy (str, optional): Distance strategy for similarity search.
+            Currently supports ``"cosine"``, ``"ip"``, and ``"l2"``. Defaults to ``cosine``.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.embeddings.huggingface import HuggingFaceEmbedding
+            from pineflow.vector_stores.chroma import ChromaVectorStore
 
-        from pineflow.embeddings.huggingface import HuggingFaceEmbedding
-        from pineflow.vector_stores.chroma import ChromaVectorStore
-
-        embedding = HuggingFaceEmbedding()
-        vector_db = ChromaVectorStore(embed_model=embedding)
+            embedding = HuggingFaceEmbedding()
+            vector_db = ChromaVectorStore(embed_model=embedding)
     """
 
     def __init__(self, embed_model: BaseEmbedding,
@@ -56,7 +56,7 @@ class ChromaVectorStore(BaseVectorStore):
         """Add documents to the ChromaDB collection.
 
         Args:
-            documents (List[Document]): List of `Document` objects to add to the collection.
+            documents (List[Document]): List of documents to add to the collection.
         """
         embeddings = []
         metadatas = []
@@ -78,11 +78,14 @@ class ChromaVectorStore(BaseVectorStore):
         return ids
 
     def search_documents(self, query: str, top_k: int = 4) -> List[DocumentWithScore]:
-        """Performs a similarity search for top-k most similar documents.
+        """Performs a similarity search for the top-k most similar documents.
 
         Args:
             query (str): Query text.
             top_k (int, optional): Number of top results to return. Defaults to ``4``.
+
+        Returns:
+            List[DocumentWithScore]: List of the most similar documents.
         """
         query_embedding = self._embed_model.get_text_embedding(query)
 
@@ -109,7 +112,7 @@ class ChromaVectorStore(BaseVectorStore):
         """Delete documents from the ChromaDB collection.
 
         Args:
-            ids (List[str]): List of `Document` IDs to delete. Defaults to ``None``.
+            ids (List[str], optional): List of ``Document`` IDs to delete. Defaults to ``None``.
         """
         self._collection.delete(ids=ids)
         

@@ -48,10 +48,10 @@ class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
         return self.get_texts_embedding([query])[0]
 
     def get_texts_embedding(self, texts: List[str]) -> List[Embedding]:
-        """Compute embeddings for list of texts.
+        """Compute embeddings for a list of texts.
 
         Args:
-            texts (List[str]): List of text to compute embeddings.
+            texts (List[str]): A list of input strings for which to compute embeddings.
         """
         return self._client.encode(texts).tolist()
 
@@ -59,7 +59,7 @@ class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
         """Compute embeddings for a list of documents.
 
         Args:
-            documents (List[Document]): List of `Document` objects to compute embeddings.
+            documents (List[Document]): List of documents to compute embeddings.
         """
         texts = [document.get_content() for document in documents]
         embeddings = self.get_texts_embedding(texts)

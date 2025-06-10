@@ -7,7 +7,7 @@ from pineflow.core.readers import BaseReader
 
 
 class HTMLReader(BaseReader):
-    """Load HTML file and extract text from a specific tag.
+    """Load a HTML file and extract text from a specific tag.
 
     Args:
         tag (str): HTML tag to extract. Defaults to ``section``.
@@ -16,10 +16,13 @@ class HTMLReader(BaseReader):
     tag: str = "section"
 
     def load_data(self, input_file: str) -> List[Document]:
-        """Loads data from the specified directory.
-        
+        """Loads data from the specified file.
+
         Args:
             input_file (str): File path to load.
+
+        Returns:
+            List[Document]: A list of ``Document`` objects loaded from the file.
         """
         try:
             from bs4 import BeautifulSoup  # noqa: F401

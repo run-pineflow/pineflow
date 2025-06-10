@@ -18,16 +18,17 @@ class S3Reader(BaseReader):
         ibm_service_instance_id (str): Service instance ID for the IBM COS.
         s3_endpoint_url (str): Endpoint URL for the S3 service.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.readers.s3 import S3Reader
 
-        from pineflow.readers.s3 import S3Reader
-
-        s3_reader = S3Reader(bucket="your_bucket",
-                     ibm_api_key_id="your_api_key",
-                     ibm_service_instance_id="your_instance_id",
-                     s3_endpoint_url="your_api_url")
+            s3_reader = S3Reader(
+                bucket="your_bucket",
+                ibm_api_key_id="your_api_key",
+                ibm_service_instance_id="your_instance_id",
+                s3_endpoint_url="your_api_url"
+            )
     """
 
     def __init__(self, bucket: str,

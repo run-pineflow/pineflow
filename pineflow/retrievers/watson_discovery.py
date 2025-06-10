@@ -11,24 +11,27 @@ logger = getLogger(__name__)
 class WatsonDiscoveryRetriever:
     """Provides functionality to interact with IBM Watson Discovery for querying documents.
 
-    See https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-getting-started for more info.
+    For more information, see
+    `IBM Watson Discovery Getting Started <https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-getting-started>`_.
 
     Args:
-        url (str): Watson Discovery instance url.
+        url (str): Watson Discovery instance URL.
         api_key (str): Watson Discovery API key.
-        project_id (str): Watson Discovery project_id.
+        project_id (str): Watson Discovery project ID.
         version (str, optional): Watson Discovery API version. Defaults to ``2023-03-31``.
-        disable_passages (bool, optional): Return the full document instead of passages (only enable this if all documents are short). Defaults to ``False``.
+        disable_passages (bool, optional): Return the full document instead of passages.
+            Only enable this if all documents are short. Defaults to ``False``.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.retrievers.watson_discovery import WatsonDiscoveryRetriever
 
-        from pineflow.retrievers.watson_discovery import WatsonDiscoveryRetriever
-
-        doc_retriever = WatsonDiscoveryRetriever(url="your_url",
-                                                api_key="your_api_key",
-                                                project_id="your_project_id")
+            doc_retriever = WatsonDiscoveryRetriever(
+                url="your_url",
+                api_key="your_api_key",
+                project_id="your_project_id"
+            )
     """
 
     def __init__(self,
@@ -73,14 +76,14 @@ class WatsonDiscoveryRetriever:
 
         Args:
             query (str): Query text.
-            filter (str, optional): Searches for documents that match the filter. Use Discovery Query Language syntax.
+            filter (str, optional): Searches for documents that match the filter.
+                Use Discovery Query Language syntax. Defaults to ``None``.
             top_k (int, optional): Number of top results to return. Defaults to ``4``.
 
-        **Example**
+        Example:
+            .. code-block:: python
 
-        .. code-block:: python
-
-            docs = doc_retriever.query("What's Pineflow?")
+                docs = doc_retriever.query("What's Pineflow?")
         """
         from ibm_watson.discovery_v2 import QueryLargePassages
         return_fields = ["extracted_metadata.filename", "extracted_metadata.file_type"]

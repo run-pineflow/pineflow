@@ -10,10 +10,13 @@ class DocxReader(BaseReader):
     """Microsoft Word (Docx) reader."""
 
     def load_data(self, input_file: str) -> List[Document]:
-        """Loads data from the specified directory.
-        
+        """Loads data from the specified file.
+
         Args:
             input_file (str): File path to load.
+
+        Returns:
+            List[Document]: A list of ``Document`` objects loaded from the file.
         """
         try:
             import docx2txt  # noqa: F401

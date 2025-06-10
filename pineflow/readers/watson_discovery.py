@@ -11,26 +11,30 @@ logger = getLogger(__name__)
 class WatsonDiscoveryReader(BaseReader):
     """Provides functionality to read documents from IBM Watson Discovery.
 
-    See https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-getting-started for more info.
+    For more information, see
+    `IBM Watson Discovery Getting Started <https://cloud.ibm.com/docs/discovery-data?topic=discovery-data-getting-started>`_.
 
     Args:
-        url (str): Watson Discovery instance url.
+        url (str): Watson Discovery instance URL.
         api_key (str): Watson Discovery API key.
-        project_id (str): Watson Discovery project_id.
+        project_id (str): Watson Discovery project ID.
         version (str, optional): Watson Discovery API version. Defaults to ``2023-03-31``.
         batch_size (int, optional): Batch size for bulk operations. Defaults to ``50``.
-        created_date (str, optional): Load documents created after the date. Expected format ``YYYY-MM-DD``. Defaults to ``datetime.today()``.
-        pre_additional_data_field (str, optional): Additional data field to be added to the beginning of the Document content. Defaults to ``None``.
+        created_date (str, optional): Load documents created after this date.
+            Expected format is ``YYYY-MM-DD``. Defaults to today's date.
+        pre_additional_data_field (str, optional): Additional data field to prepend to the Document content.
+            Defaults to ``None``.
 
-    **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.readers.watson_discovery import WatsonDiscoveryReader
 
-        from pineflow.readers.watson_discovery import WatsonDiscoveryReader
-
-        discovery_reader = WatsonDiscoveryReader(url="your_url",
-                                          api_key="your_api_key",
-                                          project_id="your_project_id")
+            discovery_reader = WatsonDiscoveryReader(
+                url="your_url",
+                api_key="your_api_key",
+                project_id="your_project_id"
+            )
     """
 
     def __init__(self,
@@ -65,13 +69,12 @@ class WatsonDiscoveryReader(BaseReader):
             raise
 
     def load_data(self) -> List[Document]:
-        """Loads documents from the Watson Discovery.
+        """Loads documents from Watson Discovery.
 
-        **Example**
+        Example:
+            .. code-block:: python
 
-        .. code-block:: python
-
-            docs = discovery_reader.load_data()
+                docs = discovery_reader.load_data()
         """
         from ibm_watson.discovery_v2 import QueryLargePassages
         last_batch_size = self.batch_size

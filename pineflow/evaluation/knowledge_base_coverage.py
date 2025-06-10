@@ -9,22 +9,23 @@ from pineflow.core.embeddings import BaseEmbedding, SimilarityMode
 
 class KnowledgeBaseCoverageEvaluator(BaseModel):
     """Measures how much the knowledge base (context) has contributed to the answer’s coverage.
-    Higher value suggests greater proportion of context are in LLM response.
+    A higher value suggests a greater proportion of the context is present in the LLM's response.
 
     Args:
-        embed_model (BaseEmbedding):
-        similarity_mode (str, optional): Similarity strategy. Currently supports "cosine", "dot_product" and "euclidean". Defaults to ``cosine``.
-        similarity_threshold (float, optional): Embedding similarity threshold for "passing". Defaults to ``0.8``.
+        embed_model (BaseEmbedding): The embedding model used to compute vector representations.
+        similarity_mode (str, optional): Similarity strategy to use. Supported options are 
+            ``"cosine"``, ``"dot_product"``, and ``"euclidean"``. Defaults to ``"cosine"``.
+        similarity_threshold (float, optional): Embedding similarity threshold for determining
+            whether a context segment "passes". Defaults to ``0.8``.
 
-     **Example**
+    Example:
+        .. code-block:: python
 
-    .. code-block:: python
+            from pineflow.embeddings.huggingface import HuggingFaceEmbedding
+            from pineflow.evaluation import KnowledgeBaseCoverage
 
-        from pineflow.embeddings.huggingface import HuggingFaceEmbedding
-        from pineflow.evaluation import KnowledgeBaseCoverage
-
-        embedding = HuggingFaceEmbedding()
-        eval_coverage = KnowledgeBaseCoverage(embed_model=embedding)
+            embedding = HuggingFaceEmbedding()
+            eval_coverage = KnowledgeBaseCoverage(embed_model=embedding)
     """
 
     embed_model: BaseEmbedding

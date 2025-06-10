@@ -1581,7 +1581,7 @@ class WatsonxCustomMetric:
         Args:
             monitor_instance_id (str): The unique ID of the monitor instance.
             monitor_run_id (str): The ID of the monitor run that generated the metrics.
-            records_request (Dict[str, Union[float, int]]): Dict containing the metrics to be published.
+            records_request (dict[str | float | int]): Dict containing the metrics to be published.
     
         Example:
             .. code-block:: python
