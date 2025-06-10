@@ -27,12 +27,12 @@ REGIONS_URL = {
 }
 
 def _filter_dict(original_dict: dict, optional_keys: List, required_keys: List = []):
-    """Filters a dictionary to keep only the specified keys and check required.
+    """Filters a dictionary to keep only the specified keys and checks for required keys.
     
     Args:
-        original_dict (dict): The original dictionary
-        optional_keys (list): A list of keys to keep
-        required_keys (list, optional): A list of keys that must exist in the dictionary
+        original_dict (dict): The original dictionary.
+        optional_keys (list): A list of keys to retain.
+        required_keys (list, optional): A list of keys that must be present in the dictionary. Defaults to None.
     """
     # Ensure all required keys are in the source dictionary
     missing_keys = [key for key in required_keys if key not in original_dict]
@@ -66,17 +66,17 @@ def _convert_payload_format(records: List[dict], feature_fields: List[str]) -> L
 
 
 class CloudPakforDataCredentials:
-    """Encapsulate passed credentials for IBM Cloud Pak for Data.
-
+    """Encapsulates the credentials required for IBM Cloud Pak for Data.
+    
     Args:
-        url (str): Host URL of Cloud Pak for Data environment.
-        api_key (str, optional): Environment api_key if IAM enabled.
-        username (str, optional): Environment username.
-        password (str, optional): Environment password.
-        bedrock_url (str, optional): Bedrock URL. This url is required only when iam-integration is enabled on CP4D 4.0.x cluster.
-        instance_id (str, optional): Instance ID.
-        version (str, optional): CPD Version.
-        disable_ssl_verification (bool, optional): Indicates whether verification of the server's SSL certificate. Defaults to ``True``.
+        url (str): The host URL of the Cloud Pak for Data environment.
+        api_key (str, optional): The API key for the environment, if IAM is enabled.
+        username (str, optional): The username for the environment.
+        password (str, optional): The password for the environment.
+        bedrock_url (str, optional): The Bedrock URL. Required only when IAM integration is enabled on CP4D 4.0.x clusters.
+        instance_id (str, optional): The instance ID.
+        version (str, optional): The version of Cloud Pak for Data.
+        disable_ssl_verification (bool, optional): Indicates whether to disable SSL certificate verification. Defaults to `True`.
     """
     
     def __init__(
@@ -111,18 +111,18 @@ class CloudPakforDataCredentials:
         return data
 
 class IntegratedSystemCredentials(BaseModel):
-    """Encapsulate passed credentials for Integrated System.
+    """Encapsulates the credentials for an Integrated System based on the authentication type.
     
-    Depending on the `auth_type`, only a subset of the properties are required.
-
+    Depending on the `auth_type`, only a subset of the properties is required.
+    
     Args:
-        auth_type (str): Type of authentication. Currently supports "basic" and "bearer".
-        username (str, optional): Username for Basic Auth.
-        password (str, optional): Password for Basic Auth.
-        token_url (str, optional): URL of the authentication endpoint used to request a Bearer token.
-        token_method (str, optional): HTTP method used to request the Bearer token (e.g., "POST", "GET").
-        token_headers (str, optional): Optional headers to include when requesting the token.
-        token_payload (bool, optional): Body/payload to send when requesting the token. Can be a string (e.g., raw JSON).
+        auth_type (str): The type of authentication. Currently supports "basic" and "bearer".
+        username (str, optional): The username for Basic Authentication.
+        password (str, optional): The password for Basic Authentication.
+        token_url (str, optional): The URL of the authentication endpoint used to request a Bearer token.
+        token_method (str, optional): The HTTP method (e.g., "POST", "GET") used to request the Bearer token.
+        token_headers (dict, optional): Optional headers to include when requesting the Bearer token. Defaults to `None`.
+        token_payload (str, optional): The body or payload to send when requesting the Bearer token. Can be a string (e.g., raw JSON).
     """
     
     auth_type: Literal["basic", "bearer"]
@@ -177,40 +177,42 @@ class IntegratedSystemCredentials(BaseModel):
         return integrated_system_creds
 
 class WatsonxExternalPromptMonitor:
-    """Provides functionality to interact with IBM watsonx.governance for monitoring external LLM's.
+    """Provides functionality to interact with IBM watsonx.governance for monitoring external LLMs.
     
     Note:
-            One of these parameters is required to create prompt monitor: ``project_id`` or ``space_id``. Not both.
-
+        One of the following parameters is required to create a prompt monitor: ``project_id`` or ``space_id``, but not both.
+    
     Args:
-        api_key (str): IBM watsonx.governance API key.
-        space_id (str, optional): watsonx.governance space_id.
-        project_id (str, optional): watsonx.governance project_id.
-        region (str, optional): Region where the watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``
-        cpd_creds (CloudPakforDataCredentials, optional): Cloud Pak for Data environment details.
-
-    **Example**
-
-    .. code-block:: python
-
-        from pineflow.monitors.watsonx import WatsonxExternalPromptMonitor, CloudPakforDataCredentials
-
-        # watsonx.governance (IBM Cloud)
-        wxgov_client = WatsonxExternalPromptMonitor(
-            api_key="API_KEY", 
-            space_id="SPACE_ID")
-                                                               
-        # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(
-            url="CPD_URL", 
-            username="USERNAME", 
-            password="PASSWORD",
-            version="5.0", 
-            instance_id="openshift")
+        api_key (str): The API key for IBM watsonx.governance.
+        space_id (str, optional): The space ID in watsonx.governance.
+        project_id (str, optional): The project ID in watsonx.governance.
+        region (str, optional): The region where watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``.
+        cpd_creds (CloudPakforDataCredentials, optional): The Cloud Pak for Data environment credentials.
+     
+    Example:
+        .. code-block:: python
         
-        wxgov_client = WatsonxExternalPromptMonitor(
-            space_id="SPACE_ID"
-            cpd_creds=cpd_creds)
+            from pineflow.monitors.watsonx import WatsonxExternalPromptMonitor, CloudPakforDataCredentials
+
+            # watsonx.governance (IBM Cloud)
+            wxgov_client = WatsonxExternalPromptMonitor(
+                api_key="API_KEY", 
+                space_id="SPACE_ID"
+            )
+                                                           
+            # watsonx.governance (CP4D)
+            cpd_creds = CloudPakforDataCredentials(
+                url="CPD_URL", 
+                username="USERNAME", 
+                password="PASSWORD",
+                version="5.0", 
+                instance_id="openshift"
+            )
+            
+            wxgov_client = WatsonxExternalPromptMonitor(
+                space_id="SPACE_ID",
+                cpd_creds=cpd_creds
+            )
     """
     
     def __init__(self,
@@ -375,28 +377,29 @@ class WatsonxExternalPromptMonitor:
                               input_text: str = None,
                               context_fields: List[str] = None,
                               question_field: str = None) -> dict:
-        """Create a Detached/External Prompt Template Asset and setup monitors for a given prompt template asset.
-
-        Args:
-            name (str): The name of the External Prompt Template Asset..
-            model_id (str): Id of the model associated with the prompt.
-            task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
-            detached_model_provider (str): The external model provider.
-            description (str, optional): Description of the External Prompt Template Asset.
-            model_parameters (dict, optional): Model parameters and their respective values.
-            detached_model_name (str, optional): The name of the external model.
-            detached_model_url (str, optional): URL of the external model.
-            detached_prompt_url (str, optional): URL of the external prompt.
-            detached_prompt_additional_info (dict, optional): Additional information related to the external prompt.
-            prompt_variables (List[str], optional): Values for prompt variables.
-            input_text (str, optional): The input text for the prompt.
-            context_fields (List[str], optional): A list of fields that will provide context to the prompt. Applicable only for ``retrieval_augmented_generation`` problem type.
-            question_field (str, optional): The field containing the question to be answered. Applicable only for ``retrieval_augmented_generation`` problem type.
-
-        **Example**
-
+        """Creates a Detached/External Prompt Template Asset and sets up monitors for a given prompt template asset.
+    
+    Args:
+        name (str): The name of the External Prompt Template Asset.
+        model_id (str): The ID of the model associated with the prompt.
+        task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
+        detached_model_provider (str): The external model provider.
+        description (str, optional): A description of the External Prompt Template Asset.
+        model_parameters (dict, optional): Model parameters and their respective values.
+        detached_model_name (str, optional): The name of the external model.
+        detached_model_url (str, optional): The URL of the external model.
+        detached_prompt_url (str, optional): The URL of the external prompt.
+        detached_prompt_additional_info (dict, optional): Additional information related to the external prompt.
+        prompt_variables (List[str], optional): Values for the prompt variables.
+        input_text (str, optional): The input text for the prompt.
+        context_fields (List[str], optional): A list of fields that will provide context to the prompt. 
+                                             Applicable only for "retrieval_augmented_generation" task type.
+        question_field (str, optional): The field containing the question to be answered. 
+                                        Applicable only for "retrieval_augmented_generation" task type.
+    
+    Example:
         .. code-block:: python
-
+        
             wxgov_client.create_prompt_monitor(
                 name="Detached prompt (model AWS Anthropic)",
                 model_id="anthropic.claude-v2",
@@ -407,8 +410,8 @@ class WatsonxExternalPromptMonitor:
                 prompt_variables=["context1", "context2", "input_query"],
                 input_text="Prompt text to be given",
                 context_fields=["context1", "context2"],
-                question_field="input_query")
-            
+                question_field="input_query"
+            )
         """
         prompt_metadata = locals()
         # remove unused vars from dict
@@ -542,23 +545,25 @@ class WatsonxExternalPromptMonitor:
         subscription_id: str, 
         payload_records: List[dict] = None
         ) -> List[str]:
-        """Store records to payload logging.
-
-        Args:
-            records_request (List[dict]): 
-            subscription_id (str): 
-
-        **Example**
-
+        """Stores records to the payload logging system.
+    
+    Args:
+        records_request (List[dict]): A list of records to be logged, where each record is represented as a dictionary.
+        subscription_id (str): The subscription ID associated with the records being logged.
+    
+    Example:
         .. code-block:: python
-
+        
             wxgov_client.store_payload_records(
-                records_request=[{"context1": "value_context1",
+                records_request=[{
+                    "context1": "value_context1",
                     "context2": "value_context1",
                     "input_query": "What's Pineflow?",
                     "input_token_count": 25,
-                    "generated_token_count": 150}], 
-                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0")
+                    "generated_token_count": 150
+                }],
+                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0"
+            )
         """
         # START deprecated params message
         if payload_records is not None:
@@ -628,40 +633,42 @@ class WatsonxExternalPromptMonitoring(WatsonxExternalPromptMonitor):
         super().__init__(*args, **kwargs)
      
 class WatsonxPromptMonitor:
-    """Provides functionality to interact with IBM watsonx.governance for monitoring IBM watsonx.ai LLM's.
+    """Provides functionality to interact with IBM watsonx.governance for monitoring IBM watsonx.ai LLMs.
     
     Note:
-        One of these parameters is required to create prompt monitor: ``project_id`` or ``space_id``. Not both.
-
+        One of the following parameters is required to create a prompt monitor: ``project_id`` or ``space_id``, but not both.
+    
     Args:
-        api_key (str): IBM watsonx.governance API key.
-        space_id (str, optional): watsonx.governance space_id.
-        project_id (str, optional): watsonx.governance project_id.
-        region (str, optional): Region where the watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``
-        cpd_creds (CloudPakforDataCredentials, optional): Cloud Pak for Data environment details.
-
-    **Example**
-
-    .. code-block:: python
-
-        from pineflow.monitors.watsonx import WatsonxPromptMonitor, CloudPakforDataCredentials
-
-        # watsonx.governance (IBM Cloud)
-        wxgov_client = WatsonxPromptMonitor(
-            api_key="API_KEY", 
-            space_id="SPACE_ID")
+        api_key (str): The API key for IBM watsonx.governance.
+        space_id (str, optional): The space ID in watsonx.governance.
+        project_id (str, optional): The project ID in watsonx.governance.
+        region (str, optional): The region where watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``.
+        cpd_creds (CloudPakforDataCredentials, optional): The Cloud Pak for Data environment credentials.
+      
+    Example:
+        .. code-block:: python
         
-        # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(
-            url="CPD_URL", 
-            username="USERNAME", 
-            password="PASSWORD",
-            version="5.0", 
-            instance_id="openshift")
+            from pineflow.monitors.watsonx import WatsonxPromptMonitor, CloudPakforDataCredentials
+
+            # watsonx.governance (IBM Cloud)
+            wxgov_client = WatsonxPromptMonitor(
+                api_key="API_KEY", 
+                space_id="SPACE_ID"
+            )
         
-        wxgov_client = WatsonxPromptMonitor(
-            space_id="SPACE_ID"
-            cpd_creds=cpd_creds)                                            
+            # watsonx.governance (CP4D)
+            cpd_creds = CloudPakforDataCredentials(
+                url="CPD_URL", 
+                username="USERNAME", 
+                password="PASSWORD",
+                version="5.0", 
+                instance_id="openshift"
+            )
+        
+            wxgov_client = WatsonxPromptMonitor(
+                space_id="SPACE_ID",
+                cpd_creds=cpd_creds
+            )                                         
     """
     
     def __init__(self,
@@ -809,23 +816,24 @@ class WatsonxPromptMonitor:
                               context_fields: List[str] = None,
                               question_field: str = None,
                               ) -> dict:
-        """Create an IBM Prompt Template Asset and setup monitors for a given prompt template asset.
-
-        Args:
-            name (str): The name of the Prompt Template Asset.
-            model_id (str): Id of the model associated with the prompt.
-            task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
-            description (str, optional): Description of the Prompt Template Asset.
-            model_parameters (dict, optional): Model parameters and their respective values.
-            prompt_variables (List[str], optional): Values for prompt input variables.
-            input_text (str, optional): The input text for the prompt.
-            context_fields (List[str], optional): A list of fields that will provide context to the prompt. Applicable only for ``retrieval_augmented_generation`` problem type.
-            question_field (str, optional): The field containing the question to be answered. Applicable only for ``retrieval_augmented_generation`` problem type.
-            
-        **Example**
-
+        """Creates an IBM Prompt Template Asset and sets up monitors for the given prompt template asset.
+    
+    Args:
+        name (str): The name of the Prompt Template Asset.
+        model_id (str): The ID of the model associated with the prompt.
+        task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
+        description (str, optional): A description of the Prompt Template Asset.
+        model_parameters (dict, optional): A dictionary of model parameters and their respective values.
+        prompt_variables (List[str], optional): A list of values for prompt input variables.
+        input_text (str, optional): The input text for the prompt.
+        context_fields (List[str], optional): A list of fields that will provide context to the prompt. 
+                                              Applicable only for the ``retrieval_augmented_generation`` task type.
+        question_field (str, optional): The field containing the question to be answered. 
+                                         Applicable only for the ``retrieval_augmented_generation`` task type.
+        
+    Example:
         .. code-block:: python
-
+        
             wxgov_client.create_prompt_monitor(
                 name="IBM prompt template",
                 model_id="ibm/granite-3-2b-instruct",
@@ -833,8 +841,8 @@ class WatsonxPromptMonitor:
                 prompt_variables=["context1", "context2", "input_query"],
                 input_text="Prompt text to be given",
                 context_fields=["context1", "context2"],
-                question_field="input_query")
-            
+                question_field="input_query"
+            )
         """
         prompt_metadata = locals()
         # remove unused vars from dict
@@ -961,23 +969,25 @@ class WatsonxPromptMonitor:
         subscription_id: str, 
         payload_records: List[dict] = None
         ) -> List[str]:
-        """Store records to payload logging.
-
-        Args:
-            records_request (List[dict]): 
-            subscription_id (str): 
-
-        **Example**
-
+        """Stores records to the payload logging system.
+    
+    Args:
+        records_request (List[dict]): A list of records to be logged. Each record is represented as a dictionary.
+        subscription_id (str): The subscription ID associated with the records being logged.
+    
+    Example:
         .. code-block:: python
-
+        
             wxgov_client.store_payload_records(
-                records_request=[{"context1": "value_context1",
+                records_request=[{
+                    "context1": "value_context1",
                     "context2": "value_context1",
                     "input_query": "What's Pineflow?",
                     "input_token_count": 25,
-                    "generated_token_count": 150}], 
-                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0")
+                    "generated_token_count": 150
+                }],
+                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0"
+            )
         """
         # START deprecated params message
         if payload_records is not None:
@@ -1049,20 +1059,19 @@ class WatsonxPromptMonitoring(WatsonxPromptMonitor):
 
 # Supporting class
 class WatsonxLocalMonitorMetric(BaseModel):
-    """Provides IBM watsonx.governance local monitor metric definition.
-     
+    """Provides the IBM watsonx.governance local monitor metric definition.
+    
     Args:
-        name (str): Name of metric.
-        data_type (str): Currently supports "string", "integer", "double", "timestamp".
-        nullable (bool):
+        name (str): The name of the metric.
+        data_type (str): The data type of the metric. Currently supports "string", "integer", "double", and "timestamp".
+        nullable (bool, optional): Indicates whether the metric can be null. Defaults to `False`.
+    
+    Example:
+        .. code-block:: python
         
-    **Example**
+            from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
 
-    .. code-block:: python
-
-        from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
-
-        WatsonxLocalMonitorMetric(name="context_judge_quality", data_type="double")
+            WatsonxLocalMonitorMetric(name="context_judge_quality", data_type="double")
     """
     
     name: str
@@ -1089,18 +1098,18 @@ class WatsonxTransactionMetric(WatsonxLocalMonitorMetric):
 
 # Supporting class
 class WatsonxMetricThreshold(BaseModel):
-    """
+    """Defines the metric threshold for IBM watsonx.governance.
+    
     Args:
-        threshold_type (str): Threshold type. `lower_limit` or `upper_limit`.
-        default_value (float): Metric thresholds.
+        threshold_type (str): The threshold type. Can be either `lower_limit` or `upper_limit`.
+        default_value (float): The metric threshold value.
+    
+    Example:
+        .. code-block:: python
+        
+            from pineflow.monitors.watsonx import WatsonxMetricThreshold
 
-    **Example**
-
-    .. code-block:: python
-
-        from pineflow.monitors.watsonx import WatsonxMetricThreshold
-
-        WatsonxMetricThreshold(threshold_type="lower_limit", default=0.8)
+            WatsonxMetricThreshold(threshold_type="lower_limit", default_value=0.8)
     """
 
     threshold_type: Literal["lower_limit", "upper_limit"]
@@ -1114,23 +1123,23 @@ class WatsonxMetricThreshold(BaseModel):
 
 # Supporting class        
 class WatsonxMonitorMetric(BaseModel):
-    """Provides IBM watsonx.governance global monitor metric definition.
-     
+    """Defines the IBM watsonx.governance global monitor metric.
+    
     Args:
-        name (str): Name of metric.
-        applies_to (List[str]): Currently supports "summarization", "generation", "question_answering", "extraction" "retrieval_augmented_generation".
-        thresholds (List[WatsonxMetricThreshold]): Metric thresholds.
+        name (str): The name of the metric.
+        applies_to (List[str]): A list of task types that the metric applies to. Currently supports:
+            "summarization", "generation", "question_answering", "extraction", and "retrieval_augmented_generation".
+        thresholds (List[WatsonxMetricThreshold]): A list of metric thresholds associated with the metric.
+    
+    Example:
+        .. code-block:: python
+        
+            from pineflow.monitors.watsonx import WatsonxMonitorMetric, WatsonxMetricThreshold
 
-    **Example**
-
-    .. code-block:: python
-
-        from pineflow.monitors.watsonx import WatsonxMonitorMetric
-
-        WatsonxMonitorMetric(
-            name="context_judge_quality", 
-            applies_to=["retrieval_augmented_generation", "summarization"],
-            thresholds=[WatsonxMetricThreshold(threshold_type="lower_limit", default_value=0.75)]
+            WatsonxMonitorMetric(
+                name="context_judge_quality", 
+                applies_to=["retrieval_augmented_generation", "summarization"],
+                thresholds=[WatsonxMetricThreshold(threshold_type="lower_limit", default_value=0.75)]
             )
     """
     
@@ -1156,21 +1165,20 @@ class WatsonxMonitorMetric(BaseModel):
 
 # Supporting class
 class WatsonxMetricRequest(BaseModel):
-    """Initialize a WatsonxMetricRequest object. Used to publish custom metrics.
-     
+    """Initializes a WatsonxMetricRequest object. Used to publish custom metrics.
+    
     Args:
-        metrics (List[dict]):  Metrics grouped for a single measurement.
-        run_id (str, optional): ID of the monitoring run which produced the measurement.
+        metrics (List[dict]): A list of metrics grouped for a single measurement.
+        run_id (str, optional): The ID of the monitoring run that produced the measurement.
+    
+    Example:
+        .. code-block:: python
         
-    **Example**
+            from pineflow.monitors.watsonx import WatsonxMetricRequest
 
-    .. code-block:: python
-
-        from pineflow.monitors.watsonx import WatsonxMetricRequest
-
-        WatsonxMetricRequest(
-            metrics=[{"context_judge_quality": 0.914}], 
-            run_id="RUN_ID"
+            WatsonxMetricRequest(
+                metrics=[{"context_judge_quality": 0.914}], 
+                run_id="RUN_ID"
             )
     """
     
@@ -1199,31 +1207,31 @@ class WatsonxMeasurementRequest(WatsonxMetricRequest):
         super().__init__(*args, **kwargs)
         
 class WatsonxCustomMetric:
-    """Provides functionality to setup custom metric to measure your model performance with IBM watsonx.governance.
+    """Provides functionality to set up a custom metric to measure your model's performance with IBM watsonx.governance.
     
     Args:
-        api_key (str): IBM watsonx.governance API key.
-        region (str, optional): Region where the IBM watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``
-        cpd_creds (CloudPakforDataCredentials, optional): IBM Cloud Pak for Data environment details.
+        api_key (str): The API key for IBM watsonx.governance.
+        region (str, optional): The region where IBM watsonx.governance is hosted when using IBM Cloud. Defaults to ``us-south``.
+        cpd_creds (CloudPakforDataCredentials, optional): IBM Cloud Pak for Data environment credentials.
+    
+    Example:
+        .. code-block:: python
         
-    **Example**
+            from pineflow.monitors.watsonx import WatsonxCustomMetric, CloudPakforDataCredentials
 
-    .. code-block:: python
-
-        from pineflow.monitors.watsonx import WatsonxCustomMetric, CloudPakforDataCredentials
-
-        # watsonx.governance (IBM Cloud)
-        wxgov_client = WatsonxCustomMetric(api_key="API_KEY")
+            # watsonx.governance (IBM Cloud)
+            wxgov_client = WatsonxCustomMetric(api_key="API_KEY")
         
-        # watsonx.governance (cp4d)
-        cpd_creds = CloudPakforDataCredentials(
-            url="CPD_URL", 
-            username="USERNAME", 
-            password="PASSWORD",
-            version="5.0", 
-            instance_id="openshift")
+            # watsonx.governance (CP4D)
+            cpd_creds = CloudPakforDataCredentials(
+                url="CPD_URL", 
+                username="USERNAME", 
+                password="PASSWORD",
+                version="5.0", 
+                instance_id="openshift"
+            )
         
-        wxgov_client = WatsonxCustomMetric(cpd_creds=cpd_creds)
+            wxgov_client = WatsonxCustomMetric(cpd_creds=cpd_creds)
     """
     
     def __init__(
@@ -1437,23 +1445,22 @@ class WatsonxCustomMetric:
         integrated_system_credentials: IntegratedSystemCredentials,
         schedule: bool = False
         ):
-        """Create custom monitor definition to IBM watsonx.governance.
-
-        This must be done before using custom metrics.
-        
-        Args:
-            name (str): Name of custom metric group.
-            monitor_metrics (List[WatsonxMonitorMetric]): List of metrics that will be measured.
-            schedule (bool): Enable or disable the scheduler. Defaults to False.
-            integrated_system_url (str): URL of external metric.
-            integrated_system_credentials (IntegratedSystemCredentials): Integrated system credentials.
-            
-        **Example**
-
+        """Creates a custom monitor definition for IBM watsonx.governance.
+    
+    This must be done before using custom metrics.
+    
+    Args:
+        name (str): The name of the custom metric group.
+        monitor_metrics (List[WatsonxMonitorMetric]): A list of metrics to be measured.
+        schedule (bool, optional): Enable or disable the scheduler. Defaults to `False`.
+        integrated_system_url (str): The URL of the external metric provider.
+        integrated_system_credentials (IntegratedSystemCredentials): The credentials for the integrated system.
+    
+    Example:
         .. code-block:: python
         
             from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
-        
+
             wxgov_client.add_metric_definition(
                 name="Custom Metric - Custom LLM Quality",
                 monitor_metrics=[WatsonxMonitorMetric(
@@ -1461,14 +1468,14 @@ class WatsonxCustomMetric:
                     applies_to=["retrieval_augmented_generation", "summarization"],
                     thresholds=[WatsonxMetricThreshold(
                         threshold_type="lower_limit", 
-                        default=0.75)])
-                        ],
-                integrated_system_url="IS_URL", # endpoint to compute metric
+                        default_value=0.75)])
+                ],
+                integrated_system_url="IS_URL",  # URL to the endpoint computing the metric
                 integrated_system_credentials=IntegratedSystemCredentials(
                     auth_type="basic", 
                     username="USERNAME", 
                     password="PASSWORD")
-                    )
+            )
         """
         integrated_system_id = self._add_integrated_system(integrated_system_credentials,
                                                            name,
@@ -1499,22 +1506,21 @@ class WatsonxCustomMetric:
         monitor_definition_id: str,
         subscription_id: str,
         ):
-        """Enable a custom monitor for the specified subscription and monitor definition.
-        
-        Args:
-            integrated_system_id (str): 
-            monitor_definition_id (str): The Custom Metric monitor instance ID.
-            subscription_id (str):
-            
-        **Example**
-
+        """Enables a custom monitor for the specified subscription and monitor definition.
+    
+    Args:
+        integrated_system_id (str): The ID of the integrated system.
+        monitor_definition_id (str): The ID of the custom metric monitor instance.
+        subscription_id (str): The ID of the subscription to associate the monitor with.
+    
+    Example:
         .. code-block:: python
         
             wxgov_client.add_monitor_instance(
                 integrated_system_id="019667ca-5687-7838-8d29-4ff70c2b36b0",
                 monitor_definition_id="custom_llm_quality",
                 subscription_id="0195e95d-03a4-7000-b954-b607db10fe9e"
-                )
+            )
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import Target
         
@@ -1584,24 +1590,24 @@ class WatsonxCustomMetric:
         measurements_request: List[WatsonxMetricRequest], # DEPRECATED remove in next release
         ):
         """Publishes custom metrics for a specific monitor instance.
-        
-        Args:
-            monitor_instance_id (str): Unique monitor instance ID.
-            monitor_run_id (str): 
-            records_request (List[WatsonxMetricRequest]):
-
-        **Example**
-
+    
+    Args:
+        monitor_instance_id (str): The unique ID of the monitor instance.
+        monitor_run_id (str): The ID of the monitor run that generated the metrics.
+        records_request (List[WatsonxMetricRequest]): A list of `WatsonxMetricRequest` objects containing the metrics to be published.
+    
+    Example:
         .. code-block:: python
         
             from pineflow.monitors.watsonx import WatsonxMetricRequest
-            
+
             wxgov_client.publish_metrics(
                 monitor_instance_id="01966801-f9ee-7248-a706-41de00a8a998",
                 monitor_run_id="RUN_ID",
                 records_request=[WatsonxMetricRequest(
                     metrics=[{"context_judge_quality": 0.914}]
-                    ])
+                )]
+            )
         """
         # START deprecated params message
         if measurements_request is not None:
@@ -1647,26 +1653,26 @@ class WatsonxCustomMetric:
         monitor_metrics: List[WatsonxLocalMonitorMetric],
         subscription_id: str
         ):
-        """Create custom metric definition to compute metrics at local (transaction) level to IBM watsonx.governance.
-        
-        Args:
-            name (str): Name of custom transaction metric group.
-            monitor_metrics (List[WatsonxLocalMonitorMetric]): 
-            subscription_id (str): watsonx.governance subscription ID.
-            
-        **Example**
-
+        """Creates a custom metric definition to compute metrics at the local (transaction) level for IBM watsonx.governance.
+    
+    Args:
+        name (str): The name of the custom transaction metric group.
+        monitor_metrics (List[WatsonxLocalMonitorMetric]): A list of metrics to be monitored at the local (transaction) level.
+        subscription_id (str): The IBM watsonx.governance subscription ID associated with the metric definition.
+    
+    Example:
         .. code-block:: python
         
             from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
-            
+
             wxgov_client.add_local_metric_definition(
                 name="Custom LLM Local Metric", 
                 subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
                 monitor_metrics=[WatsonxLocalMonitorMetric(
                     name="context_judge_quality", 
                     data_type="double")
-                    ])
+                ]
+            )
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             LocationTableName,
@@ -1730,38 +1736,39 @@ class WatsonxCustomMetric:
         records_request: List[Dict]
         ):
         """Stores custom metrics to payload records (transaction/record level).
-        
-        Args:
-            custom_local_metric_id (str): Unique custom transaction metric ID.
-            records_request (List[Dict]): 
-
-        **Example**
-
+    
+    Args:
+        custom_local_metric_id (str): The unique ID of the custom transaction metric.
+        records_request (List[Dict]): A list of dictionaries containing the records to be stored.
+    
+    Example:
         .. code-block:: python
 
             wxgov_client.store_payload_records(
                 custom_local_metric_id="0196ad39-1b75-7e77-bddb-cc5393d575c2",
-                records_request=[{"scoring_id": "123-123", 
-                      "run_id": "RUN_ID",
-                      "computed_on": "payload",
-                      "context_judge_quality": 0.786}]
-                    )
+                records_request=[{
+                    "scoring_id": "123-123", 
+                    "run_id": "RUN_ID",
+                    "computed_on": "payload",
+                    "context_judge_quality": 0.786
+                }]
+            )
         """
         return self._wos_client.data_sets.store_records(
             data_set_id=custom_local_metric_id, 
             request_body=records_request).result
 
     def list_local_metrics(self, custom_local_metric_id: str):
-        """List records from custom local metric definition.
-        
-        Args:
-            custom_local_metric_id (str): Unique custom transaction metric ID.
-            
-        **Example**
-
+        """Lists records from a custom local metric definition.
+    
+    Args:
+        custom_local_metric_id (str): The unique ID of the custom transaction metric.
+    
+    Example:
         .. code-block:: python
         
             wxgov_client.list_local_metrics(
-                custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3")
+                custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3"
+            )
         """
         return self._get_dataset_data(custom_local_metric_id)
