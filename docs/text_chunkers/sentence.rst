@@ -3,5 +3,5 @@ Sentence Chunker
 ============================================
 
 
-.. automodule:: pineflow.text_chunkers.sentence
+.. automodule:: pineflow.core.text_chunkers.sentence
     :members:
