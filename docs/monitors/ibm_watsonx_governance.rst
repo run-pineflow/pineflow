@@ -39,8 +39,9 @@ Supporting Classes
 .. autoclass:: pineflow.monitors.watsonx.WatsonxMonitorMetric
     :members:
 
-.. autoclass:: pineflow.monitors.watsonx.WatsonxMetricRequest
-    :members:
-
 .. autoclass:: pineflow.monitors.watsonx.WatsonxLocalMonitorMetric
     :members:
+
+.. autoclass:: pineflow.monitors.watsonx.WatsonxMetricThreshold
+    :members:
+    
