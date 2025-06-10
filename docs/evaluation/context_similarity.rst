@@ -1,7 +1,7 @@
 ============================================
-Knowledge Base Coverage
+Context Similarity
 ============================================
 
 
-.. automodule:: pineflow.evaluation.knowledge_base_coverage
+.. automodule:: pineflow.core.evaluation.context_similarity
     :members:
