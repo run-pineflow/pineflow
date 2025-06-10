@@ -36,10 +36,10 @@ Credentials
 Supporting Classes
 ---------------------
 
-.. autoclass:: pineflow.monitors.watsonx.WatsonxMonitorMetric
+.. autoclass:: pineflow.monitors.watsonx.WatsonxMetric
     :members:
 
-.. autoclass:: pineflow.monitors.watsonx.WatsonxLocalMonitorMetric
+.. autoclass:: pineflow.monitors.watsonx.WatsonxLocalMetric
     :members:
 
 .. autoclass:: pineflow.monitors.watsonx.WatsonxMetricThreshold

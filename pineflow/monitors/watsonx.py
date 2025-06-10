@@ -1066,7 +1066,7 @@ class WatsonxPromptMonitoring(WatsonxPromptMonitor):
         super().__init__(*args, **kwargs)
 
 # Supporting class
-class WatsonxLocalMonitorMetric(BaseModel):
+class WatsonxLocalMetric(BaseModel):
     """Provides the IBM watsonx.governance local monitor metric definition.
     
     Args:
@@ -1077,9 +1077,9 @@ class WatsonxLocalMonitorMetric(BaseModel):
     Example:
         .. code-block:: python
         
-            from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
+            from pineflow.monitors.watsonx import WatsonxLocalMetric
 
-            WatsonxLocalMonitorMetric(name="context_quality", data_type="double")
+            WatsonxLocalMetric(name="context_quality", data_type="double")
     """
     
     name: str
@@ -1095,10 +1095,21 @@ class WatsonxLocalMonitorMetric(BaseModel):
 
 # DEPRECATED remove in next release
 # Supporting class
-class WatsonxTransactionMetric(WatsonxLocalMonitorMetric):
+class WatsonxLocalMonitorMetric(WatsonxLocalMetric):
     def __init__(self, *args, **kwargs):
         warnings.warn(
-            "'WatsonxTransactionMetric' is deprecated and will be removed. Use 'WatsonxLocalMonitorMetric' instead.",
+            "'WatsonxLocalMonitorMetric' is deprecated and will be removed. Use 'WatsonxLocalMetric' instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        super().__init__(*args, **kwargs)
+        
+# DEPRECATED remove in next release
+# Supporting class
+class WatsonxTransactionMetric(WatsonxLocalMetric):
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "'WatsonxTransactionMetric' is deprecated and will be removed. Use 'WatsonxLocalMetric' instead.",
             DeprecationWarning,
             stacklevel=2
         )
@@ -1130,7 +1141,7 @@ class WatsonxMetricThreshold(BaseModel):
         }
 
 # Supporting class        
-class WatsonxMonitorMetric(BaseModel):
+class WatsonxMetric(BaseModel):
     """Defines the IBM watsonx.governance global monitor metric.
     
     Args:
@@ -1142,9 +1153,9 @@ class WatsonxMonitorMetric(BaseModel):
     Example:
         .. code-block:: python
         
-            from pineflow.monitors.watsonx import WatsonxMonitorMetric, WatsonxMetricThreshold
+            from pineflow.monitors.watsonx import WatsonxMetric, WatsonxMetricThreshold
 
-            WatsonxMonitorMetric(
+            WatsonxMetric(
                 name="context_quality", 
                 applies_to=["retrieval_augmented_generation", "summarization"],
                 thresholds=[WatsonxMetricThreshold(threshold_type="lower_limit", default_value=0.75)]
@@ -1170,7 +1181,18 @@ class WatsonxMonitorMetric(BaseModel):
             monitor_metric["thresholds"] = [MetricThreshold(**threshold.to_dict()) for threshold in self.thresholds]
             
         return monitor_metric
-        
+
+# DEPRECATED remove in next release
+# Supporting class
+class WatsonxMonitorMetric(WatsonxMetric):
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "'WatsonxMonitorMetric' is deprecated and will be removed. Use 'WatsonxMetric' instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        super().__init__(*args, **kwargs)
+    
 class WatsonxCustomMetric:
     """Provides functionality to set up a custom metric to measure your model's performance with IBM watsonx.governance.
     
@@ -1269,7 +1291,7 @@ class WatsonxCustomMetric:
     def _add_monitor_definitions(
         self,
         name: str,
-        monitor_metrics: List[WatsonxMonitorMetric],
+        monitor_metrics: List[WatsonxMetric],
         schedule: bool
         ):
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
@@ -1390,7 +1412,7 @@ class WatsonxCustomMetric:
     )
     def create_metric_definition(self,
             name: str,
-            monitor_metrics: List[WatsonxMonitorMetric],
+            monitor_metrics: List[WatsonxMetric],
             integrated_system_url: str,
             integrated_system_credentials: IntegratedSystemCredentials,
             schedule: bool = False):
@@ -1405,7 +1427,7 @@ class WatsonxCustomMetric:
     def add_metric_definition(
         self,
         name: str,
-        monitor_metrics: List[WatsonxMonitorMetric],
+        monitor_metrics: List[WatsonxMetric],
         integrated_system_url: str,
         integrated_system_credentials: IntegratedSystemCredentials,
         schedule: bool = False
@@ -1416,7 +1438,7 @@ class WatsonxCustomMetric:
     
         Args:
             name (str): The name of the custom metric group.
-            monitor_metrics (List[WatsonxMonitorMetric]): A list of metrics to be measured.
+            monitor_metrics (List[WatsonxMetric]): A list of metrics to be measured.
             schedule (bool, optional): Enable or disable the scheduler. Defaults to `False`.
             integrated_system_url (str): The URL of the external metric provider.
             integrated_system_credentials (IntegratedSystemCredentials): The credentials for the integrated system.
@@ -1424,11 +1446,11 @@ class WatsonxCustomMetric:
         Example:
             .. code-block:: python
             
-                from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
+                from pineflow.monitors.watsonx import WatsonxMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
 
                 wxgov_client.add_metric_definition(
                     name="Custom Metric - Custom LLM Quality",
-                    monitor_metrics=[WatsonxMonitorMetric(
+                    monitor_metrics=[WatsonxMetric(
                         name="context_quality", 
                         applies_to=["retrieval_augmented_generation", "summarization"],
                         thresholds=[WatsonxMetricThreshold(
@@ -1608,31 +1630,31 @@ class WatsonxCustomMetric:
         version="0.6.12",
         reason="'add_transaction_metric' is deprecated and will be removed in next release, use 'add_local_metric_definition'.",
     )
-    def add_transaction_metric(self, name: str, monitor_metrics: List[WatsonxLocalMonitorMetric], subscription_id: str):
+    def add_transaction_metric(self, name: str, monitor_metrics: List[WatsonxLocalMetric], subscription_id: str):
         return self.add_metric_definition_local(name, monitor_metrics, subscription_id)
 
     def add_local_metric_definition(
         self,
         name: str,
-        monitor_metrics: List[WatsonxLocalMonitorMetric],
+        monitor_metrics: List[WatsonxLocalMetric],
         subscription_id: str
         ):
         """Creates a custom metric definition to compute metrics at the local (transaction) level for IBM watsonx.governance.
     
         Args:
             name (str): The name of the custom transaction metric group.
-            monitor_metrics (List[WatsonxLocalMonitorMetric]): A list of metrics to be monitored at the local (transaction) level.
+            monitor_metrics (List[WatsonxLocalMetric]): A list of metrics to be monitored at the local (transaction) level.
             subscription_id (str): The IBM watsonx.governance subscription ID associated with the metric definition.
     
         Example:
             .. code-block:: python
             
-                from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
+                from pineflow.monitors.watsonx import WatsonxLocalMetric
 
                 wxgov_client.add_local_metric_definition(
                     name="Custom LLM Local Metric", 
                     subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
-                    monitor_metrics=[WatsonxLocalMonitorMetric(
+                    monitor_metrics=[WatsonxLocalMetric(
                         name="context_quality", 
                         data_type="double")
                     ]
