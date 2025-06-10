@@ -380,38 +380,38 @@ class WatsonxExternalPromptMonitor:
         """Creates a Detached/External Prompt Template Asset and sets up monitors for a given prompt template asset.
     
         Args:
-        name (str): The name of the External Prompt Template Asset.
-        model_id (str): The ID of the model associated with the prompt.
-        task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
-        detached_model_provider (str): The external model provider.
-        description (str, optional): A description of the External Prompt Template Asset.
-        model_parameters (dict, optional): Model parameters and their respective values.
-        detached_model_name (str, optional): The name of the external model.
-        detached_model_url (str, optional): The URL of the external model.
-        detached_prompt_url (str, optional): The URL of the external prompt.
-        detached_prompt_additional_info (dict, optional): Additional information related to the external prompt.
-        prompt_variables (List[str], optional): Values for the prompt variables.
-        input_text (str, optional): The input text for the prompt.
-        context_fields (List[str], optional): A list of fields that will provide context to the prompt. 
-                                             Applicable only for "retrieval_augmented_generation" task type.
-        question_field (str, optional): The field containing the question to be answered. 
-                                        Applicable only for "retrieval_augmented_generation" task type.
+            name (str): The name of the External Prompt Template Asset.
+            model_id (str): The ID of the model associated with the prompt.
+            task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
+            detached_model_provider (str): The external model provider.
+            description (str, optional): A description of the External Prompt Template Asset.
+            model_parameters (dict, optional): Model parameters and their respective values.
+            detached_model_name (str, optional): The name of the external model.
+            detached_model_url (str, optional): The URL of the external model.
+            detached_prompt_url (str, optional): The URL of the external prompt.
+            detached_prompt_additional_info (dict, optional): Additional information related to the external prompt.
+            prompt_variables (List[str], optional): Values for the prompt variables.
+            input_text (str, optional): The input text for the prompt.
+            context_fields (List[str], optional): A list of fields that will provide context to the prompt. 
+                                                Applicable only for "retrieval_augmented_generation" task type.
+            question_field (str, optional): The field containing the question to be answered. 
+                                            Applicable only for "retrieval_augmented_generation" task type.
     
         Example:
-        .. code-block:: python
-        
-            wxgov_client.create_prompt_monitor(
-                name="Detached prompt (model AWS Anthropic)",
-                model_id="anthropic.claude-v2",
-                task_id="retrieval_augmented_generation",
-                detached_model_provider="AWS Bedrock",
-                detached_model_name="Anthropic Claude 2.0",
-                detached_model_url="https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-claude.html",
-                prompt_variables=["context1", "context2", "input_query"],
-                input_text="Prompt text to be given",
-                context_fields=["context1", "context2"],
-                question_field="input_query"
-            )
+            .. code-block:: python
+            
+                wxgov_client.create_prompt_monitor(
+                    name="Detached prompt (model AWS Anthropic)",
+                    model_id="anthropic.claude-v2",
+                    task_id="retrieval_augmented_generation",
+                    detached_model_provider="AWS Bedrock",
+                    detached_model_name="Anthropic Claude 2.0",
+                    detached_model_url="https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-claude.html",
+                    prompt_variables=["context1", "context2", "input_query"],
+                    input_text="Prompt text to be given",
+                    context_fields=["context1", "context2"],
+                    question_field="input_query"
+                )
         """
         prompt_metadata = locals()
         # remove unused vars from dict
@@ -548,22 +548,22 @@ class WatsonxExternalPromptMonitor:
         """Stores records to the payload logging system.
     
         Args:
-        records_request (List[dict]): A list of records to be logged, where each record is represented as a dictionary.
-        subscription_id (str): The subscription ID associated with the records being logged.
+            records_request (List[dict]): A list of records to be logged, where each record is represented as a dictionary.
+            subscription_id (str): The subscription ID associated with the records being logged.
     
         Example:
-        .. code-block:: python
-        
-            wxgov_client.store_payload_records(
-                records_request=[{
-                    "context1": "value_context1",
-                    "context2": "value_context1",
-                    "input_query": "What's Pineflow?",
-                    "input_token_count": 25,
-                    "generated_token_count": 150
-                }],
-                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0"
-            )
+            .. code-block:: python
+            
+                wxgov_client.store_payload_records(
+                    records_request=[{
+                        "context1": "value_context1",
+                        "context2": "value_context1",
+                        "input_query": "What's Pineflow?",
+                        "input_token_count": 25,
+                        "generated_token_count": 150
+                    }],
+                    subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0"
+                )
         """
         # START deprecated params message
         if payload_records is not None:
@@ -819,30 +819,30 @@ class WatsonxPromptMonitor:
         """Creates an IBM Prompt Template Asset and sets up monitors for the given prompt template asset.
     
         Args:
-        name (str): The name of the Prompt Template Asset.
-        model_id (str): The ID of the model associated with the prompt.
-        task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
-        description (str, optional): A description of the Prompt Template Asset.
-        model_parameters (dict, optional): A dictionary of model parameters and their respective values.
-        prompt_variables (List[str], optional): A list of values for prompt input variables.
-        input_text (str, optional): The input text for the prompt.
-        context_fields (List[str], optional): A list of fields that will provide context to the prompt. 
-                                              Applicable only for the ``retrieval_augmented_generation`` task type.
-        question_field (str, optional): The field containing the question to be answered. 
-                                         Applicable only for the ``retrieval_augmented_generation`` task type.
+            name (str): The name of the Prompt Template Asset.
+            model_id (str): The ID of the model associated with the prompt.
+            task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
+            description (str, optional): A description of the Prompt Template Asset.
+            model_parameters (dict, optional): A dictionary of model parameters and their respective values.
+            prompt_variables (List[str], optional): A list of values for prompt input variables.
+            input_text (str, optional): The input text for the prompt.
+            context_fields (List[str], optional): A list of fields that will provide context to the prompt. 
+                                                Applicable only for the ``retrieval_augmented_generation`` task type.
+            question_field (str, optional): The field containing the question to be answered. 
+                                            Applicable only for the ``retrieval_augmented_generation`` task type.
         
         Example:
-        .. code-block:: python
-        
-            wxgov_client.create_prompt_monitor(
-                name="IBM prompt template",
-                model_id="ibm/granite-3-2b-instruct",
-                task_id="retrieval_augmented_generation",
-                prompt_variables=["context1", "context2", "input_query"],
-                input_text="Prompt text to be given",
-                context_fields=["context1", "context2"],
-                question_field="input_query"
-            )
+            .. code-block:: python
+            
+                wxgov_client.create_prompt_monitor(
+                    name="IBM prompt template",
+                    model_id="ibm/granite-3-2b-instruct",
+                    task_id="retrieval_augmented_generation",
+                    prompt_variables=["context1", "context2", "input_query"],
+                    input_text="Prompt text to be given",
+                    context_fields=["context1", "context2"],
+                    question_field="input_query"
+                )
         """
         prompt_metadata = locals()
         # remove unused vars from dict
@@ -972,22 +972,22 @@ class WatsonxPromptMonitor:
         """Stores records to the payload logging system.
     
         Args:
-        records_request (List[dict]): A list of records to be logged. Each record is represented as a dictionary.
-        subscription_id (str): The subscription ID associated with the records being logged.
+            records_request (List[dict]): A list of records to be logged. Each record is represented as a dictionary.
+            subscription_id (str): The subscription ID associated with the records being logged.
     
         Example:
-        .. code-block:: python
-        
-            wxgov_client.store_payload_records(
-                records_request=[{
-                    "context1": "value_context1",
-                    "context2": "value_context1",
-                    "input_query": "What's Pineflow?",
-                    "input_token_count": 25,
-                    "generated_token_count": 150
-                }],
-                subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0"
-            )
+            .. code-block:: python
+            
+                wxgov_client.store_payload_records(
+                    records_request=[{
+                        "context1": "value_context1",
+                        "context2": "value_context1",
+                        "input_query": "What's Pineflow?",
+                        "input_token_count": 25,
+                        "generated_token_count": 150
+                    }],
+                    subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0"
+                )
         """
         # START deprecated params message
         if payload_records is not None:
@@ -1450,32 +1450,32 @@ class WatsonxCustomMetric:
         This must be done before using custom metrics.
     
         Args:
-        name (str): The name of the custom metric group.
-        monitor_metrics (List[WatsonxMonitorMetric]): A list of metrics to be measured.
-        schedule (bool, optional): Enable or disable the scheduler. Defaults to `False`.
-        integrated_system_url (str): The URL of the external metric provider.
-        integrated_system_credentials (IntegratedSystemCredentials): The credentials for the integrated system.
+            name (str): The name of the custom metric group.
+            monitor_metrics (List[WatsonxMonitorMetric]): A list of metrics to be measured.
+            schedule (bool, optional): Enable or disable the scheduler. Defaults to `False`.
+            integrated_system_url (str): The URL of the external metric provider.
+            integrated_system_credentials (IntegratedSystemCredentials): The credentials for the integrated system.
     
         Example:
-        .. code-block:: python
-        
-            from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
+            .. code-block:: python
+            
+                from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
 
-            wxgov_client.add_metric_definition(
-                name="Custom Metric - Custom LLM Quality",
-                monitor_metrics=[WatsonxMonitorMetric(
-                    name="context_judge_quality", 
-                    applies_to=["retrieval_augmented_generation", "summarization"],
-                    thresholds=[WatsonxMetricThreshold(
-                        threshold_type="lower_limit", 
-                        default_value=0.75)])
-                ],
-                integrated_system_url="IS_URL",  # URL to the endpoint computing the metric
-                integrated_system_credentials=IntegratedSystemCredentials(
-                    auth_type="basic", 
-                    username="USERNAME", 
-                    password="PASSWORD")
-            )
+                wxgov_client.add_metric_definition(
+                    name="Custom Metric - Custom LLM Quality",
+                    monitor_metrics=[WatsonxMonitorMetric(
+                        name="context_judge_quality", 
+                        applies_to=["retrieval_augmented_generation", "summarization"],
+                        thresholds=[WatsonxMetricThreshold(
+                            threshold_type="lower_limit", 
+                            default_value=0.75)])
+                    ],
+                    integrated_system_url="IS_URL",  # URL to the endpoint computing the metric
+                    integrated_system_credentials=IntegratedSystemCredentials(
+                        auth_type="basic", 
+                        username="USERNAME", 
+                        password="PASSWORD")
+                )
         """
         integrated_system_id = self._add_integrated_system(integrated_system_credentials,
                                                            name,
@@ -1509,18 +1509,18 @@ class WatsonxCustomMetric:
         """Enables a custom monitor for the specified subscription and monitor definition.
     
         Args:
-        integrated_system_id (str): The ID of the integrated system.
-        monitor_definition_id (str): The ID of the custom metric monitor instance.
-        subscription_id (str): The ID of the subscription to associate the monitor with.
+            integrated_system_id (str): The ID of the integrated system.
+            monitor_definition_id (str): The ID of the custom metric monitor instance.
+            subscription_id (str): The ID of the subscription to associate the monitor with.
     
         Example:
-        .. code-block:: python
-        
-            wxgov_client.add_monitor_instance(
-                integrated_system_id="019667ca-5687-7838-8d29-4ff70c2b36b0",
-                monitor_definition_id="custom_llm_quality",
-                subscription_id="0195e95d-03a4-7000-b954-b607db10fe9e"
-            )
+            .. code-block:: python
+            
+                wxgov_client.add_monitor_instance(
+                    integrated_system_id="019667ca-5687-7838-8d29-4ff70c2b36b0",
+                    monitor_definition_id="custom_llm_quality",
+                    subscription_id="0195e95d-03a4-7000-b954-b607db10fe9e"
+                )
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import Target
         
@@ -1592,22 +1592,22 @@ class WatsonxCustomMetric:
         """Publishes custom metrics for a specific monitor instance.
     
         Args:
-        monitor_instance_id (str): The unique ID of the monitor instance.
-        monitor_run_id (str): The ID of the monitor run that generated the metrics.
-        records_request (List[WatsonxMetricRequest]): A list of `WatsonxMetricRequest` objects containing the metrics to be published.
+            monitor_instance_id (str): The unique ID of the monitor instance.
+            monitor_run_id (str): The ID of the monitor run that generated the metrics.
+            records_request (List[WatsonxMetricRequest]): A list of `WatsonxMetricRequest` objects containing the metrics to be published.
     
         Example:
-        .. code-block:: python
-        
-            from pineflow.monitors.watsonx import WatsonxMetricRequest
+            .. code-block:: python
+            
+                from pineflow.monitors.watsonx import WatsonxMetricRequest
 
-            wxgov_client.publish_metrics(
-                monitor_instance_id="01966801-f9ee-7248-a706-41de00a8a998",
-                monitor_run_id="RUN_ID",
-                records_request=[WatsonxMetricRequest(
-                    metrics=[{"context_judge_quality": 0.914}]
-                )]
-            )
+                wxgov_client.publish_metrics(
+                    monitor_instance_id="01966801-f9ee-7248-a706-41de00a8a998",
+                    monitor_run_id="RUN_ID",
+                    records_request=[WatsonxMetricRequest(
+                        metrics=[{"context_judge_quality": 0.914}]
+                    )]
+                )
         """
         # START deprecated params message
         if measurements_request is not None:
@@ -1656,23 +1656,23 @@ class WatsonxCustomMetric:
         """Creates a custom metric definition to compute metrics at the local (transaction) level for IBM watsonx.governance.
     
         Args:
-        name (str): The name of the custom transaction metric group.
-        monitor_metrics (List[WatsonxLocalMonitorMetric]): A list of metrics to be monitored at the local (transaction) level.
-        subscription_id (str): The IBM watsonx.governance subscription ID associated with the metric definition.
+            name (str): The name of the custom transaction metric group.
+            monitor_metrics (List[WatsonxLocalMonitorMetric]): A list of metrics to be monitored at the local (transaction) level.
+            subscription_id (str): The IBM watsonx.governance subscription ID associated with the metric definition.
     
         Example:
-        .. code-block:: python
-        
-            from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
+            .. code-block:: python
+            
+                from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
 
-            wxgov_client.add_local_metric_definition(
-                name="Custom LLM Local Metric", 
-                subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
-                monitor_metrics=[WatsonxLocalMonitorMetric(
-                    name="context_judge_quality", 
-                    data_type="double")
-                ]
-            )
+                wxgov_client.add_local_metric_definition(
+                    name="Custom LLM Local Metric", 
+                    subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
+                    monitor_metrics=[WatsonxLocalMonitorMetric(
+                        name="context_judge_quality", 
+                        data_type="double")
+                    ]
+                )
         """
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             LocationTableName,
@@ -1738,21 +1738,21 @@ class WatsonxCustomMetric:
         """Stores custom metrics to payload records (transaction/record level).
     
         Args:
-        custom_local_metric_id (str): The unique ID of the custom transaction metric.
-        records_request (List[Dict]): A list of dictionaries containing the records to be stored.
+            custom_local_metric_id (str): The unique ID of the custom transaction metric.
+            records_request (List[Dict]): A list of dictionaries containing the records to be stored.
     
         Example:
-        .. code-block:: python
+            .. code-block:: python
 
-            wxgov_client.store_payload_records(
-                custom_local_metric_id="0196ad39-1b75-7e77-bddb-cc5393d575c2",
-                records_request=[{
-                    "scoring_id": "123-123", 
-                    "run_id": "RUN_ID",
-                    "computed_on": "payload",
-                    "context_judge_quality": 0.786
-                }]
-            )
+                wxgov_client.store_payload_records(
+                    custom_local_metric_id="0196ad39-1b75-7e77-bddb-cc5393d575c2",
+                    records_request=[{
+                        "scoring_id": "123-123", 
+                        "run_id": "RUN_ID",
+                        "computed_on": "payload",
+                        "context_judge_quality": 0.786
+                    }]
+                )
         """
         return self._wos_client.data_sets.store_records(
             data_set_id=custom_local_metric_id, 
@@ -1762,13 +1762,13 @@ class WatsonxCustomMetric:
         """Lists records from a custom local metric definition.
     
         Args:
-        custom_local_metric_id (str): The unique ID of the custom transaction metric.
+            custom_local_metric_id (str): The unique ID of the custom transaction metric.
     
         Example:
-        .. code-block:: python
-        
-            wxgov_client.list_local_metrics(
-                custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3"
-            )
+            .. code-block:: python
+            
+                wxgov_client.list_local_metrics(
+                    custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3"
+                )
         """
         return self._get_dataset_data(custom_local_metric_id)
