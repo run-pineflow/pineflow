@@ -1079,7 +1079,7 @@ class WatsonxLocalMonitorMetric(BaseModel):
         
             from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
 
-            WatsonxLocalMonitorMetric(name="context_judge_quality", data_type="double")
+            WatsonxLocalMonitorMetric(name="context_quality", data_type="double")
     """
     
     name: str
@@ -1145,7 +1145,7 @@ class WatsonxMonitorMetric(BaseModel):
             from pineflow.monitors.watsonx import WatsonxMonitorMetric, WatsonxMetricThreshold
 
             WatsonxMonitorMetric(
-                name="context_judge_quality", 
+                name="context_quality", 
                 applies_to=["retrieval_augmented_generation", "summarization"],
                 thresholds=[WatsonxMetricThreshold(threshold_type="lower_limit", default_value=0.75)]
             )
@@ -1170,47 +1170,6 @@ class WatsonxMonitorMetric(BaseModel):
             monitor_metric["thresholds"] = [MetricThreshold(**threshold.to_dict()) for threshold in self.thresholds]
             
         return monitor_metric
-
-# Supporting class
-class WatsonxMetricRequest(BaseModel):
-    """Initializes a WatsonxMetricRequest object. Used to publish custom metrics.
-    
-    Args:
-        metrics (List[dict]): A list of metrics grouped for a single measurement.
-        run_id (str, optional): The ID of the monitoring run that produced the measurement.
-    
-    Example:
-        .. code-block:: python
-        
-            from pineflow.monitors.watsonx import WatsonxMetricRequest
-
-            WatsonxMetricRequest(
-                metrics=[{"context_judge_quality": 0.914}]
-            )
-    """
-    
-    timestamp: datetime.datetime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-    metrics: List[dict]
-    run_id: Optional[str] = None
-    
-    def to_dict(self) -> Dict:
-        return {
-            "timestamp": self.timestamp,
-            "metrics": self.metrics,
-            "run_id": self.run_id
-        }
-        
-
-# DEPRECATED remove in next release
-# Supporting class
-class WatsonxMeasurementRequest(WatsonxMetricRequest):
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            "'WatsonxMeasurementRequest' is deprecated and will be removed. Use 'WatsonxMetricRequest' instead.",
-            DeprecationWarning,
-            stacklevel=2
-        )
-        super().__init__(*args, **kwargs)
         
 class WatsonxCustomMetric:
     """Provides functionality to set up a custom metric to measure your model's performance with IBM watsonx.governance.
@@ -1470,7 +1429,7 @@ class WatsonxCustomMetric:
                 wxgov_client.add_metric_definition(
                     name="Custom Metric - Custom LLM Quality",
                     monitor_metrics=[WatsonxMonitorMetric(
-                        name="context_judge_quality", 
+                        name="context_quality", 
                         applies_to=["retrieval_augmented_generation", "summarization"],
                         thresholds=[WatsonxMetricThreshold(
                             threshold_type="lower_limit", 
@@ -1569,7 +1528,7 @@ class WatsonxCustomMetric:
     def publish_measurements(self,
             monitor_instance_id: str,
             monitor_run_id: str,
-            measurements_request: List[WatsonxMetricRequest]):
+            measurements_request: Dict[str, Union[float, int]]):
         return self.publish_metrics(monitor_instance_id,
                                      monitor_run_id,
                                      measurements_request
@@ -1582,7 +1541,7 @@ class WatsonxCustomMetric:
     def add_measurements(self,
             monitor_instance_id: str,
             monitor_run_id: str,
-            measurements_request: List[WatsonxMetricRequest]):
+            measurements_request: Dict[str, Union[float, int]]):
         return self.publish_metrics(monitor_instance_id,
                                      monitor_run_id,
                                      measurements_request
@@ -1592,27 +1551,23 @@ class WatsonxCustomMetric:
         self,
         monitor_instance_id: str,
         monitor_run_id: str,
-        records_request: List[WatsonxMetricRequest],
-        measurements_request: List[WatsonxMetricRequest], # DEPRECATED remove in next release
+        records_request: Dict[str, Union[float, int]],
+        measurements_request: Dict[str, Union[float, int]] = None, # DEPRECATED remove in next release
         ):
         """Publishes custom metrics for a specific monitor instance.
     
         Args:
             monitor_instance_id (str): The unique ID of the monitor instance.
             monitor_run_id (str): The ID of the monitor run that generated the metrics.
-            records_request (List[WatsonxMetricRequest]): A list of `WatsonxMetricRequest` objects containing the metrics to be published.
+            records_request (Dict[str, Union[float, int]]): Dict containing the metrics to be published.
     
         Example:
             .. code-block:: python
-            
-                from pineflow.monitors.watsonx import WatsonxMetricRequest
 
                 wxgov_client.publish_metrics(
                     monitor_instance_id="01966801-f9ee-7248-a706-41de00a8a998",
                     monitor_run_id="RUN_ID",
-                    records_request=[WatsonxMetricRequest(
-                        metrics=[{"context_judge_quality": 0.914}]
-                    )]
+                    records_request={"context_quality": 0.914, "sensitivity": 0.85}
                 )
         """
         # START deprecated params message
@@ -1631,12 +1586,15 @@ class WatsonxCustomMetric:
             Runs,
         )
         
-        for obj in records_request: obj.run_id = monitor_run_id # noqa: E701
-        records_request = [MonitorMeasurementRequest(**obj.to_dict()) for obj in records_request]
+        measurement_request = MonitorMeasurementRequest(
+            timestamp=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+            run_id=monitor_run_id, 
+            metrics=[records_request]
+        )
         
         self._wos_client.monitor_instances.add_measurements(
             monitor_instance_id=monitor_instance_id,
-            monitor_measurement_request=records_request).result        
+            monitor_measurement_request=[measurement_request]).result        
         
         run = Runs(watson_open_scale=self._wos_client)
         patch_payload = []
@@ -1675,7 +1633,7 @@ class WatsonxCustomMetric:
                     name="Custom LLM Local Metric", 
                     subscription_id="019674ca-0c38-745f-8e9b-58546e95174e",
                     monitor_metrics=[WatsonxLocalMonitorMetric(
-                        name="context_judge_quality", 
+                        name="context_quality", 
                         data_type="double")
                     ]
                 )
@@ -1756,7 +1714,7 @@ class WatsonxCustomMetric:
                         "scoring_id": "123-123", 
                         "run_id": "RUN_ID",
                         "computed_on": "payload",
-                        "context_judge_quality": 0.786
+                        "context_quality": 0.786
                     }]
                 )
         """
