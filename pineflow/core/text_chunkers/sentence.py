@@ -25,7 +25,7 @@ class SentenceChunker(BaseTextChunker):
     Example:
         .. code-block:: python
 
-            from pineflow.text_chunkers import SentenceChunker
+            from pineflow.core.text_chunkers import SentenceChunker
 
             text_chunker = SentenceChunker()
     """

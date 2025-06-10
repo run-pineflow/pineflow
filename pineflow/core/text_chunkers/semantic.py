@@ -25,8 +25,8 @@ class SemanticChunker(BaseTextChunker, BaseModel):
     Example:
         .. code-block:: python
 
+            from pineflow.core.text_chunkers import SemanticChunker
             from pineflow.embeddings.huggingface import HuggingFaceEmbedding
-            from pineflow.text_chunkers import SemanticChunker
 
             embedding = HuggingFaceEmbedding()
             text_chunker = SemanticChunker(embed_model=embedding)

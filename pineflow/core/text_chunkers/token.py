@@ -23,7 +23,7 @@ class TokenTextChunker(BaseTextChunker):
     Example:
         .. code-block:: python
 
-            from pineflow.text_chunkers import TokenTextChunker
+            from pineflow.core.text_chunkers import TokenTextChunker
 
             text_chunker = TokenTextChunker()
     """
