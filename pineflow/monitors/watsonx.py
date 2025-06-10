@@ -379,7 +379,7 @@ class WatsonxExternalPromptMonitor:
                               question_field: str = None) -> dict:
         """Creates a Detached/External Prompt Template Asset and sets up monitors for a given prompt template asset.
     
-    Args:
+        Args:
         name (str): The name of the External Prompt Template Asset.
         model_id (str): The ID of the model associated with the prompt.
         task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
@@ -397,7 +397,7 @@ class WatsonxExternalPromptMonitor:
         question_field (str, optional): The field containing the question to be answered. 
                                         Applicable only for "retrieval_augmented_generation" task type.
     
-    Example:
+        Example:
         .. code-block:: python
         
             wxgov_client.create_prompt_monitor(
@@ -547,11 +547,11 @@ class WatsonxExternalPromptMonitor:
         ) -> List[str]:
         """Stores records to the payload logging system.
     
-    Args:
+        Args:
         records_request (List[dict]): A list of records to be logged, where each record is represented as a dictionary.
         subscription_id (str): The subscription ID associated with the records being logged.
     
-    Example:
+        Example:
         .. code-block:: python
         
             wxgov_client.store_payload_records(
@@ -818,7 +818,7 @@ class WatsonxPromptMonitor:
                               ) -> dict:
         """Creates an IBM Prompt Template Asset and sets up monitors for the given prompt template asset.
     
-    Args:
+        Args:
         name (str): The name of the Prompt Template Asset.
         model_id (str): The ID of the model associated with the prompt.
         task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
@@ -831,7 +831,7 @@ class WatsonxPromptMonitor:
         question_field (str, optional): The field containing the question to be answered. 
                                          Applicable only for the ``retrieval_augmented_generation`` task type.
         
-    Example:
+        Example:
         .. code-block:: python
         
             wxgov_client.create_prompt_monitor(
@@ -971,11 +971,11 @@ class WatsonxPromptMonitor:
         ) -> List[str]:
         """Stores records to the payload logging system.
     
-    Args:
+        Args:
         records_request (List[dict]): A list of records to be logged. Each record is represented as a dictionary.
         subscription_id (str): The subscription ID associated with the records being logged.
     
-    Example:
+        Example:
         .. code-block:: python
         
             wxgov_client.store_payload_records(
@@ -1447,16 +1447,16 @@ class WatsonxCustomMetric:
         ):
         """Creates a custom monitor definition for IBM watsonx.governance.
     
-    This must be done before using custom metrics.
+        This must be done before using custom metrics.
     
-    Args:
+        Args:
         name (str): The name of the custom metric group.
         monitor_metrics (List[WatsonxMonitorMetric]): A list of metrics to be measured.
         schedule (bool, optional): Enable or disable the scheduler. Defaults to `False`.
         integrated_system_url (str): The URL of the external metric provider.
         integrated_system_credentials (IntegratedSystemCredentials): The credentials for the integrated system.
     
-    Example:
+        Example:
         .. code-block:: python
         
             from pineflow.monitors.watsonx import WatsonxMonitorMetric, IntegratedSystemCredentials, WatsonxMetricThreshold
@@ -1508,12 +1508,12 @@ class WatsonxCustomMetric:
         ):
         """Enables a custom monitor for the specified subscription and monitor definition.
     
-    Args:
+        Args:
         integrated_system_id (str): The ID of the integrated system.
         monitor_definition_id (str): The ID of the custom metric monitor instance.
         subscription_id (str): The ID of the subscription to associate the monitor with.
     
-    Example:
+        Example:
         .. code-block:: python
         
             wxgov_client.add_monitor_instance(
@@ -1591,12 +1591,12 @@ class WatsonxCustomMetric:
         ):
         """Publishes custom metrics for a specific monitor instance.
     
-    Args:
+        Args:
         monitor_instance_id (str): The unique ID of the monitor instance.
         monitor_run_id (str): The ID of the monitor run that generated the metrics.
         records_request (List[WatsonxMetricRequest]): A list of `WatsonxMetricRequest` objects containing the metrics to be published.
     
-    Example:
+        Example:
         .. code-block:: python
         
             from pineflow.monitors.watsonx import WatsonxMetricRequest
@@ -1655,12 +1655,12 @@ class WatsonxCustomMetric:
         ):
         """Creates a custom metric definition to compute metrics at the local (transaction) level for IBM watsonx.governance.
     
-    Args:
+        Args:
         name (str): The name of the custom transaction metric group.
         monitor_metrics (List[WatsonxLocalMonitorMetric]): A list of metrics to be monitored at the local (transaction) level.
         subscription_id (str): The IBM watsonx.governance subscription ID associated with the metric definition.
     
-    Example:
+        Example:
         .. code-block:: python
         
             from pineflow.monitors.watsonx import WatsonxLocalMonitorMetric
@@ -1737,11 +1737,11 @@ class WatsonxCustomMetric:
         ):
         """Stores custom metrics to payload records (transaction/record level).
     
-    Args:
+        Args:
         custom_local_metric_id (str): The unique ID of the custom transaction metric.
         records_request (List[Dict]): A list of dictionaries containing the records to be stored.
     
-    Example:
+        Example:
         .. code-block:: python
 
             wxgov_client.store_payload_records(
@@ -1761,10 +1761,10 @@ class WatsonxCustomMetric:
     def list_local_metrics(self, custom_local_metric_id: str):
         """Lists records from a custom local metric definition.
     
-    Args:
+        Args:
         custom_local_metric_id (str): The unique ID of the custom transaction metric.
     
-    Example:
+        Example:
         .. code-block:: python
         
             wxgov_client.list_local_metrics(
