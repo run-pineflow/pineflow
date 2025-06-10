@@ -18,7 +18,7 @@ class IngestionFlow():
         .. code-block:: python
 
             from pineflow.core.flows import IngestionFlow
-            from pineflow.text_chunkers import TokenTextChunker
+            from pineflow.core.text_chunkers import TokenTextChunker
             from pineflow.embeddings.huggingface import HuggingFaceEmbedding
 
             ingestion_flow = IngestionFlow(
@@ -77,11 +77,10 @@ class IngestionFlow():
         Args:
             documents: Set of documents to be transformed.
 
-        **Example**
+        Example:
+            .. code-block:: python
 
-        .. code-block:: python
-
-            ingestion_flow.run(documents: List[Document])
+                ingestion_flow.run(documents: List[Document])
         """
         input_documents = self._read_documents(documents)
         
