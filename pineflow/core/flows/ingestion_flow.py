@@ -1,5 +1,5 @@
 
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from pineflow.core.document.schema import Document, TransformerComponent
 from pineflow.core.readers.base import BaseReader
@@ -30,14 +30,17 @@ class IngestionFlow():
     """
 
     def __init__(self, 
+                 readers: List[BaseReader],
                  transformers: TransformerComponent,
-                 readers: List[BaseReader] = None,
-                 vector_store: BaseVectorStore = None):
+                 strategy: Literal["duplicates_only","duplicates_and_delete","de_dup_off"] = "duplicates_only",
+                 vector_store: BaseVectorStore = None
+                 ) -> None:
         
-        self.transformers = transformers
         self.readers = readers
+        self.strategy = strategy
+        self.transformers = transformers
         self.vector_store = vector_store
-    
+        
     def _read_documents(self, documents: Optional[List[Document]]):
         input_documents = []
         
@@ -50,18 +53,31 @@ class IngestionFlow():
         
         return input_documents    
     
-    def _handle_pre_upsert(self, documents) -> List[Document]:
+    def _handle_duplicates(self, documents) -> List[Document]:
         ids, existing_hashes, existing_ref_hashes = self.vector_store.get_all_document_hashes()
-        # Fallback to document own hash if `ref_doc_hash`` is missing (for de-duplication)
+        # Fallback to document own hash if `ref_doc_hash` is missing (for de-duplication)
         hashes_fallback = [existing_ref_hashes[i] if existing_ref_hashes[i] is not None else existing_hashes[i] 
                                 for i in range(len(existing_ref_hashes))]
+        
         current_hashes = []
+        current_unique_hashes = []
         dedup_documents_to_run = []
         
         for doc in documents:
-            if doc.hash not in hashes_fallback and doc.hash not in current_hashes:
+            current_hashes.append(doc.hash)
+
+            if (doc.hash not in hashes_fallback and 
+                doc.hash not in current_unique_hashes and 
+                doc.get_content() != ""):
                 dedup_documents_to_run.append(doc)
-                current_hashes.append(doc.hash)
+                current_unique_hashes.append(doc.hash) # Prevent duplicating same document hash in same batch flow execution.
+        
+        if self.strategy == "duplicates_and_delete":
+            ids_to_remove = [ids[i] for i in range(len(hashes_fallback)) 
+                           if hashes_fallback[i] not in current_hashes]
+ 
+            if self.vector_store is not None:
+                self.vector_store.delete_documents(ids_to_remove)
         
         return dedup_documents_to_run
                 
@@ -71,7 +87,7 @@ class IngestionFlow():
         
         return documents    
     
-    def run(self, documents: List[Document]=None):
+    def run(self, documents: List[Document]=None) -> List[Document]:
         """Run an ingestion flow.
 
         Args:
@@ -85,7 +101,7 @@ class IngestionFlow():
         input_documents = self._read_documents(documents)
         
         if self.vector_store is not None:
-            documents_to_run = self._handle_pre_upsert(input_documents)
+            documents_to_run = self._handle_duplicates(input_documents)
         else:
             documents_to_run = input_documents
         
