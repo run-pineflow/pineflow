@@ -10,7 +10,9 @@ class IngestionFlow():
     """An ingestion flow for processing and storing data.
 
     Args:
-        transformers (list): A list of transformers to apply to the data.
+        transformers (List[TransformerComponent]): A list of transformers to apply to the data.
+        dedup_strategy (str): Document de-dup strategy. 
+                            Currently supports "duplicate_only", "duplicate_and_delete", and "deduplicate_off".
         readers (BaseReader, optional): Reader to use for ingesting data.
         vector_store (BaseVectorStore, optional): Vector store to use for storing the data.
 
@@ -30,14 +32,14 @@ class IngestionFlow():
     """
 
     def __init__(self, 
-                 readers: List[BaseReader],
-                 transformers: TransformerComponent,
-                 strategy: Literal["duplicates_only","duplicates_and_delete","de_dup_off"] = "duplicates_only",
+                 transformers: List[TransformerComponent],
+                 dedup_strategy: Literal["duplicate_only","duplicate_and_delete","deduplicate_off"] = "duplicate_only",
+                 readers: List[BaseReader] = None,
                  vector_store: BaseVectorStore = None
                  ) -> None:
         
         self.readers = readers
-        self.strategy = strategy
+        self.dedup_strategy = dedup_strategy
         self.transformers = transformers
         self.vector_store = vector_store
         
@@ -72,7 +74,7 @@ class IngestionFlow():
                 dedup_documents_to_run.append(doc)
                 current_unique_hashes.append(doc.hash) # Prevent duplicating same document hash in same batch flow execution.
         
-        if self.strategy == "duplicates_and_delete":
+        if self.dedup_strategy == "duplicate_and_delete":
             ids_to_remove = [ids[i] for i in range(len(hashes_fallback)) 
                            if hashes_fallback[i] not in current_hashes]
  
@@ -100,16 +102,17 @@ class IngestionFlow():
         """
         input_documents = self._read_documents(documents)
         
-        if self.vector_store is not None:
+        if self.vector_store is not None and self.dedup_strategy != "deduplicate_off":
             documents_to_run = self._handle_duplicates(input_documents)
         else:
             documents_to_run = input_documents
         
-        documents = self._run_transformers(documents_to_run, self.transformers)
+        if documents_to_run:
+            documents = self._run_transformers(documents_to_run, self.transformers)
         
-        documents = documents or []
-        
-        if self.vector_store is not None:
-            self.vector_store.add_documents(documents)
+            documents = documents or []
+            
+            if self.vector_store is not None:
+                self.vector_store.add_documents(documents)
         
         return documents
