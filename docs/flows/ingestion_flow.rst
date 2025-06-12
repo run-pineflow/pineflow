@@ -2,11 +2,13 @@
 Ingestion Flow
 ============================================
 
-### IngestionFlow
+IngestionFlow
+---------------------
 
 .. autoclass:: pineflow.core.flows.IngestionFlow
 
-### run()
+run()
+---------------------
 
 .. automethod:: pineflow.core.flows.IngestionFlow.run
    :noindex:
