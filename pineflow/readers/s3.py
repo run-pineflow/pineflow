@@ -5,8 +5,7 @@ import tempfile
 from typing import List
 
 from pineflow.core.document import Document
-from pineflow.core.readers import BaseReader
-from pineflow.core.readers import DirectoryReader
+from pineflow.core.readers import BaseReader, DirectoryReader
 
 
 class S3Reader(BaseReader):
