@@ -1,6 +1,3 @@
-Ingestion Flow Documentation
-=============================
-
 Ingestion Flow
 ===============
 
