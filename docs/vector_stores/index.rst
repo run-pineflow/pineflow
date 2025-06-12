@@ -1,9 +1,8 @@
-============================================
-Elasticsearch
+Vector Stores
 ============================================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     Chroma <chroma>
     Elasticsearch <elasticsearch>

@@ -1,8 +1,7 @@
-============================================
 Retrevers
 ============================================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     
     IBM Watson Discovery <watson_discovery>

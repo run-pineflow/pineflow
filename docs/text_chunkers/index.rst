@@ -1,9 +1,8 @@
-============================================
 Text Chunkers
 ============================================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     
     Semantic <semantic>
     Sentence <sentence>

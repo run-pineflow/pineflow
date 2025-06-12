@@ -8,10 +8,10 @@
 import os
 import sys
 
-project = 'Pineflow'
-copyright = '2025, Leonardo Furnielis'
-author = 'Leonardo Furnielis'
-version = '0.6.16'
+project = "Pineflow"
+copyright = "2025, Leonardo Furnielis"
+author = "Leonardo Furnielis"
+version = "0.6.16"
 release = version
 
 # -- General configuration ---------------------------------------------------
@@ -27,18 +27,19 @@ extensions = [
     "sphinx_favicon"
 ]
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.idea']
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", ".idea"]
 
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
 
 autoclass_content = "class"
 autodoc_typehints = "description"
 autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "documented"
 autodoc_class_signature = "separated"
 autodoc_default_options = {"exclude-members": "__init__"}
 
-# -- Options for Favicons -------------------------------------------------
+# -- Options for Sphinx Favicon -------------------------------------------------
 # https://sphinx-favicon.readthedocs.io/en/latest/index.html
 
 favicons = [
@@ -48,8 +49,8 @@ favicons = [
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'furo'
-html_static_path = ['_static']
+html_theme = "furo"
+html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 html_title = "Pineflow"
 html_last_updated_fmt = "%b %d, %Y"
@@ -58,8 +59,8 @@ html_show_sourcelink = False
 
 html_theme_options = {
     "light_css_variables": {
-        "font-stack": "'Red Hat Text', -apple-system, BlinkMacSystemFont, Segoe UI, Arial, sans-serif",
-        "font-stack--monospace": "'Red Hat Mono', 'SFMono-Regular', Menlo, Consolas, Lucida Console, monospace",
+        "font-stack": "Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Arial, sans-serif",
+        "font-stack--monospace": "'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, Lucida Console, monospace",
     },
     "footer_icons": [
         {
@@ -89,3 +90,19 @@ html_theme_options = {
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-the-python-domain
 
 add_module_names = False
+
+# -- Display method signatures without the class name prefix -------------------
+
+# def setup(app):
+#     from sphinx.ext.autodoc import MethodDocumenter 
+    
+#     # Override format_signature to remove class prefix from methods
+#     original_format_signature = MethodDocumenter.format_signature
+
+#     def custom_format_signature(self, *args, **kwargs):
+#         sig = original_format_signature(self, *args, **kwargs)
+#         # Prevent Sphinx from adding 'ClassName.' to method name
+#         self.objpath = [self.objpath[-1]]  # Keep only the method name
+#         return sig
+
+#     MethodDocumenter.format_signature = custom_format_signature

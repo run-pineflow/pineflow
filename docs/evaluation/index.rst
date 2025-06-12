@@ -1,8 +1,7 @@
-============================================
 Evaluation
 ============================================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     
     Context Similarity <context_similarity>
