@@ -2,7 +2,7 @@ Ingestion Flow
 ============================================
 
 .. autoclass:: pineflow.core.flows.IngestionFlow
-  :exclude-members: run
+  :exclude-members: run, __init__, __new__
   :undoc-members:
   :show-inheritance:
 
