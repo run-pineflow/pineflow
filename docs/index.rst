@@ -26,6 +26,8 @@ Features
 
 ✅ **Data indexes**: Organize this data into structured representations optimized for efficient consumption by language models.
 
+✅ **Flows**: Automate the end-to-end processing of data—from ingestion to response generation—by chaining connectors, indexes, and models into customizable workflows.
+
 ✅ **Models**: Enable natural language interaction with your data.
 
 ✅ **Monitor and Evaluation**: Enable evaluation and monitoring of LLMs models.

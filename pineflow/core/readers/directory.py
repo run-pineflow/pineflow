@@ -29,6 +29,12 @@ class DirectoryReader(BaseReader):
         recursive (bool, optional): Whether to recursively search subdirectories for files.
             Defaults to ``False``.
 
+    Example:
+        .. code-block:: python
+
+            from pineflow.core.readers import DirectoryReader
+
+            directory_reader = DirectoryReader()
     """
     
     required_exts: List[str] = [".pdf", ".docx", ".html"]

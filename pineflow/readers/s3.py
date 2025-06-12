@@ -6,7 +6,7 @@ from typing import List
 
 from pineflow.core.document import Document
 from pineflow.core.readers import BaseReader
-from pineflow.readers import DirectoryReader
+from pineflow.core.readers import DirectoryReader
 
 
 class S3Reader(BaseReader):
