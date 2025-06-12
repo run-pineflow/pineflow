@@ -24,6 +24,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx_favicon"
 ]
 
 templates_path = ['_templates']
@@ -36,6 +37,13 @@ autodoc_typehints = "description"
 autodoc_typehints_format = "short"
 autodoc_class_signature = "separated"
 autodoc_default_options = {"exclude-members": "__init__"}
+
+# -- Options for Favicons -------------------------------------------------
+# https://sphinx-favicon.readthedocs.io/en/latest/index.html
+
+favicons = [
+    "favicon-32x32.png",
+]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
