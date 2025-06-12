@@ -7,7 +7,7 @@ Ingestion Flow
 Enums
 ----------------
 
-DedupStrategy
+DocStrategy
 ________________
 
 .. list-table::
@@ -16,14 +16,14 @@ ________________
 
    * - Name
      - Description
-   * - DedupStrategy.DUPLICATE_ONLY
+   * - DocStrategy.DUPLICATE_ONLY
      - Inserts only new, unique documents. Skips duplicates both from the input batch and existing data in the vector store.
-   * - DedupStrategy.DUPLICATE_AND_DELETE
+   * - DocStrategy.DUPLICATE_AND_DELETE
      - Deletes all existing documents in the vector store and replaces them with the new batch after removing duplicates.
-   * - DedupStrategy.DEDUPLICATE_OFF
+   * - DocStrategy.DEDUPLICATE_OFF
      - Inserts all input documents as-is, regardless of duplicates or existing content.
 
-DedupStage
+DeduplicationMode
 ________________
 
 .. list-table::
@@ -32,7 +32,7 @@ ________________
 
    * - Name
      - Description
-   * - DedupStrategy.PRE_TRANSFORM
+   * - DeduplicationMode.PRE_TRANSFORM
      - Deduplication happens before applying any transformations (e.g. chunking, embeddings).
-   * - DedupStrategy.POST_TRANSFORM
+   * - DeduplicationMode.POST_TRANSFORM
      - Deduplication happens after the transformation step (e.g. after splitting documents).
