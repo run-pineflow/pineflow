@@ -10,6 +10,10 @@ from pineflow.core.vector_stores.base import BaseVectorStore
 class DedupStage(Enum):
     """
     Document de-duplication stages determine when the deduplication process occurs during the ingestion flow.
+    
+    Enum members:
+        PRE_TRANSFORM: Deduplication before the transformation process.
+        POST_TRANSFORM: Deduplication after the transformation process.
     """
 
     PRE_TRANSFORM = "pre_transform"
