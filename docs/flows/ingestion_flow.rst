@@ -1,9 +1,5 @@
-============================================
 Ingestion Flow
 ============================================
-
-IngestionFlow
----------------------
 
 .. autoclass:: pineflow.core.flows.IngestionFlow
   :exclude-members: run
@@ -52,5 +48,3 @@ Deduplication Stage
    * - post_transform
      - Deduplication happens after the transformation step (e.g. after splitting documents).
      - Use when deduplication should be based on the final transformed content (e.g. deduping chunks).
-
-
