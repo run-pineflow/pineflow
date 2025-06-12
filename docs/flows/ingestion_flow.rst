@@ -32,7 +32,7 @@ ________________
 
    * - Name
      - Description
-   * - DeduplicationMode.PRE_TRANSFORM
+   * - DeduplicationMode.PRE
      - Deduplication happens before applying any transformations (e.g. chunking, embeddings).
-   * - DeduplicationMode.POST_TRANSFORM
+   * - DeduplicationMode.POST
      - Deduplication happens after the transformation step (e.g. after splitting documents).

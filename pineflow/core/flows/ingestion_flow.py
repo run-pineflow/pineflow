@@ -12,8 +12,8 @@ class DeduplicationMode(Enum):
     Document de-duplication mode determine when the deduplication process occurs during the ingestion flow.
     """
 
-    PRE_TRANSFORM = "pre_transform"
-    POST_TRANSFORM = "post_transform"
+    PRE = "pre_transform"
+    POST = "post_transform"
     
 class DocStrategy(Enum):
     """
@@ -31,7 +31,7 @@ class IngestionFlow():
     Args:
         transformers (List[TransformerComponent]): A list of transformer components applied to the input documents.
         dedup_stage (DeduplicationMode): The stage at which deduplication is applied (before or after transformation). 
-                                 Defaults to ``DeduplicationMode.PRE_TRANSFORM``.
+                                 Defaults to ``DeduplicationMode.PRE``.
         dedup_strategy (DocStrategy): The strategy used for handling document duplicates. 
                                  Defaults to ``DocStrategy.DUPLICATE_ONLY``.
         readers (BaseReader, optional): List of readers for loading or fetching documents.
@@ -54,7 +54,7 @@ class IngestionFlow():
 
     def __init__(self, 
                  transformers: List[TransformerComponent],
-                 dedup_stage: DeduplicationMode = DeduplicationMode.PRE_TRANSFORM,
+                 dedup_stage: DeduplicationMode = DeduplicationMode.PRE,
                  dedup_strategy: DocStrategy = DocStrategy.DUPLICATE_ONLY,
                  readers: Optional[List[BaseReader]] = None,
                  vector_store: Optional[BaseVectorStore] = None
@@ -80,11 +80,11 @@ class IngestionFlow():
     
     def _handle_duplicates(self, documents) -> List[Document]:
         ids, existing_hashes, existing_ref_hashes = self.vector_store.get_all_document_hashes()
-        if self.dedup_stage == DeduplicationMode.PRE_TRANSFORM:
+        if self.dedup_stage == DeduplicationMode.PRE:
             # Fallback to document own hash if `ref_doc_hash` (parent level) is missing for de-duplication
             hashes_fallback = [existing_ref_hashes[i] if existing_ref_hashes[i] is not None else existing_hashes[i] 
                                         for i in range(len(existing_ref_hashes))]
-        elif self.dedup_stage == DeduplicationMode.POST_TRANSFORM:
+        elif self.dedup_stage == DeduplicationMode.POST:
             # Use own document hash (chunks level) for de-duplication
             hashes_fallback = existing_hashes
             
@@ -134,7 +134,7 @@ class IngestionFlow():
         # Apply pre-transform de-dup (parent level)
         if (self.vector_store is not None and 
             self.dedup_strategy != DocStrategy.DEDUPLICATE_OFF and
-            self.dedup_stage == DeduplicationMode.PRE_TRANSFORM):
+            self.dedup_stage == DeduplicationMode.PRE):
             
             documents_to_run = self._handle_duplicates(input_documents)
         else:
@@ -148,7 +148,7 @@ class IngestionFlow():
             # Apply post-transform de-dup (chunk level)
             if (self.vector_store is not None and
             self.dedup_strategy != DocStrategy.DEDUPLICATE_OFF and
-            self.dedup_stage == DeduplicationMode.POST_TRANSFORM):
+            self.dedup_stage == DeduplicationMode.POST):
                 documents = self._handle_duplicates(documents)
             
             if self.vector_store is not None and documents:
