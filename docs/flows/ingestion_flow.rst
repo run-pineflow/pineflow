@@ -5,7 +5,10 @@ Ingestion Flow
 .. automodule:: pineflow.core.flows
     :members:
 
-.. list-table:: Deduplication Strategy
+Deduplication Strategy
+---------------------
+
+.. list-table::
    :header-rows: 1
    :widths: 20 50 30
 
@@ -22,7 +25,10 @@ Ingestion Flow
      - Inserts all input documents as-is, regardless of duplicates or existing content.
      - Use when you want raw ingestion or are relying on another system to manage duplication.
 
-.. list-table:: Deduplication Stage
+Deduplication Stage
+---------------------
+
+.. list-table:: 
    :header-rows: 1
    :widths: 20 50 30
 
