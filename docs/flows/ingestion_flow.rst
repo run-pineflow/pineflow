@@ -6,6 +6,9 @@ IngestionFlow
 ---------------------
 
 .. autoclass:: pineflow.core.flows.IngestionFlow
+  :exclude-members: run
+  :undoc-members:
+  :show-inheritance:
 
 run()
 ---------------------
