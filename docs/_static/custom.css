@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
 
 /* Change the font for the entire body */
 body {
-    font-family: "Red Hat Text", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 400;
     font-optical-sizing: auto;
 }
 
 /* Change the font for headings */
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Red Hat Display", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 400;
     font-optical-sizing: auto;
 }
