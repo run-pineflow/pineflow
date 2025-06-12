@@ -6,10 +6,12 @@ from pineflow.core.document.schema import Document, TransformerComponent
 from pineflow.core.readers.base import BaseReader
 from pineflow.core.vector_stores.base import BaseVectorStore
 
+
 class DedupStage(Enum):
     """
     Document de-duplication stages determine when the deduplication process occurs during the ingestion flow.
     """
+
     PRE_TRANSFORM = "pre_transform"
     POST_TRANSFORM = "post_transform"
     
@@ -18,6 +20,7 @@ class DedupStrategy(Enum):
     Document de-duplication strategies work by comparing the hashes in the vector store. 
     They require a vector store to be set.
     """
+
     DUPLICATE_ONLY = "duplicate_only"
     DUPLICATE_AND_DELETE = "duplicate_and_delete"
     DEDUPLICATE_OFF = "deduplicate_off"
