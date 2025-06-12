@@ -10,10 +10,6 @@ from pineflow.core.vector_stores.base import BaseVectorStore
 class DedupStage(Enum):
     """
     Document de-duplication stages determine when the deduplication process occurs during the ingestion flow.
-    
-    Enum members:
-        PRE_TRANSFORM: Deduplication before the transformation process.
-        POST_TRANSFORM: Deduplication after the transformation process.
     """
 
     PRE_TRANSFORM = "pre_transform"
@@ -36,7 +32,7 @@ class IngestionFlow():
         transformers (List[TransformerComponent]): A list of transformer components applied to the input documents.
         dedup_stage (DedupStage): The stage at which deduplication is applied (before or after transformation). 
                                  Defaults to ``DedupStage.PRE_TRANSFORM``.
-        dedup_strategy (str): The strategy used for handling duplicates. Defaults to ``DedupStrategy.DUPLICATE_ONLY``.
+        dedup_strategy (DedupStrategy): The strategy used for handling duplicates. Defaults to ``DedupStrategy.DUPLICATE_ONLY``.
         readers (BaseReader, optional): List of readers for loading or fetching documents.
         vector_store (BaseVectorStore, optional): Vector store for saving processed documents
 

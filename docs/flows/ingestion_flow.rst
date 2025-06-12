@@ -4,39 +4,35 @@ Ingestion Flow
 .. autoclass:: pineflow.core.flows.IngestionFlow
    :members:
 
-.. autoclass:: pineflow.core.flows.DedupStrategy
-   :members:
+Enums
+----------------
+
+DedupStrategy
+________________
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 50 30
+   :widths: 20 50
 
    * - Name
      - Description
-     - When to Use
-   * - duplicate_only
+   * - DedupStrategy.DUPLICATE_ONLY
      - Inserts only new, unique documents. Skips duplicates both from the input batch and existing data in the vector store.
-     - Use to safely add data without changing or deleting anything. Ensures uniqueness without loss.
-   * - duplicate_and_delete
+   * - DedupStrategy.DUPLICATE_AND_DELETE
      - Deletes all existing documents in the vector store and replaces them with the new batch after removing duplicates.
-     - Use when doing a full refresh or reindexing. Replaces the store content with only the clean, deduplicated batch.
-   * - deduplicate_off
+   * - DedupStrategy.DEDUPLICATE_OFF
      - Inserts all input documents as-is, regardless of duplicates or existing content.
-     - Use when you want raw ingestion or are relying on another system to manage duplication.
 
-.. autoclass:: pineflow.core.flows.DedupStage
-   :members:
+DedupStage
+________________
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 50 30
+   :widths: 20 50
 
    * - Name
      - Description
-     - When to Use
-   * - pre_transform
+   * - DedupStrategy.PRE_TRANSFORM
      - Deduplication happens before applying any transformations (e.g. chunking, embeddings).
-     - Use to eliminate exact duplicates early and reduce unnecessary processing or transformation.
-   * - post_transform
+   * - DedupStrategy.POST_TRANSFORM
      - Deduplication happens after the transformation step (e.g. after splitting documents).
-     - Use when deduplication should be based on the final transformed content (e.g. deduping chunks).
