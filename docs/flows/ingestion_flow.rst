@@ -1,19 +1,22 @@
+Ingestion Flow Documentation
+=============================
+
 Ingestion Flow
-============================================
+===============
 
 .. autoclass:: pineflow.core.flows.IngestionFlow
-  :exclude-members: run, __init__, __new__
-  :undoc-members:
-  :show-inheritance:
+   :exclude-members: run, __init__, __new__
+   :undoc-members:
+   :show-inheritance:
 
 run()
----------------------
+~~~~~~
 
 .. automethod:: pineflow.core.flows.IngestionFlow.run
    :noindex:
 
 Deduplication Strategy
----------------------
+---------------------------
 
 .. list-table::
    :header-rows: 1
@@ -33,9 +36,9 @@ Deduplication Strategy
      - Use when you want raw ingestion or are relying on another system to manage duplication.
 
 Deduplication Stage
----------------------
+---------------------------
 
-.. list-table:: 
+.. list-table::
    :header-rows: 1
    :widths: 20 50 30
 
