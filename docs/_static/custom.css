@@ -9,11 +9,27 @@ body {
     font-optical-sizing: auto;
 }
 
+p {
+  font-size: 14px;
+}
+
 /* Change the font for headings */
 h1, h2, h3, h4, h5, h6 {
     font-family: "Montserrat", sans-serif;
     font-weight: 400;
     font-optical-sizing: auto;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h2 {
+  font-size: 18px;
 }
 
 .highlight {
