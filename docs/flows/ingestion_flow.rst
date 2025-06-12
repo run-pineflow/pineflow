@@ -2,8 +2,14 @@
 Ingestion Flow
 ============================================
 
-.. automodule:: pineflow.core.flows
-    :members:
+### IngestionFlow
+
+.. autoclass:: pineflow.core.flows.IngestionFlow
+
+### run()
+
+.. automethod:: pineflow.core.flows.IngestionFlow.run
+   :noindex:
 
 Deduplication Strategy
 ---------------------
