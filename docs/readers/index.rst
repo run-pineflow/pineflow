@@ -2,7 +2,7 @@ Readers
 ============================================
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
 
     Docx <docx>
     File Directory <directory>
