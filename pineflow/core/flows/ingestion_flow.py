@@ -1,19 +1,11 @@
 
 from enum import Enum
-from typing import List, Optional
+from typing import List, Literal, Optional
+import warnings
 
 from pineflow.core.document.schema import Document, TransformerComponent
 from pineflow.core.readers.base import BaseReader
 from pineflow.core.vector_stores.base import BaseVectorStore
-
-
-class DeduplicationMode(Enum):
-    """
-    Document de-duplication mode determine when the deduplication process occurs during the ingestion flow.
-    """
-
-    PRE = "pre_transform"
-    POST = "post_transform"
     
 class DocStrategy(Enum):
     """
@@ -30,10 +22,9 @@ class IngestionFlow():
 
     Args:
         transformers (List[TransformerComponent]): A list of transformer components applied to the input documents.
-        dedup_stage (DeduplicationMode): The stage at which deduplication is applied (before or after transformation). 
-                                 Defaults to ``DeduplicationMode.PRE``.
-        dedup_strategy (DocStrategy): The strategy used for handling document duplicates. 
+        doc_strategy (DocStrategy): The strategy used for handling document duplicates. 
                                  Defaults to ``DocStrategy.DUPLICATE_ONLY``.
+        post_transformer (bool): Whether transformers should be applied after transformation step. Defaults to ``False``.
         readers (BaseReader, optional): List of readers for loading or fetching documents.
         vector_store (BaseVectorStore, optional): Vector store for saving processed documents
 
@@ -54,17 +45,38 @@ class IngestionFlow():
 
     def __init__(self, 
                  transformers: List[TransformerComponent],
-                 dedup_stage: DeduplicationMode = DeduplicationMode.PRE,
-                 dedup_strategy: DocStrategy = DocStrategy.DUPLICATE_ONLY,
+                 doc_strategy: DocStrategy = DocStrategy.DUPLICATE_ONLY,
+                 post_transformer: bool = False,
                  readers: Optional[List[BaseReader]] = None,
-                 vector_store: Optional[BaseVectorStore] = None
+                 vector_store: Optional[BaseVectorStore] = None,
+                 
+                 dedup_stage: Literal["pre_transform", "post_transform"] = None, # deprecated
+                 dedup_strategy: DocStrategy = None, # deprecated
                  ) -> None:
         
-        self.readers = readers
-        self.dedup_stage = dedup_stage
-        self.dedup_strategy = dedup_strategy
+        self.doc_strategy = doc_strategy
+        self.post_transformer = post_transformer
         self.transformers = transformers
+        self.readers = readers
         self.vector_store = vector_store
+        
+        # START deprecated params message
+        if dedup_stage is not None:
+            warnings.warn(
+                "'dedup_stage' is deprecated and has no effect. It will be removed in future versions."
+                "Please use 'post_transformer' instead.",
+                DeprecationWarning,
+                stacklevel=2
+            )
+        if dedup_strategy is not None:
+            warnings.warn(
+                "'dedup_strategy' is deprecated and has no effect. It will be removed in future versions."
+                "Please use 'doc_strategy' instead.",
+                DeprecationWarning,
+                stacklevel=2
+            )
+        # END deprecated params message      
+        
         
     def _read_documents(self, documents: Optional[List[Document]]):
         input_documents = []
@@ -80,13 +92,14 @@ class IngestionFlow():
     
     def _handle_duplicates(self, documents) -> List[Document]:
         ids, existing_hashes, existing_ref_hashes = self.vector_store.get_all_document_hashes()
-        if self.dedup_stage == DeduplicationMode.PRE:
+        if self.post_transformer:
+            # Use own document hash (chunks level) for de-duplication
+            hashes_fallback = existing_hashes
+        else:
+            # Use parent document hash `ref_doc_hash` 
             # Fallback to document own hash if `ref_doc_hash` (parent level) is missing for de-duplication
             hashes_fallback = [existing_ref_hashes[i] if existing_ref_hashes[i] is not None else existing_hashes[i] 
                                         for i in range(len(existing_ref_hashes))]
-        elif self.dedup_stage == DeduplicationMode.POST:
-            # Use own document hash (chunks level) for de-duplication
-            hashes_fallback = existing_hashes
             
         current_hashes = []
         current_unique_hashes = []
@@ -101,7 +114,7 @@ class IngestionFlow():
                 dedup_documents_to_run.append(doc)
                 current_unique_hashes.append(doc.hash) # Prevent duplicating same document hash in same batch flow execution.
         
-        if self.dedup_strategy == DocStrategy.DUPLICATE_AND_DELETE:
+        if self.doc_strategy == DocStrategy.DUPLICATE_AND_DELETE:
             ids_to_remove = [ids[i] for i in range(len(hashes_fallback)) 
                            if hashes_fallback[i] not in current_hashes]
  
@@ -133,8 +146,8 @@ class IngestionFlow():
         
         # Apply pre-transform de-dup (parent level)
         if (self.vector_store is not None and 
-            self.dedup_strategy != DocStrategy.DEDUPLICATE_OFF and
-            self.dedup_stage == DeduplicationMode.PRE):
+            self.doc_strategy != DocStrategy.DEDUPLICATE_OFF and
+            not self.post_transformer):
             
             documents_to_run = self._handle_duplicates(input_documents)
         else:
@@ -147,8 +160,8 @@ class IngestionFlow():
             
             # Apply post-transform de-dup (chunk level)
             if (self.vector_store is not None and
-            self.dedup_strategy != DocStrategy.DEDUPLICATE_OFF and
-            self.dedup_stage == DeduplicationMode.POST):
+            self.doc_strategy != DocStrategy.DEDUPLICATE_OFF and
+            self.post_transformer):
                 documents = self._handle_duplicates(documents)
             
             if self.vector_store is not None and documents:
