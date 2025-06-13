@@ -1,6 +1,6 @@
 import uuid
 from logging import getLogger
-from typing import Dict, List, Literal
+from typing import List, Literal
 
 from pineflow.core.document import Document, DocumentWithScore
 from pineflow.core.embeddings import BaseEmbedding
@@ -208,7 +208,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
         for id in ids:
             self._client.delete(index=self.index_name, id=id)
 
-    def get_all_documents(self, include_fields: List[str] = []) -> List[Dict[str, Dict]]:
+    def get_all_documents(self, include_fields: List[str] = []) -> List[Document]:
         """Get all documents from vector store."""
         es_query = { "query": { "match_all": {} } }
         
@@ -233,8 +233,12 @@ class ElasticsearchVectorStore(BaseVectorStore):
         scroll_id = data["_scroll_id"]
         hits = data.get("hits", {}).get("hits", [])
         
-        documents = [{ "_source": { "_id": hit["_id"], **hit["_source"] }} for hit in hits]
-        
+        documents = [Document(
+            id_=hit["_id"], 
+            metadata=hit["_source"].get("metadata", {}), 
+            embedding=hit["_source"].get(self.vector_field),
+            text=hit["_source"].get(self.text_field, "")) 
+                     for hit in hits]
 
         while len(hits) > 0:
             scroll_data = self._client.scroll(scroll_id=scroll_id, scroll="2m")
@@ -242,6 +246,11 @@ class ElasticsearchVectorStore(BaseVectorStore):
             
             hits = scroll_data.get("hits", {}).get("hits", [])
             
-            documents.extend([{ "_source": { "_id": hit["_id"], **hit["_source"] }} for hit in hits])
-            
+            documents.extend([Document(
+                id_=hit["_id"], 
+                metadata=hit["_source"].get("metadata", {}), 
+                embedding=hit["_source"].get(self.vector_field),
+                text=hit["_source"].get(self.text_field, "")) 
+                        for hit in hits])
+        
         return documents

@@ -1,8 +1,9 @@
 import uuid
 from abc import ABC, abstractmethod
 from hashlib import sha256
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
+import numpy as np
 from pydantic.v1 import BaseModel, Field, validator
 
 
@@ -15,9 +16,12 @@ class BaseDocument(ABC, BaseModel):
     metadata: Dict[str, Any] = Field(
         default_factory=dict,
         description="A flat dictionary of metadata fields.")
-    embedding: Optional[List[float]] = Field(
+    embedding: Optional[Union[List[float], np.ndarray]] = Field(
         default_factory=None,
         description="Embedding of the document.")
+    
+    class Config:
+        arbitrary_types_allowed = True
 
     @validator("metadata", pre=True)
     def _validate_metadata(cls, v) -> Dict:

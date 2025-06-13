@@ -1,6 +1,6 @@
 import uuid
 from logging import getLogger
-from typing import Dict, List, Literal
+from typing import List, Literal
 
 from pineflow.core.document import Document, DocumentWithScore
 from pineflow.core.embeddings import BaseEmbedding
@@ -116,7 +116,7 @@ class ChromaVectorStore(BaseVectorStore):
         """
         self._collection.delete(ids=ids)
         
-    def get_all_documents(self, include_fields: List[str] = None) -> List[Dict[str, Dict]]:
+    def get_all_documents(self, include_fields: List[str] = None) -> List[Document]:
         """Get all documents from vector store."""
         default_fields = ["documents", "metadatas", "embeddings"]
         include = include_fields if include_fields else default_fields
@@ -128,17 +128,12 @@ class ChromaVectorStore(BaseVectorStore):
             }
         
         data = self._collection.get(include=include)
-        
-        # Extract only requested data in aligned order + ids
-        include.insert(0, "ids")
-        rows = zip(*[data[key] for key in include])
-        
+        num_items = len(data["ids"])
+            
         return [
-            {
-                "_source": {
-                    field_map[key]: value
-                    for key, value in zip(include, row)
-                    }
-                }
-            for row in rows
+            Document(**{
+                mapped_key: data[original_key][i]
+                for original_key, mapped_key in field_map.items()
+            })
+            for i in range(num_items)
             ]

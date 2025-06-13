@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 from deprecated import deprecated
 
@@ -37,16 +37,16 @@ class BaseVectorStore(ABC):
         """Delete documents from vector store."""
     
     @abstractmethod
-    def get_all_documents(self, include_fields: List[str]) -> List[Dict[str, Dict]]:
+    def get_all_documents(self, include_fields: List[str]) -> List[Document]:
         """Get all documents from vector store."""
              
     def get_all_document_hashes(self) -> Tuple[List[str], List[str], List[str]]:
         """Get all ref hashes from vector store."""
-        hits = self.get_all_documents(include_fields=["metadata"])
+        hits = self.get_all_documents()
         
-        ids = [hit["_source"]["_id"] for hit in hits]
-        hashes = [hit["_source"]["metadata"].get("hash") for hit in hits]
-        ref_hashes = [hit["_source"]["metadata"].get("ref_doc_hash") for hit in hits]
+        ids = [doc.id_ for doc in hits]
+        hashes = [doc.metadata.get("hash") for doc in hits]
+        ref_hashes = [doc.metadata.get("ref_doc_hash") for doc in hits]
         
         return ids, hashes, ref_hashes
         

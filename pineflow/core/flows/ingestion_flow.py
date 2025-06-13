@@ -93,6 +93,7 @@ class IngestionFlow():
     
     def _handle_duplicates(self, documents) -> List[Document]:
         ids, existing_hashes, existing_ref_hashes = self.vector_store.get_all_document_hashes()
+
         if self.post_transformer:
             # Use own document hash (chunks level) for de-duplication
             hashes_fallback = existing_hashes
@@ -105,10 +106,10 @@ class IngestionFlow():
         current_hashes = []
         current_unique_hashes = []
         dedup_documents_to_run = []
-
+        
         for doc in documents:
             current_hashes.append(doc.hash)
-
+            
             if (doc.hash not in hashes_fallback and 
                 doc.hash not in current_unique_hashes and 
                 doc.get_content() != ""):
@@ -121,7 +122,7 @@ class IngestionFlow():
  
             if self.vector_store is not None:
                 self.vector_store.delete_documents(ids_to_remove)
-
+        
         return dedup_documents_to_run
                 
     def _run_transformers(self, documents: List[Document], transformers: TransformerComponent) -> List[Document]:
@@ -143,29 +144,29 @@ class IngestionFlow():
 
                 ingestion_flow.run(documents: List[Document])
         """
+        documents_processed = []
         input_documents = self._read_documents(documents)
         
-        # Apply pre-transform de-dup (parent level)
         if (self.vector_store is not None and 
             self.doc_strategy != DocStrategy.DEDUPLICATE_OFF and
             not self.post_transformer):
+            # Apply transformers before de-dup (parent level)
             
             documents_to_run = self._handle_duplicates(input_documents)
         else:
+            # Apply transformers after de-dup (chunk level)
             documents_to_run = input_documents
         
         if documents_to_run:
-            documents = self._run_transformers(documents_to_run, self.transformers)
-
-            documents = documents or []
+            documents_processed = self._run_transformers(documents_to_run, self.transformers)
             
-            # Apply post-transform de-dup (chunk level)
+            # Apply transformers after de-dup (chunk level)
             if (self.vector_store is not None and
             self.doc_strategy != DocStrategy.DEDUPLICATE_OFF and
             self.post_transformer):
-                documents = self._handle_duplicates(documents)
+                documents_processed = self._handle_duplicates(documents_processed)
             
-            if self.vector_store is not None and documents:
-                self.vector_store.add_documents(documents)
+            if self.vector_store is not None and documents_processed:
+                self.vector_store.add_documents(documents_processed)
         
-        return documents
+        return documents_processed
