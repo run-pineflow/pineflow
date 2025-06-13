@@ -25,7 +25,7 @@ class IngestionFlow():
         transformers (List[TransformerComponent]): A list of transformer components applied to the input documents.
         doc_strategy (DocStrategy): The strategy used for handling document duplicates. 
                                  Defaults to ``DocStrategy.DUPLICATE_ONLY``.
-        post_transformer (bool): Whether transformers should be applied after transformation step. Defaults to ``False``.
+        post_transformer (bool): Whether document de-duplication should be applied after transformations step. Defaults to ``False``.
         readers (BaseReader, optional): List of readers for loading or fetching documents.
         vector_store (BaseVectorStore, optional): Vector store for saving processed documents
 
