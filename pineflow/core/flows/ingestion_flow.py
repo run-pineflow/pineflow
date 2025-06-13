@@ -1,12 +1,13 @@
 
+import warnings
 from enum import Enum
 from typing import List, Literal, Optional
-import warnings
 
 from pineflow.core.document.schema import Document, TransformerComponent
 from pineflow.core.readers.base import BaseReader
 from pineflow.core.vector_stores.base import BaseVectorStore
-    
+
+
 class DocStrategy(Enum):
     """
     Document de-duplication strategies work by comparing the hashes in the vector store. 
