@@ -10,4 +10,4 @@ Readers
     IBM Watson Discovery <watson_discovery>
     JSON <json>
     PDF <pdf>
-    S3 <s3>
+    IBM COS <ibm_cos>
