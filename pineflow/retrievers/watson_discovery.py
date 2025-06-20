@@ -67,13 +67,19 @@ class WatsonDiscoveryRetriever:
         reason="'query' is deprecated and will be removed in next release, use 'search_documents'.",
     )
     def query(
-        self, query: str, filter: str = None, top_k: int = 4,
+        self,
+        query: str,
+        filter: str = None,
+        top_k: int = 4,
     ) -> List[DocumentWithScore]:
         """DEPRECATED: use 'search_documents'."""
         return self.search_documents(query, filter, top_k)
 
     def search_documents(
-        self, query: str, filter: str = None, top_k: int = 4,
+        self,
+        query: str,
+        filter: str = None,
+        top_k: int = 4,
     ) -> List[DocumentWithScore]:
         """
         Search your data in the Discovery API and return a list of documents.

@@ -62,7 +62,9 @@ def _split_by_sentence_tokenizer(text: str, sentence_tokenizer) -> List[str]:
 
 
 def split_by_fns(
-    text: str, split_fns: List[Callable], sub_split_fns: List[Callable] = None,
+    text: str,
+    split_fns: List[Callable],
+    sub_split_fns: List[Callable] = None,
 ) -> Tuple[List[str], bool]:
     """Split text by defined list of split functions."""
     if not split_fns:

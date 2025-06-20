@@ -104,7 +104,8 @@ class ChromaVectorStore(BaseVectorStore):
         query_embedding = self._embed_model.get_text_embedding(query)
 
         results = self._collection.query(
-            query_embeddings=query_embedding, n_results=top_k,
+            query_embeddings=query_embedding,
+            n_results=top_k,
         )
 
         return [

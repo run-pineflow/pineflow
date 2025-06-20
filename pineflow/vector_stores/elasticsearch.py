@@ -125,7 +125,9 @@ class ElasticsearchVectorStore(BaseVectorStore):
         return metadata_mapping
 
     def add_documents(
-        self, documents: List[Document], create_index_if_not_exists: bool = True,
+        self,
+        documents: List[Document],
+        create_index_if_not_exists: bool = True,
     ) -> List[str]:
         """
         Add documents to the Elasticsearch index.
@@ -156,7 +158,10 @@ class ElasticsearchVectorStore(BaseVectorStore):
             )
 
         self._es_bulk(
-            self._client, vector_store_data, chunk_size=self.batch_size, refresh=True,
+            self._client,
+            vector_store_data,
+            chunk_size=self.batch_size,
+            refresh=True,
         )
         print(f"Added {len(vector_store_data)} documents to `{self.index_name}`")
 

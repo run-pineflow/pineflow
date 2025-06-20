@@ -60,7 +60,9 @@ class ContextSimilarityEvaluator(BaseModel):
             context_embedding = self.embed_model.get_text_embedding(context)
             evaluation_result["contexts_score"].append(
                 self.embed_model.similarity(
-                    candidate_embedding, context_embedding, mode=self.similarity_mode,
+                    candidate_embedding,
+                    context_embedding,
+                    mode=self.similarity_mode,
                 ),
             )
 

@@ -64,7 +64,8 @@ class SemanticChunker(BaseTextChunker, BaseModel):
         return sentences
 
     def _calculate_cosine_distances(
-        self, single_sentences_list: List[str],
+        self,
+        single_sentences_list: List[str],
     ) -> Tuple[List[float], List[dict]]:
         _sentences = [
             {"sentence": x, "index": i} for i, x in enumerate(single_sentences_list)

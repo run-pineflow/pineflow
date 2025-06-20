@@ -58,7 +58,8 @@ def _filter_dict(original_dict: dict, optional_keys: List, required_keys: List =
 
 
 def _convert_payload_format(
-    records: List[dict], feature_fields: List[str],
+    records: List[dict],
+    feature_fields: List[str],
 ) -> List[dict]:
     payload_data = []
     response_fields = ["generated_text", "input_token_count", "generated_token_count"]
@@ -132,7 +133,7 @@ class CloudPakforDataCredentials(BaseModel):
         )
 
     def to_dict(self) -> dict[str, Any]:
-        cpd_creds = dict([(k, v) for k, v in self.__dict__.items()]) # noqa: C404
+        cpd_creds = dict([(k, v) for k, v in self.__dict__.items()])  # noqa: C404
 
         if "instance_id" in cpd_creds and self.instance_id.lower() not in [
             "icp",
@@ -271,7 +272,9 @@ class WatsonxExternalPromptMonitor:
             import ibm_watsonx_ai  # noqa: F401
 
         except ImportError:
-            raise ImportError("""ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`""")
+            raise ImportError(
+                """ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`"""
+            )
 
         if (not (project_id or space_id)) or (project_id and space_id):
             raise ValueError(
@@ -372,7 +375,8 @@ class WatsonxExternalPromptMonitor:
 
             else:
                 creds = Credentials(
-                    url=REGIONS_URL[self.region]["wml"], api_key=self._api_key,
+                    url=REGIONS_URL[self.region]["wml"],
+                    api_key=self._api_key,
                 )
                 wml_client = APIClient(creds)
                 wml_client.set.default_space(self.space_id)
@@ -498,17 +502,21 @@ class WatsonxExternalPromptMonitor:
         # update name of keys to aigov_facts api
         prompt_metadata["input"] = prompt_metadata.pop("input_text", None)
         prompt_metadata["model_provider"] = prompt_metadata.pop(
-            "detached_model_provider", None,
+            "detached_model_provider",
+            None,
         )
         prompt_metadata["model_name"] = prompt_metadata.pop("detached_model_name", None)
         prompt_metadata["model_url"] = prompt_metadata.pop("detached_model_url", None)
         prompt_metadata["prompt_url"] = prompt_metadata.pop("detached_prompt_url", None)
         prompt_metadata["prompt_additional_info"] = prompt_metadata.pop(
-            "detached_prompt_additional_info", None,
+            "detached_prompt_additional_info",
+            None,
         )
 
         # update list of vars to dict
-        prompt_metadata["prompt_variables"] = dict.fromkeys(prompt_metadata["prompt_variables"], "")
+        prompt_metadata["prompt_variables"] = dict.fromkeys(
+            prompt_metadata["prompt_variables"], ""
+        )
 
         from ibm_watson_openscale import APIClient as WosAPIClient  # type: ignore
 
@@ -550,15 +558,20 @@ class WatsonxExternalPromptMonitor:
         detached_details["prompt_id"] = "detached_prompt_" + str(uuid.uuid4())
 
         prompt_details = _filter_dict(
-            prompt_metadata, ["prompt_variables", "input", "model_parameters"],
+            prompt_metadata,
+            ["prompt_variables", "input", "model_parameters"],
         )
 
         detached_asset_details = _filter_dict(
-            prompt_metadata, ["description"], ["name", "model_id", "task_id"],
+            prompt_metadata,
+            ["description"],
+            ["name", "model_id", "task_id"],
         )
 
         detached_pta_id = self._create_detached_prompt(
-            detached_details, prompt_details, detached_asset_details,
+            detached_details,
+            prompt_details,
+            detached_asset_details,
         )
         deployment_id = None
         if self._container_type == "space":
@@ -632,7 +645,9 @@ class WatsonxExternalPromptMonitor:
         version="0.6.8",
     )
     def payload_logging(
-        self, payload_records: List[dict], subscription_id: str,
+        self,
+        payload_records: List[dict],
+        subscription_id: str,
     ) -> None:
         """DEPRECATED: use 'store_payload_records'."""
         return self.store_payload_records(payload_records, subscription_id)
@@ -642,7 +657,9 @@ class WatsonxExternalPromptMonitor:
         reason="'add_payload_records' is deprecated and will be removed in next release, use 'store_payload_records'.",
     )
     def add_payload_records(
-        self, payload_records: List[dict], subscription_id: str,
+        self,
+        payload_records: List[dict],
+        subscription_id: str,
     ) -> None:
         """DEPRECATED: use 'store_payload_records'."""
         return self.store_payload_records(payload_records, subscription_id)
@@ -818,7 +835,9 @@ class WatsonxPromptMonitor:
             import ibm_watsonx_ai  # noqa: F401
 
         except ImportError:
-            raise ImportError("""ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`""")
+            raise ImportError(
+                """ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`"""
+            )
 
         if (not (project_id or space_id)) or (project_id and space_id):
             raise ValueError(
@@ -861,7 +880,9 @@ class WatsonxPromptMonitor:
             )
 
     def _create_prompt_template(
-        self, prompt_template_details: dict, asset_details: dict,
+        self,
+        prompt_template_details: dict,
+        asset_details: dict,
     ) -> str:
         from ibm_aigov_facts_client import (
             AIGovFactsClient,
@@ -915,7 +936,8 @@ class WatsonxPromptMonitor:
 
             else:
                 creds = Credentials(
-                    url=REGIONS_URL[self.region]["wml"], api_key=self._api_key,
+                    url=REGIONS_URL[self.region]["wml"],
+                    api_key=self._api_key,
                 )
 
                 wml_client = APIClient(creds)
@@ -1020,7 +1042,9 @@ class WatsonxPromptMonitor:
         prompt_metadata["input"] = prompt_metadata.pop("input_text", None)
 
         # update list of vars to dict
-        prompt_metadata["prompt_variables"] = dict.fromkeys(prompt_metadata["prompt_variables"], "")
+        prompt_metadata["prompt_variables"] = dict.fromkeys(
+            prompt_metadata["prompt_variables"], ""
+        )
 
         from ibm_cloud_sdk_core.authenticators import IAMAuthenticator  # type: ignore
         from ibm_watson_openscale import APIClient as WosAPIClient  # type: ignore
@@ -1057,11 +1081,14 @@ class WatsonxPromptMonitor:
                 raise
 
         prompt_details = _filter_dict(
-            prompt_metadata, ["prompt_variables", "input", "model_parameters"],
+            prompt_metadata,
+            ["prompt_variables", "input", "model_parameters"],
         )
 
         asset_details = _filter_dict(
-            prompt_metadata, ["description"], ["name", "model_id", "task_id"],
+            prompt_metadata,
+            ["description"],
+            ["name", "model_id", "task_id"],
         )
 
         pta_id = self._create_prompt_template(prompt_details, asset_details)
@@ -1138,7 +1165,9 @@ class WatsonxPromptMonitor:
         reason="'payload_logging' is deprecated and will be removed in next release, use 'store_payload_records'.",
     )
     def payload_logging(
-        self, payload_records: List[dict], subscription_id: str,
+        self,
+        payload_records: List[dict],
+        subscription_id: str,
     ) -> None:
         """DEPRECATED: use 'store_payload_records'."""
         return self.store_payload_records(payload_records, subscription_id)
@@ -1148,7 +1177,9 @@ class WatsonxPromptMonitor:
         reason="'add_payload_records' is deprecated and will be removed in next release, use 'store_payload_records'.",
     )
     def add_payload_records(
-        self, payload_records: List[dict], subscription_id: str,
+        self,
+        payload_records: List[dict],
+        subscription_id: str,
     ) -> None:
         """DEPRECATED: use 'store_payload_records'."""
         return self.store_payload_records(payload_records, subscription_id)
@@ -1460,7 +1491,9 @@ class WatsonxCustomMetric:
             from ibm_watson_openscale import APIClient as WosAPIClient  # type: ignore
 
         except ImportError:
-            raise ImportError("""ibm-watson-openscale not found, please install it with `pip install ibm-watson-openscale`""")
+            raise ImportError(
+                """ibm-watson-openscale not found, please install it with `pip install ibm-watson-openscale`"""
+            )
 
         self.region = region
         self._api_key = api_key
@@ -1505,7 +1538,10 @@ class WatsonxCustomMetric:
                 raise
 
     def _add_integrated_system(
-        self, credentials: IntegratedSystemCredentials, name: str, endpoint: str,
+        self,
+        credentials: IntegratedSystemCredentials,
+        name: str,
+        endpoint: str,
     ) -> str:
         custom_metrics_integrated_system = self._wos_client.integrated_systems.add(
             name=name,
@@ -1518,7 +1554,10 @@ class WatsonxCustomMetric:
         return custom_metrics_integrated_system.metadata.id
 
     def _add_monitor_definitions(
-        self, name: str, monitor_metrics: List[WatsonxMetric], schedule: bool,
+        self,
+        name: str,
+        monitor_metrics: List[WatsonxMetric],
+        schedule: bool,
     ):
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             ApplicabilitySelection,
@@ -1540,7 +1579,9 @@ class WatsonxCustomMetric:
                 repeat_interval=1,
                 repeat_unit="hour",
                 start_time=ScheduleStartTime(
-                    type="relative", delay_unit="minute", delay=30,
+                    type="relative",
+                    delay_unit="minute",
+                    delay=30,
                 ),
             )
 
@@ -1568,7 +1609,9 @@ class WatsonxCustomMetric:
             return None
 
     def _update_monitor_instance(
-        self, integrated_system_id: str, custom_monitor_id: str,
+        self,
+        integrated_system_id: str,
+        custom_monitor_id: str,
     ):
         payload = [
             {
@@ -1583,11 +1626,16 @@ class WatsonxCustomMetric:
         ]
 
         return self._wos_client.monitor_instances.update(
-            custom_monitor_id, payload, update_metadata_only=True,
+            custom_monitor_id,
+            payload,
+            update_metadata_only=True,
         ).result
 
     def _get_patch_request_field(
-        self, field_path: str, field_value: Any, op_name: str = "replace",
+        self,
+        field_path: str,
+        field_value: Any,
+        op_name: str = "replace",
     ) -> Dict:
         return {"op": op_name, "va": field_path, "value": field_value}
 
@@ -1597,7 +1645,8 @@ class WatsonxCustomMetric:
         data_set_type: Literal["feedback", "payload_logging"],
     ) -> str:
         data_sets = self._wos_client.data_sets.list(
-            target_target_id=subscription_id, type=data_set_type,
+            target_target_id=subscription_id,
+            type=data_set_type,
         ).result.data_sets
         data_set_id = None
         if len(data_sets) > 0:
@@ -1606,7 +1655,8 @@ class WatsonxCustomMetric:
 
     def _get_dataset_data(self, data_set_id: str):
         json_data = self._wos_client.data_sets.get_list_of_records(
-            data_set_id=data_set_id, format="list",
+            data_set_id=data_set_id,
+            format="list",
         ).result
 
         if not json_data.get("records"):
@@ -1696,11 +1746,15 @@ class WatsonxCustomMetric:
                 )
         """
         integrated_system_id = self._add_integrated_system(
-            integrated_system_credentials, name, integrated_system_url,
+            integrated_system_credentials,
+            name,
+            integrated_system_url,
         )
 
         external_monitor_id = self._add_monitor_definitions(
-            name, monitor_metrics, schedule,
+            name,
+            monitor_metrics,
+            schedule,
         )
 
         # Associate the external monitor with the integrated system
@@ -1752,7 +1806,8 @@ class WatsonxCustomMetric:
 
         data_mart_id = data_marts[0].metadata.id
         existing_monitor_instance = self._get_monitor_instance(
-            subscription_id, monitor_definition_id,
+            subscription_id,
+            monitor_definition_id,
         )
 
         if existing_monitor_instance is None:
@@ -1774,7 +1829,8 @@ class WatsonxCustomMetric:
         else:
             existing_instance_id = existing_monitor_instance.metadata.id
             monitor_instance_details = self._update_monitor_instance(
-                integrated_system_id, existing_instance_id,
+                integrated_system_id,
+                existing_instance_id,
             )
 
         return monitor_instance_details
@@ -1790,7 +1846,9 @@ class WatsonxCustomMetric:
         measurements_request: Dict[str, Union[float, int]],
     ):
         return self.publish_metrics(
-            monitor_instance_id, monitor_run_id, measurements_request,
+            monitor_instance_id,
+            monitor_run_id,
+            measurements_request,
         )
 
     @deprecated(
@@ -1804,7 +1862,9 @@ class WatsonxCustomMetric:
         measurements_request: Dict[str, Union[float, int]],
     ):
         return self.publish_metrics(
-            monitor_instance_id, monitor_run_id, measurements_request,
+            monitor_instance_id,
+            monitor_run_id,
+            measurements_request,
         )
 
     def publish_metrics(
@@ -1813,7 +1873,8 @@ class WatsonxCustomMetric:
         monitor_run_id: str,
         records_request: Dict[str, Union[float, int]],
         measurements_request: Dict[
-            str, Union[float, int],
+            str,
+            Union[float, int],
         ] = None,  # DEPRECATED remove in next release
     ):
         """
@@ -1886,12 +1947,18 @@ class WatsonxCustomMetric:
         reason="'add_transaction_metric' is deprecated and will be removed in next release, use 'add_local_metric_definition'.",
     )
     def add_transaction_metric(
-        self, name: str, monitor_metrics: List[WatsonxLocalMetric], subscription_id: str,
+        self,
+        name: str,
+        monitor_metrics: List[WatsonxLocalMetric],
+        subscription_id: str,
     ):
         return self.add_metric_definition_local(name, monitor_metrics, subscription_id)
 
     def add_local_metric_definition(
-        self, name: str, monitor_metrics: List[WatsonxLocalMetric], subscription_id: str,
+        self,
+        name: str,
+        monitor_metrics: List[WatsonxLocalMetric],
+        subscription_id: str,
     ):
         """
         Creates a custom metric definition to compute metrics at the local (transaction) level for IBM watsonx.governance.
@@ -1966,12 +2033,16 @@ class WatsonxCustomMetric:
         reason="'store_metric_records' is deprecated and will be removed in next release, use 'store_payload_records'.",
     )
     def store_metric_records(
-        self, custom_local_metric_id: str, records_request: List[Dict],
+        self,
+        custom_local_metric_id: str,
+        records_request: List[Dict],
     ):
         return self.store_payload_records(custom_local_metric_id, records_request)
 
     def store_payload_records(
-        self, custom_local_metric_id: str, records_request: List[Dict],
+        self,
+        custom_local_metric_id: str,
+        records_request: List[Dict],
     ):
         """
         Stores custom metrics to payload records (transaction/record level).
@@ -1996,7 +2067,8 @@ class WatsonxCustomMetric:
                 )
         """
         return self._wos_client.data_sets.store_records(
-            data_set_id=custom_local_metric_id, request_body=records_request,
+            data_set_id=custom_local_metric_id,
+            request_body=records_request,
         ).result
 
     def list_local_metrics(self, custom_local_metric_id: str):

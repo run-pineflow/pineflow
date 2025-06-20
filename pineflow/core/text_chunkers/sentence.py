@@ -32,7 +32,10 @@ class SentenceChunker(BaseTextChunker):
     """
 
     def __init__(
-        self, chunk_size: int = 512, chunk_overlap: int = 256, separator=" ",
+        self,
+        chunk_size: int = 512,
+        chunk_overlap: int = 256,
+        separator=" ",
     ) -> None:
         if chunk_overlap > chunk_size:
             raise ValueError(
@@ -107,7 +110,9 @@ class SentenceChunker(BaseTextChunker):
 
         text_splits = []
         text_splits_by_fns, is_sentence = split_by_fns(
-            text, self._split_fns, self._sub_split_fns,
+            text,
+            self._split_fns,
+            self._sub_split_fns,
         )
 
         for text_split_by_fns in text_splits_by_fns:

@@ -113,7 +113,8 @@ class WatsonDiscoveryReader(BaseReader):
             if self.pre_additional_data_field:
                 for i, doc in enumerate(results_documents):
                     doc["text"].insert(
-                        0, self._get_nested_value(doc, self.pre_additional_data_field),
+                        0,
+                        self._get_nested_value(doc, self.pre_additional_data_field),
                     )
 
             documents.extend(
