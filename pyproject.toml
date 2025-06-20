@@ -50,16 +50,18 @@ sphinx-favicon = "^1.0.1"
 
 [tool.ruff]
 extend-exclude = ["docs"]
+target-version = "py310"
 
 [tool.ruff.lint]
-ignore = ["D417"]
-extend-select = [
-    "I",
+ignore = ["D417", "COM812", "E501"]
+select = [
     "B009",
     "B010",
     "B011",
     "B013",
     "B014",
+    "C4",
+    "COM819",
     "D201",
     "D202",
     "D204",
@@ -67,21 +69,44 @@ extend-select = [
     "D208",
     "D209",
     "D211",
+    "D213",
     "D214",
     "D215",
     "D3",
     "D4",
+    "E",
+    "F504",
+    "F541",
+    "F632",
     "FLY",
     "G010",
+    "I",
     "PERF1",
+    "PIE790",
     "PIE794",
     "PIE808",
+    "PIE810",
+    "PLC0414",
     "PLE2510",
+    "PLE2512",
+    "PLE2513",
+    "PLE2514",
+    "PLE2515",
     "PLR1711",
+    "PT001",
+    "PT003",
+    "PT006",
+    "PTH201",
+    "PYI",
+    "Q",
     "RET501",
     "RET502",
     "RET503",
     "RET504",
+    "RSE",
+    "RUF005",
+    "RUF010",
+    "RUF015",
     "SIM101",
     "SIM103",
     "SIM109",
@@ -89,9 +114,16 @@ extend-select = [
     "SIM2",
     "SIM300",
     "SIM9",
+    "TC005",
+    "TD006",
     "TID",
-    "Q"
+    "TRY201",
+    "W",
 ]
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

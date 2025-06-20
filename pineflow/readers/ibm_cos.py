@@ -9,7 +9,8 @@ from pineflow.core.readers import BaseReader, DirectoryReader
 
 
 class IBMCOSReader(BaseReader):
-    """IBM Cloud Object Storage bucket reader.
+    """
+    IBM Cloud Object Storage bucket reader.
 
     Args:
         bucket (str): Name of the bucket.
@@ -26,16 +27,17 @@ class IBMCOSReader(BaseReader):
                 bucket="your_bucket",
                 ibm_api_key_id="your_api_key",
                 ibm_service_instance_id="your_instance_id",
-                s3_endpoint_url="your_api_url"
+                s3_endpoint_url="your_api_url",
             )
     """
 
-    def __init__(self, bucket: str,
-                 ibm_api_key_id: str = None,
-                 ibm_service_instance_id: str = None,
-                 s3_endpoint_url: str = None
-                 ):
-
+    def __init__(
+        self,
+        bucket: str,
+        ibm_api_key_id: str = None,
+        ibm_service_instance_id: str = None,
+        s3_endpoint_url: str = None,
+    ):
         try:
             import ibm_boto3
             from ibm_botocore.client import Config
@@ -43,7 +45,9 @@ class IBMCOSReader(BaseReader):
             self._ibm_boto3 = ibm_boto3
             self._boto_config = Config
         except ImportError:
-            raise ImportError("ibm-cos-sdk package not found, please install it with `pip install ibm-cos-sdk`")
+            raise ImportError(
+                "ibm-cos-sdk package not found, please install it with `pip install ibm-cos-sdk`",
+            )
 
         self.bucket = bucket
         self.ibm_api_key_id = ibm_api_key_id

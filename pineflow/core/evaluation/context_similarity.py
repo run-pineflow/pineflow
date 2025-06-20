@@ -7,15 +7,16 @@ from pineflow.core.embeddings import BaseEmbedding, SimilarityMode
 
 
 class ContextSimilarityEvaluator(BaseModel):
-    """Measures how much context has contributed to the answer’s.
+    """
+    Measures how much context has contributed to the answer’s.
     A higher value suggests a greater proportion of the context is present in the LLM's response.
 
     Args:
         embed_model (BaseEmbedding): The embedding model used to compute vector representations.
-        similarity_mode (str, optional): Similarity strategy to use. Supported options are 
-            ``"cosine"``, ``"dot_product"``, and ``"euclidean"``. Defaults to ``"cosine"``.
+        similarity_mode (str, optional): Similarity strategy to use. Supported options are
+            `"cosine"`, `"dot_product"`, and `"euclidean"`. Defaults to `"cosine"`.
         similarity_threshold (float, optional): Embedding similarity threshold for determining
-            whether a context segment "passes". Defaults to ``0.8``.
+            whether a context segment "passes". Defaults to `0.8`.
 
     Example:
         .. code-block:: python
@@ -43,10 +44,14 @@ class ContextSimilarityEvaluator(BaseModel):
         Example:
             .. code-block:: python
 
-                evaluation_result = ctx_sim_evaluator.evaluate(contexts=[], generated_text="<candidate>")
+                evaluation_result = ctx_sim_evaluator.evaluate(
+                    contexts=[], generated_text="<candidate>"
+                )
         """
         if not contexts or not generated_text:
-            raise ValueError("Must provide these parameters [`contexts`, `generated_text`]")
+            raise ValueError(
+                "Must provide these parameters [`contexts`, `generated_text`]",
+            )
 
         evaluation_result = {"contexts_score": [], "score": 0}
         candidate_embedding = self.embed_model.get_text_embedding(generated_text)
@@ -54,9 +59,16 @@ class ContextSimilarityEvaluator(BaseModel):
         for context in contexts:
             context_embedding = self.embed_model.get_text_embedding(context)
             evaluation_result["contexts_score"].append(
-                self.embed_model.similarity(candidate_embedding, context_embedding, mode=self.similarity_mode))
+                self.embed_model.similarity(
+                    candidate_embedding,
+                    context_embedding,
+                    mode=self.similarity_mode,
+                ),
+            )
 
         evaluation_result["score"] = np.mean(evaluation_result["contexts_score"])
-        evaluation_result["passing"] = evaluation_result["score"] >= self.similarity_threshold
+        evaluation_result["passing"] = (
+            evaluation_result["score"] >= self.similarity_threshold
+        )
 
         return evaluation_result

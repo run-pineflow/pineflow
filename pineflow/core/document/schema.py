@@ -12,14 +12,17 @@ class BaseDocument(ABC, BaseModel):
 
     id_: str = Field(
         default_factory=lambda: str(uuid.uuid4()),
-        description="Unique ID of the document.")
+        description="Unique ID of the document.",
+    )
     metadata: Dict[str, Any] = Field(
         default_factory=dict,
-        description="A flat dictionary of metadata fields.")
+        description="A flat dictionary of metadata fields.",
+    )
     embedding: Optional[Union[List[float], np.ndarray]] = Field(
         default_factory=None,
-        description="Embedding of the document.")
-    
+        description="Embedding of the document.",
+    )
+
     class Config:
         arbitrary_types_allowed = True
 
@@ -36,16 +39,16 @@ class BaseDocument(ABC, BaseModel):
     def get_metadata(self) -> dict:
         """Get metadata."""
         return self.metadata
-        
+
     def get_embedding(self) -> List[float]:
         """Get metadata."""
         return self.embedding
-        
+
     @property
     @abstractmethod
     def hash(self) -> str:
         """Get hash."""
-    
+
 
 class TransformerComponent:
     @abstractmethod
@@ -65,7 +68,7 @@ class Document(BaseDocument):
     def get_content(self) -> str:
         """Get the text content."""
         return self.text
-    
+
     @property
     def hash(self) -> str:
         """Get document hash."""
