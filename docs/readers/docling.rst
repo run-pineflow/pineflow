@@ -7,6 +7,6 @@ In order to use ``DoclingReader`` you need to install the ``docling`` package.
 
     pip install docling
 
-.. automodule:: pineflow.readers.docling.DoclingReader
+.. automodule:: pineflow.readers.docling.base
     :members:
 
