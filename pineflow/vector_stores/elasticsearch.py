@@ -134,7 +134,8 @@ class ElasticsearchVectorStore(BaseVectorStore):
 
         Args:
             documents (List[Document]): List of documents to add to the index.
-            create_index_if_not_exists (bool, optional): Whether to create the index if it doesn't exist. Defaults to ``True``.
+            create_index_if_not_exists (bool, optional): Whether to create the index
+                if it doesn't exist. Defaults to ``True``.
         """
         if create_index_if_not_exists:
             self._create_index_if_not_exists()

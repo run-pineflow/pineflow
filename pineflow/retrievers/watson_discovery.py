@@ -146,8 +146,8 @@ class WatsonDiscoveryRetriever:
             # If `disable_passages`, use document text (not recommended,
             # make sure that all documents are short to not exceed the model context window)
             logger.warning(
-                "Not recommended to disable passages. Make sure that all documents are short to not "
-                "exceed the model context window.",
+                "Not recommended to disable passages. "
+                "Make sure that all documents are short to not exceed the model context window.",
             )
             for document in discovery_results["results"]:
                 docs_and_scores.append(

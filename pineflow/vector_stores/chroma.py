@@ -11,7 +11,8 @@ logger = getLogger(__name__)
 
 class ChromaVectorStore(BaseVectorStore):
     """
-    Chroma is the AI-native open-source vector database. Embeddings are stored within a ChromaDB collection.
+    Chroma is the AI-native open-source vector database.
+    Embeddings are stored within a ChromaDB collection.
 
     Args:
         embed_model (BaseEmbedding): Embedding model used to compute vectors.
