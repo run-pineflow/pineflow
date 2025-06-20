@@ -1,0 +1,22 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "pineflow-embeddings-huggingface"
+version = "0.7.0"
+description = "pineflow embeddings huggingface integration"
+authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
+license = "MIT"
+readme = "README.md"
+
+packages = [{include = "pineflow"}]
+
+[tool.poetry.dependencies]
+accelerate = "^1.7.0"
+sentence-transformers = "^4.1.0"
+torch = "^2.7.1"
+pineflow-core = "^0.7.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff="^0.11.13"
