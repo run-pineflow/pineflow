@@ -5,6 +5,7 @@ Readers
     :maxdepth: 1
 
     Docx <docx>
+    Docling <docling>
     File Directory <directory>
     HTML <html>
     IBM Watson Discovery <watson_discovery>
