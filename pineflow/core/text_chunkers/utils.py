@@ -6,7 +6,7 @@ def tokenizer(text: str) -> List:
         import tiktoken
     except ImportError:
         raise ImportError(
-            "tiktoken package not found, please install it with `pip install tiktoken`"
+            "tiktoken package not found, please install it with `pip install tiktoken`",
         )
 
     enc = tiktoken.get_encoding("cl100k_base")
@@ -35,7 +35,7 @@ def split_by_sentence_tokenizer() -> Callable[[str], List[str]]:
         import nltk
     except ImportError:
         raise ImportError(
-            "nltk package not found, please install it with `pip install nltk`"
+            "nltk package not found, please install it with `pip install nltk`",
         )
 
     sentence_tokenizer = nltk.tokenize.PunktSentenceTokenizer()
@@ -62,7 +62,7 @@ def _split_by_sentence_tokenizer(text: str, sentence_tokenizer) -> List[str]:
 
 
 def split_by_fns(
-    text: str, split_fns: List[Callable], sub_split_fns: List[Callable] = None
+    text: str, split_fns: List[Callable], sub_split_fns: List[Callable] = None,
 ) -> Tuple[List[str], bool]:
     """Split text by defined list of split functions."""
     if not split_fns:

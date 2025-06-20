@@ -26,7 +26,7 @@ class BaseTool(ABC, BaseModel):
     def _validate_name(cls, v):
         if not re.match(r"^[A-Za-z0-9_]+$", v):
             raise ValueError(
-                "Invalid name: only letters, digits, and underscores are allowed. No spaces or special characters."
+                "Invalid name: only letters, digits, and underscores are allowed. No spaces or special characters.",
             )
         return v
 

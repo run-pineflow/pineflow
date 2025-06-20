@@ -39,7 +39,7 @@ class DoclingReader(BaseReader):
 
         except ImportError:
             raise ImportError(
-                "docling package not found, please install it with `pip install docling`"
+                "docling package not found, please install it with `pip install docling`",
             )
 
         if not os.path.isfile(input_file):
@@ -57,7 +57,7 @@ class DoclingReader(BaseReader):
                     Document(
                         text=text,
                         metadata={"source": input_file},
-                    )
+                    ),
                 )
 
             for i, table in enumerate(docling_document.document.tables):
@@ -71,7 +71,7 @@ class DoclingReader(BaseReader):
                     Document(
                         text=table_text,
                         metadata={"source": input_file, "table_index": i},
-                    )
+                    ),
                 )
 
         else:
@@ -79,7 +79,7 @@ class DoclingReader(BaseReader):
                 Document(
                     text=docling_document.export_to_markdown(),
                     metadata={"source": input_file},
-                )
+                ),
             )
 
         return documents

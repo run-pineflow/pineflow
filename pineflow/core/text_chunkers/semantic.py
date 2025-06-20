@@ -64,7 +64,7 @@ class SemanticChunker(BaseTextChunker, BaseModel):
         return sentences
 
     def _calculate_cosine_distances(
-        self, single_sentences_list: List[str]
+        self, single_sentences_list: List[str],
     ) -> Tuple[List[float], List[dict]]:
         _sentences = [
             {"sentence": x, "index": i} for i, x in enumerate(single_sentences_list)
@@ -72,7 +72,7 @@ class SemanticChunker(BaseTextChunker, BaseModel):
 
         sentences = self._combine_sentences(_sentences)
         embeddings = self.embed_model.get_texts_embedding(
-            [x["combined_sentence"] for x in sentences]
+            [x["combined_sentence"] for x in sentences],
         )
 
         for i, sentence in enumerate(sentences):
@@ -156,7 +156,7 @@ class SemanticChunker(BaseTextChunker, BaseModel):
                             "ref_doc_id": document.id_,
                             "ref_doc_hash": document.hash,
                         },
-                    )
+                    ),
                 )
 
         return chunks

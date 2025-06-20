@@ -31,7 +31,7 @@ class JSONReader(BaseReader):
             import jq  # noqa: F401
         except ImportError:
             raise ImportError(
-                "jq package not found, please install it with `pip install jq`"
+                "jq package not found, please install it with `pip install jq`",
             )
 
         if not os.path.isfile(input_file):
@@ -55,7 +55,7 @@ class JSONReader(BaseReader):
                     Document(
                         text=content,
                         metadata={"source": str(Path(input_file).resolve())},
-                    )
+                    ),
                 )
 
         return documents

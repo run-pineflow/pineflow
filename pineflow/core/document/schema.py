@@ -15,10 +15,10 @@ class BaseDocument(ABC, BaseModel):
         description="Unique ID of the document.",
     )
     metadata: Dict[str, Any] = Field(
-        default_factory=dict, description="A flat dictionary of metadata fields."
+        default_factory=dict, description="A flat dictionary of metadata fields.",
     )
     embedding: Optional[Union[List[float], np.ndarray]] = Field(
-        default_factory=None, description="Embedding of the document."
+        default_factory=None, description="Embedding of the document.",
     )
 
     class Config:

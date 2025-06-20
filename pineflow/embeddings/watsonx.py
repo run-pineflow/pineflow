@@ -53,14 +53,14 @@ class WatsonxEmbedding(BaseModel, BaseEmbedding):
 
         except ImportError:
             raise ImportError(
-                "ibm-watsonx-ai package not found, please install it with `pip install ibm-watsonx-ai`"
+                "ibm-watsonx-ai package not found, please install it with `pip install ibm-watsonx-ai`",
             )
 
         if (not (self.project_id or self.space_id)) or (
             self.project_id and self.space_id
         ):
             raise ValueError(
-                "Must provide one of these parameters [`project_id`, `space_id`], not both."
+                "Must provide one of these parameters [`project_id`, `space_id`], not both.",
             )
 
         kwargs_params = {

@@ -30,7 +30,7 @@ class HTMLReader(BaseReader):
             from bs4 import BeautifulSoup  # noqa: F401
         except ImportError:
             raise ImportError(
-                "beautifulsoup4 package not found, please install it with `pip install beautifulsoup4`"
+                "beautifulsoup4 package not found, please install it with `pip install beautifulsoup4`",
             )
 
         if not os.path.isfile(input_file):
@@ -67,7 +67,7 @@ class HTMLReader(BaseReader):
             from bs4 import NavigableString  # noqa: F401
         except ImportError:
             raise ImportError(
-                "beautifulsoup4 package not found, please install it with `pip install beautifulsoup4`"
+                "beautifulsoup4 package not found, please install it with `pip install beautifulsoup4`",
             )
 
         texts = []

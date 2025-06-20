@@ -30,12 +30,12 @@ class TokenTextChunker(BaseTextChunker):
     """
 
     def __init__(
-        self, chunk_size: int = 512, chunk_overlap: int = 256, separator="\n\n"
+        self, chunk_size: int = 512, chunk_overlap: int = 256, separator="\n\n",
     ) -> None:
         if chunk_overlap > chunk_size:
             raise ValueError(
                 f"Got a larger `chunk_overlap` ({chunk_overlap}) than `chunk_size` "
-                f"({chunk_size}). `chunk_overlap` should be smaller."
+                f"({chunk_size}). `chunk_overlap` should be smaller.",
             )
 
         self.chunk_size = chunk_size
@@ -90,7 +90,7 @@ class TokenTextChunker(BaseTextChunker):
                             "ref_doc_id": document.id_,
                             "ref_doc_hash": document.hash,
                         },
-                    )
+                    ),
                 )
 
         return chunks
@@ -102,7 +102,7 @@ class TokenTextChunker(BaseTextChunker):
 
         text_splits = []
         text_splits_by_fns, is_sentence = split_by_fns(
-            text, self._split_fns, self._sub_split_fns
+            text, self._split_fns, self._sub_split_fns,
         )
 
         for text_split_by_fns in text_splits_by_fns:
@@ -113,7 +113,7 @@ class TokenTextChunker(BaseTextChunker):
                         "text": text_split_by_fns,
                         "is_sentence": False,
                         "token_size": split_len,
-                    }
+                    },
                 )
             else:
                 recursive_text_splits = self._split(text_split_by_fns)

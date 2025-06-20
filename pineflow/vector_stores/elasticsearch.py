@@ -60,7 +60,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
             self._es_bulk = bulk
         except ImportError:
             raise ImportError(
-                "elasticsearch package not found, please install it with `pip install elasticsearch`"
+                "elasticsearch package not found, please install it with `pip install elasticsearch`",
             )
 
         #  TO-DO: Add connections types e.g: cloud
@@ -99,8 +99,8 @@ class ElasticsearchVectorStore(BaseVectorStore):
                         "dynamic_metadata": {
                             "path_match": "metadata.*",
                             "mapping": {"type": "keyword"},
-                        }
-                    }
+                        },
+                    },
                 ],
                 "properties": {
                     self.text_field: {"type": "text"},
@@ -125,7 +125,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
         return metadata_mapping
 
     def add_documents(
-        self, documents: List[Document], create_index_if_not_exists: bool = True
+        self, documents: List[Document], create_index_if_not_exists: bool = True,
     ) -> List[str]:
         """
         Add documents to the Elasticsearch index.
@@ -152,11 +152,11 @@ class ElasticsearchVectorStore(BaseVectorStore):
                     else self._embed_model.get_text_embedding(doc.get_content()),
                     "metadata": _metadata,
                     **_metadata_mapping,
-                }
+                },
             )
 
         self._es_bulk(
-            self._client, vector_store_data, chunk_size=self.batch_size, refresh=True
+            self._client, vector_store_data, chunk_size=self.batch_size, refresh=True,
         )
         print(f"Added {len(vector_store_data)} documents to `{self.index_name}`")
 
@@ -182,7 +182,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
                 "query_vector": query_embedding,
                 "k": top_k,
                 "num_candidates": top_k * 10,
-            }
+            },
         }
 
         from elasticsearch import NotFoundError
@@ -274,7 +274,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
                         text=hit["_source"].get(self.text_field, ""),
                     )
                     for hit in hits
-                ]
+                ],
             )
 
         return documents

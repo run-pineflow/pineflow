@@ -23,7 +23,7 @@ class DocxReader(BaseReader):
             import docx2txt  # noqa: F401
         except ImportError:
             raise ImportError(
-                "docx2txt package not found, please install it with `pip install docx2txt`"
+                "docx2txt package not found, please install it with `pip install docx2txt`",
             )
 
         if not os.path.isfile(input_file):

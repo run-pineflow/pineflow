@@ -46,7 +46,7 @@ class IBMCOSReader(BaseReader):
             self._boto_config = Config
         except ImportError:
             raise ImportError(
-                "ibm-cos-sdk package not found, please install it with `pip install ibm-cos-sdk`"
+                "ibm-cos-sdk package not found, please install it with `pip install ibm-cos-sdk`",
             )
 
         self.bucket = bucket

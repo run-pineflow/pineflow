@@ -41,7 +41,7 @@ class ChromaVectorStore(BaseVectorStore):
 
         except ImportError:
             raise ImportError(
-                "chromadb package not found, please install it with `pip install chromadb`"
+                "chromadb package not found, please install it with `pip install chromadb`",
             )
 
         self._embed_model = embed_model
@@ -76,7 +76,7 @@ class ChromaVectorStore(BaseVectorStore):
             embeddings.append(
                 doc.embedding
                 if doc.embedding
-                else self._embed_model.get_text_embedding(doc.get_content())
+                else self._embed_model.get_text_embedding(doc.get_content()),
             )
             ids.append(doc.id_ if doc.id_ else str(uuid.uuid4()))
             chroma_documents.append(doc.get_content())
@@ -104,7 +104,7 @@ class ChromaVectorStore(BaseVectorStore):
         query_embedding = self._embed_model.get_text_embedding(query)
 
         results = self._collection.query(
-            query_embeddings=query_embedding, n_results=top_k
+            query_embeddings=query_embedding, n_results=top_k,
         )
 
         return [
@@ -148,7 +148,7 @@ class ChromaVectorStore(BaseVectorStore):
                 **{
                     mapped_key: data[original_key][i]
                     for original_key, mapped_key in field_map.items()
-                }
+                },
             )
             for i in range(num_items)
         ]

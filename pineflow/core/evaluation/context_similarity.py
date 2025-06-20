@@ -50,7 +50,7 @@ class ContextSimilarityEvaluator(BaseModel):
         """
         if not contexts or not generated_text:
             raise ValueError(
-                "Must provide these parameters [`contexts`, `generated_text`]"
+                "Must provide these parameters [`contexts`, `generated_text`]",
             )
 
         evaluation_result = {"contexts_score": [], "score": 0}
@@ -60,8 +60,8 @@ class ContextSimilarityEvaluator(BaseModel):
             context_embedding = self.embed_model.get_text_embedding(context)
             evaluation_result["contexts_score"].append(
                 self.embed_model.similarity(
-                    candidate_embedding, context_embedding, mode=self.similarity_mode
-                )
+                    candidate_embedding, context_embedding, mode=self.similarity_mode,
+                ),
             )
 
         evaluation_result["score"] = np.mean(evaluation_result["contexts_score"])

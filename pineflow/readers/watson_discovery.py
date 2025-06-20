@@ -52,7 +52,7 @@ class WatsonDiscoveryReader(BaseReader):
 
         except ImportError:
             raise ImportError(
-                "ibm-watson package not found, please install it with `pip install ibm-watson`"
+                "ibm-watson package not found, please install it with `pip install ibm-watson`",
             )
 
         self.project_id = project_id
@@ -99,7 +99,7 @@ class WatsonDiscoveryReader(BaseReader):
                 offset=offset_len,
                 return_=return_fields,
                 filter="extracted_metadata.publicationdate>={}".format(
-                    self.created_date
+                    self.created_date,
                 ),
                 passages=QueryLargePassages(enabled=False),
             ).get_result()
@@ -113,7 +113,7 @@ class WatsonDiscoveryReader(BaseReader):
             if self.pre_additional_data_field:
                 for i, doc in enumerate(results_documents):
                     doc["text"].insert(
-                        0, self._get_nested_value(doc, self.pre_additional_data_field)
+                        0, self._get_nested_value(doc, self.pre_additional_data_field),
                     )
 
             documents.extend(
@@ -122,12 +122,12 @@ class WatsonDiscoveryReader(BaseReader):
                         id_=doc["document_id"],
                         text="\n".join(doc["text"]),
                         metadata={
-                            "collection_id": doc["result_metadata"]["collection_id"]
+                            "collection_id": doc["result_metadata"]["collection_id"],
                         }
                         | doc["extracted_metadata"],
                     )
                     for doc in results_documents
-                ]
+                ],
             )
 
         return documents

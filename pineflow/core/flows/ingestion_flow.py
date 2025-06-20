@@ -122,7 +122,7 @@ class IngestionFlow:
             ):
                 dedup_documents_to_run.append(doc)
                 current_unique_hashes.append(
-                    doc.hash
+                    doc.hash,
                 )  # Prevent duplicating same document hash in same batch flow execution.
 
         if self.doc_strategy == DocStrategy.DUPLICATE_AND_DELETE:
@@ -138,7 +138,7 @@ class IngestionFlow:
         return dedup_documents_to_run
 
     def _run_transformers(
-        self, documents: List[Document], transformers: TransformerComponent
+        self, documents: List[Document], transformers: TransformerComponent,
     ) -> List[Document]:
         _documents = documents.copy()
 
@@ -176,7 +176,7 @@ class IngestionFlow:
 
         if documents_to_run:
             documents_processed = self._run_transformers(
-                documents_to_run, self.transformers
+                documents_to_run, self.transformers,
             )
 
             # Apply transformers after de-dup (chunk level)

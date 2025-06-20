@@ -47,7 +47,7 @@ class WatsonDiscoveryRetriever:
 
         except ImportError:
             raise ImportError(
-                "ibm-watson package not found, please install it with `pip install ibm-watson`"
+                "ibm-watson package not found, please install it with `pip install ibm-watson`",
             )
 
         self.disable_passages = disable_passages
@@ -67,13 +67,13 @@ class WatsonDiscoveryRetriever:
         reason="'query' is deprecated and will be removed in next release, use 'search_documents'.",
     )
     def query(
-        self, query: str, filter: str = None, top_k: int = 4
+        self, query: str, filter: str = None, top_k: int = 4,
     ) -> List[DocumentWithScore]:
         """DEPRECATED: use 'search_documents'."""
         return self.search_documents(query, filter, top_k)
 
     def search_documents(
-        self, query: str, filter: str = None, top_k: int = 4
+        self, query: str, filter: str = None, top_k: int = 4,
     ) -> List[DocumentWithScore]:
         """
         Search your data in the Discovery API and return a list of documents.
@@ -133,7 +133,7 @@ class WatsonDiscoveryRetriever:
                             | document[0]["extracted_metadata"],
                         ),
                         score=passage["passage_score"] / 100,
-                    )
+                    ),
                 )
 
         elif discovery_results["matching_results"] > 0:
@@ -141,7 +141,7 @@ class WatsonDiscoveryRetriever:
             # make sure that all documents are short to not exceed the model context window)
             logger.warning(
                 "Not recommended to disable passages. Make sure that all documents are short to not "
-                "exceed the model context window."
+                "exceed the model context window.",
             )
             for document in discovery_results["results"]:
                 docs_and_scores.append(
@@ -151,12 +151,12 @@ class WatsonDiscoveryRetriever:
                             metadata={
                                 "collection_id": document["result_metadata"][
                                     "collection_id"
-                                ]
+                                ],
                             }
                             | document["extracted_metadata"],
                         ),
                         score=document["result_metadata"]["confidence"],
-                    )
+                    ),
                 )
 
         return docs_and_scores

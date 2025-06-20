@@ -27,7 +27,7 @@ class PDFReader(BaseReader):
 
         except ImportError:
             raise ImportError(
-                "pypdf package not found, please install it with `pip install pypdf`"
+                "pypdf package not found, please install it with `pip install pypdf`",
             )
 
         if not os.path.isfile(input_file):
