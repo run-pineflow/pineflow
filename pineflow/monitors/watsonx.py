@@ -271,8 +271,7 @@ class WatsonxExternalPromptMonitor:
             import ibm_watsonx_ai  # noqa: F401
 
         except ImportError:
-            raise ImportError("""ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, 
-                                please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`""")
+            raise ImportError("""ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`""")
 
         if (not (project_id or space_id)) or (project_id and space_id):
             raise ValueError(
@@ -619,7 +618,7 @@ class WatsonxExternalPromptMonitor:
                     )
                 else:
                     max_attempt_execute_prompt_setup = 2
-                    raise e
+                    raise
 
         generative_ai_monitor_details = generative_ai_monitor_details._to_dict()
 
@@ -819,8 +818,7 @@ class WatsonxPromptMonitor:
             import ibm_watsonx_ai  # noqa: F401
 
         except ImportError:
-            raise ImportError("""ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, 
-                                please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`""")
+            raise ImportError("""ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`""")
 
         if (not (project_id or space_id)) or (project_id and space_id):
             raise ValueError(
@@ -1125,7 +1123,7 @@ class WatsonxPromptMonitor:
                     )
                 else:
                     max_attempt_execute_prompt_setup = 2
-                    raise e
+                    raise
 
         generative_ai_monitor_details = generative_ai_monitor_details._to_dict()
 
@@ -1462,8 +1460,7 @@ class WatsonxCustomMetric:
             from ibm_watson_openscale import APIClient as WosAPIClient  # type: ignore
 
         except ImportError:
-            raise ImportError("""ibm-watson-openscale not found, 
-                                please install it with `pip install ibm-watson-openscale`""")
+            raise ImportError("""ibm-watson-openscale not found, please install it with `pip install ibm-watson-openscale`""")
 
         self.region = region
         self._api_key = api_key

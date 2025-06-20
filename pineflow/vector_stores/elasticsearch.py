@@ -198,7 +198,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
             if e.status_code == 404 and e.error == "index_not_found_exception":
                 return []
             else:
-                raise e
+                raise
 
         hits = data.get("hits", {}).get("hits", [])
 
@@ -244,7 +244,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
             if e.status_code == 404 and e.error == "index_not_found_exception":
                 return []
             else:
-                raise e
+                raise
 
         scroll_id = data["_scroll_id"]
         hits = data.get("hits", {}).get("hits", [])
