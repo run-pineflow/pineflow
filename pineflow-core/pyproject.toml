@@ -1,0 +1,40 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "pineflow-core"
+version = "0.7.0"
+description = "Load any data in one line of code and connect with AI applications"
+authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
+license = "MIT"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+documentation = "https://run-pine.github.io/pineflow/"
+repository = "https://github.com/run-pine/pineflow"
+packages = [{include = "pineflow"}]
+keywords = ["AI", "LLM", "QA", "RAG", "data", "monitor", "retrieval", "semantic-search"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+accelerate = "^1.7.0"
+sentence-transformers = "^4.1.0"
+pydantic = "^2.11.5"
+torch = "^2.7.1"
+numpy = "^2.2.6"
+nltk = "^3.9.1"
+tiktoken = "^0.9.0"
+certifi = "^2025.4.26"
+deprecated = "^1.2.18"
+
+[tool.poetry.group.dev.dependencies]
+ruff="^0.11.13"
