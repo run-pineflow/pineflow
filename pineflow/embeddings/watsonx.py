@@ -11,15 +11,15 @@ class WatsonxEmbedding(BaseModel, BaseEmbedding):
     IBM watsonx embedding models.
 
     Note:
-            One of these parameters is required: ``project_id`` or ``space_id``. Not both.
+            One of these parameters is required: `project_id` or `space_id`. Not both.
 
     See https://cloud.ibm.com/apidocs/watsonx-ai#endpoint-url for the watsonx.ai API endpoints.
 
     Args:
-        model_name (str): IBM watsonx.ai model to be used. Defaults to ``ibm/slate-30m-english-rtrvr``.
+        model_name (str): IBM watsonx.ai model to be used. Defaults to `ibm/slate-30m-english-rtrvr`.
         api_key (str): watsonx API key.
         url (str): watsonx instance url.
-        truncate_input_tokens (str): Maximum number of input tokens accepted. Defaults to ``512``
+        truncate_input_tokens (str): Maximum number of input tokens accepted. Defaults to `512`
         project_id (str, optional): watsonx project_id.
         space_id (str, optional): watsonx space_id.
 

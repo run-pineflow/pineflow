@@ -19,12 +19,12 @@ class ElasticsearchVectorStore(BaseVectorStore):
         embed_model (BaseEmbedding): Embedding model used to compute vectors.
         user (str, optional): Elasticsearch username.
         password (str, optional): Elasticsearch password.
-        batch_size (int, optional): Batch size for bulk operations. Defaults to ``200``.
-        ssl (bool, optional): Whether to use SSL. Defaults to ``False``.
+        batch_size (int, optional): Batch size for bulk operations. Defaults to `200`.
+        ssl (bool, optional): Whether to use SSL. Defaults to `False`.
         distance_strategy (str, optional): Distance strategy for similarity search.
-            Currently supports ``"cosine"``, ``"dot_product"``, and ``"l2_norm"``. Defaults to ``cosine``.
-        text_field (str, optional): Name of the field containing text. Defaults to ``text``.
-        vector_field (str, optional): Name of the field containing vector embeddings. Defaults to ``embedding``.
+            Currently supports `"cosine"`, `"dot_product"`, and `"l2_norm"`. Defaults to `cosine`.
+        text_field (str, optional): Name of the field containing text. Defaults to `text`.
+        vector_field (str, optional): Name of the field containing vector embeddings. Defaults to `embedding`.
 
     Example:
         .. code-block:: python
@@ -135,7 +135,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
         Args:
             documents (List[Document]): List of documents to add to the index.
             create_index_if_not_exists (bool, optional): Whether to create the index
-                if it doesn't exist. Defaults to ``True``.
+                if it doesn't exist. Defaults to `True`.
         """
         if create_index_if_not_exists:
             self._create_index_if_not_exists()
@@ -174,7 +174,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
 
         Args:
             query (str): Query text.
-            top_k (int, optional): Number of top results to return. Defaults to ``4``.
+            top_k (int, optional): Number of top results to return. Defaults to `4`.
 
         Returns:
             List[DocumentWithScore]: List of the most similar documents.

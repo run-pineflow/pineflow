@@ -14,9 +14,9 @@ class ContextSimilarityEvaluator(BaseModel):
     Args:
         embed_model (BaseEmbedding): The embedding model used to compute vector representations.
         similarity_mode (str, optional): Similarity strategy to use. Supported options are
-            ``"cosine"``, ``"dot_product"``, and ``"euclidean"``. Defaults to ``"cosine"``.
+            `"cosine"`, `"dot_product"`, and `"euclidean"`. Defaults to `"cosine"`.
         similarity_threshold (float, optional): Embedding similarity threshold for determining
-            whether a context segment "passes". Defaults to ``0.8``.
+            whether a context segment "passes". Defaults to `0.8`.
 
     Example:
         .. code-block:: python

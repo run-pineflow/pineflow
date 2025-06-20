@@ -19,12 +19,12 @@ class WatsonDiscoveryReader(BaseReader):
         url (str): Watson Discovery instance URL.
         api_key (str): Watson Discovery API key.
         project_id (str): Watson Discovery project ID.
-        version (str, optional): Watson Discovery API version. Defaults to ``2023-03-31``.
-        batch_size (int, optional): Batch size for bulk operations. Defaults to ``50``.
+        version (str, optional): Watson Discovery API version. Defaults to `2023-03-31`.
+        batch_size (int, optional): Batch size for bulk operations. Defaults to `50`.
         created_date (str, optional): Load documents created after this date.
-            Expected format is ``YYYY-MM-DD``. Defaults to today's date.
+            Expected format is `YYYY-MM-DD`. Defaults to today's date.
         pre_additional_data_field (str, optional): Additional data field to prepend to the Document content.
-            Defaults to ``None``.
+            Defaults to `None`.
 
     Example:
         .. code-block:: python

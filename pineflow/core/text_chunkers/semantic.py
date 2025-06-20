@@ -19,9 +19,9 @@ class SemanticChunker(BaseTextChunker, BaseModel):
 
     Args:
         embed_model (BaseEmbedding): Embedding model used for semantic chunking.
-        buffer_size (int, optional): Size of the buffer for semantic chunking. Default is ``1``.
-        breakpoint_threshold_amount (int, optional): Threshold percentage for detecting breakpoints. Default is ``95``.
-        device (str, optional): Device to use for processing. Currently supports "cpu" and "cuda". Default is ``cpu``.
+        buffer_size (int, optional): Size of the buffer for semantic chunking. Default is `1`.
+        breakpoint_threshold_amount (int, optional): Threshold percentage for detecting breakpoints. Default is `95`.
+        device (str, optional): Device to use for processing. Currently supports "cpu" and "cuda". Default is `cpu`.
 
     Example:
         .. code-block:: python
@@ -138,7 +138,7 @@ class SemanticChunker(BaseTextChunker, BaseModel):
         Split documents into chunks.
 
         Args:
-            documents (List[Document]): List of ``Document`` objects to split.
+            documents (List[Document]): List of `Document` objects to split.
 
         Returns:
             List[Document]: List of chunked documents objects.

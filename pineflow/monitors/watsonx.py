@@ -225,14 +225,14 @@ class WatsonxExternalPromptMonitor:
 
     Note:
         One of the following parameters is required to create a prompt monitor:
-        ``project_id`` or ``space_id``, but not both.
+        `project_id` or `space_id`, but not both.
 
     Args:
         api_key (str): The API key for IBM watsonx.governance.
         space_id (str, optional): The space ID in watsonx.governance.
         project_id (str, optional): The project ID in watsonx.governance.
         region (str, optional): The region where watsonx.governance is hosted when using IBM Cloud.
-            Defaults to ``us-south``.
+            Defaults to `us-south`.
         cpd_creds (CloudPakforDataCredentials, optional): The Cloud Pak for Data environment credentials.
 
     Example:
@@ -794,14 +794,14 @@ class WatsonxPromptMonitor:
 
     Note:
         One of the following parameters is required to create a prompt monitor:
-        ``project_id`` or ``space_id``, but not both.
+        `project_id` or `space_id`, but not both.
 
     Args:
         api_key (str): The API key for IBM watsonx.governance.
         space_id (str, optional): The space ID in watsonx.governance.
         project_id (str, optional): The project ID in watsonx.governance.
         region (str, optional): The region where watsonx.governance is hosted when using IBM Cloud.
-            Defaults to ``us-south``.
+            Defaults to `us-south`.
         cpd_creds (CloudPakforDataCredentials, optional): The Cloud Pak for Data environment credentials.
 
     Example:
@@ -1025,9 +1025,9 @@ class WatsonxPromptMonitor:
             prompt_variables (List[str], optional): A list of values for prompt input variables.
             input_text (str, optional): The input text for the prompt.
             context_fields (List[str], optional): A list of fields that will provide context to the prompt.
-                Applicable only for the ``retrieval_augmented_generation`` task type.
+                Applicable only for the `retrieval_augmented_generation` task type.
             question_field (str, optional): The field containing the question to be answered.
-                Applicable only for the ``retrieval_augmented_generation`` task type.
+                Applicable only for the `retrieval_augmented_generation` task type.
 
         Example:
             .. code-block:: python
@@ -1463,7 +1463,7 @@ class WatsonxCustomMetric:
     Args:
         api_key (str): The API key for IBM watsonx.governance.
         region (str, optional): The region where IBM watsonx.governance is hosted when using IBM Cloud.
-            Defaults to ``us-south``.
+            Defaults to `us-south`.
         cpd_creds (CloudPakforDataCredentials, optional): IBM Cloud Pak for Data environment credentials.
 
     Example:

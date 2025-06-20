@@ -11,7 +11,7 @@ class HTMLReader(BaseReader):
     Load a HTML file and extract text from a specific tag.
 
     Args:
-        tag (str): HTML tag to extract. Defaults to ``section``.
+        tag (str): HTML tag to extract. Defaults to `section`.
     """
 
     tag: str = "section"
@@ -24,7 +24,7 @@ class HTMLReader(BaseReader):
             input_file (str): File path to load.
 
         Returns:
-            List[Document]: A list of ``Document`` objects loaded from the file.
+            List[Document]: A list of `Document` objects loaded from the file.
         """
         try:
             from bs4 import BeautifulSoup  # noqa: F401

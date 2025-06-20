@@ -19,9 +19,9 @@ class WatsonDiscoveryRetriever:
         url (str): Watson Discovery instance URL.
         api_key (str): Watson Discovery API key.
         project_id (str): Watson Discovery project ID.
-        version (str, optional): Watson Discovery API version. Defaults to ``2023-03-31``.
+        version (str, optional): Watson Discovery API version. Defaults to `2023-03-31`.
         disable_passages (bool, optional): Return the full document instead of passages.
-            Only enable this if all documents are short. Defaults to ``False``.
+            Only enable this if all documents are short. Defaults to `False`.
 
     Example:
         .. code-block:: python
@@ -87,8 +87,8 @@ class WatsonDiscoveryRetriever:
         Args:
             query (str): Query text.
             filter (str, optional): Searches for documents that match the filter.
-                Use Discovery Query Language syntax. Defaults to ``None``.
-            top_k (int, optional): Number of top results to return. Defaults to ``4``.
+                Use Discovery Query Language syntax. Defaults to `None`.
+            top_k (int, optional): Number of top results to return. Defaults to `4`.
 
         Example:
             .. code-block:: python

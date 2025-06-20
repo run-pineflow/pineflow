@@ -20,7 +20,7 @@ class PDFReader(BaseReader):
             input_file (str): File path to load.
 
         Returns:
-            List[Document]: A list of ``Document`` objects loaded from the file.
+            List[Document]: A list of `Document` objects loaded from the file.
         """
         try:
             import pypdf  # noqa: F401

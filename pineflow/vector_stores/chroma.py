@@ -18,7 +18,7 @@ class ChromaVectorStore(BaseVectorStore):
         embed_model (BaseEmbedding): Embedding model used to compute vectors.
         collection_name (str, optional): Name of the ChromaDB collection.
         distance_strategy (str, optional): Distance strategy for similarity search.
-            Currently supports ``"cosine"``, ``"ip"``, and ``"l2"``. Defaults to ``cosine``.
+            Currently supports `"cosine"`, `"ip"`, and `"l2"`. Defaults to `cosine`.
 
     Example:
         .. code-block:: python
@@ -97,7 +97,7 @@ class ChromaVectorStore(BaseVectorStore):
 
         Args:
             query (str): Query text.
-            top_k (int, optional): Number of top results to return. Defaults to ``4``.
+            top_k (int, optional): Number of top results to return. Defaults to `4`.
 
         Returns:
             List[DocumentWithScore]: List of the most similar documents.
@@ -127,7 +127,7 @@ class ChromaVectorStore(BaseVectorStore):
         Delete documents from the ChromaDB collection.
 
         Args:
-            ids (List[str], optional): List of ``Document`` IDs to delete. Defaults to ``None``.
+            ids (List[str], optional): List of `Document` IDs to delete. Defaults to `None`.
         """
         self._collection.delete(ids=ids)
 

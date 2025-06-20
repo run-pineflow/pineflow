@@ -26,9 +26,9 @@ class DirectoryReader(BaseReader):
 
     Args:
         required_exts (List[str], optional): List of file extensions to filter by.
-            Only files with these extensions will be loaded. Defaults to ``None`` (no filtering).
+            Only files with these extensions will be loaded. Defaults to `None` (no filtering).
         recursive (bool, optional): Whether to recursively search subdirectories for files.
-            Defaults to ``False``.
+            Defaults to `False`.
 
     Example:
         .. code-block:: python

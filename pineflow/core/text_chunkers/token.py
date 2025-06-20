@@ -17,9 +17,9 @@ class TokenTextChunker(BaseTextChunker):
     by looking at word tokens.
 
     Args:
-        chunk_size (int, optional): Size of each chunk. Default is ``512``.
-        chunk_overlap (int, optional): Amount of overlap between chunks. Default is ``256``.
-        separator (str, optional): Separators used for splitting into words. Default is ``\\n\\n``.
+        chunk_size (int, optional): Size of each chunk. Default is `512`.
+        chunk_overlap (int, optional): Amount of overlap between chunks. Default is `256`.
+        separator (str, optional): Separators used for splitting into words. Default is `\\n\\n`.
 
     Example:
         .. code-block:: python
@@ -74,7 +74,7 @@ class TokenTextChunker(BaseTextChunker):
         Split documents into chunks.
 
         Args:
-            documents (List[Document]): List of ``Document`` objects to split.
+            documents (List[Document]): List of `Document` objects to split.
 
         Returns:
             List[Document]: List of chunked documents objects.
