@@ -13,7 +13,7 @@ readme = "README.md"
 packages = [{include = "pineflow"}]
 
 [tool.poetry.dependencies]
-elasticsearch = "^8.18.1"
+ibm-cos-sdk = "^2.14.2"
 pineflow-core = "^0.7.0"
 
 [tool.poetry.group.dev.dependencies]
