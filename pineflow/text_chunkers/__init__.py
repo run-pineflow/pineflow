@@ -7,10 +7,10 @@ from pineflow.core.text_chunkers.token import TokenTextChunker
 
 warnings.simplefilter("always", DeprecationWarning)
 warnings.warn(
-            "Deprecated import and will be removed. Use 'pineflow.core.text_chunkers' instead.",
-            DeprecationWarning,
-            stacklevel=2
-        )
+    "Deprecated import and will be removed. Use 'pineflow.core.text_chunkers' instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 __all__ = [
     "SemanticChunker",

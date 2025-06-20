@@ -10,7 +10,8 @@ logger = getLogger(__name__)
 
 
 class ChromaVectorStore(BaseVectorStore):
-    """Chroma is the AI-native open-source vector database. Embeddings are stored within a ChromaDB collection.
+    """
+    Chroma is the AI-native open-source vector database. Embeddings are stored within a ChromaDB collection.
 
     Args:
         embed_model (BaseEmbedding): Embedding model used to compute vectors.
@@ -28,15 +29,20 @@ class ChromaVectorStore(BaseVectorStore):
             vector_db = ChromaVectorStore(embed_model=embedding)
     """
 
-    def __init__(self, embed_model: BaseEmbedding,
-                 collection_name: str = None,
-                 distance_strategy: Literal["cosine", "ip", "l2"] = "cosine") -> None:
+    def __init__(
+        self,
+        embed_model: BaseEmbedding,
+        collection_name: str = None,
+        distance_strategy: Literal["cosine", "ip", "l2"] = "cosine",
+    ) -> None:
         try:
             import chromadb
             import chromadb.config
 
         except ImportError:
-            raise ImportError("chromadb package not found, please install it with `pip install chromadb`")
+            raise ImportError(
+                "chromadb package not found, please install it with `pip install chromadb`"
+            )
 
         self._embed_model = embed_model
         self._client_settings = chromadb.config.Settings()
@@ -49,11 +55,12 @@ class ChromaVectorStore(BaseVectorStore):
         self._collection = self._client.get_or_create_collection(
             name=collection_name,
             embedding_function=None,
-            metadata={"hnsw:space": distance_strategy}
+            metadata={"hnsw:space": distance_strategy},
         )
 
     def add_documents(self, documents: List[Document]) -> List:
-        """Add documents to the ChromaDB collection.
+        """
+        Add documents to the ChromaDB collection.
 
         Args:
             documents (List[Document]): List of documents to add to the collection.
@@ -65,20 +72,27 @@ class ChromaVectorStore(BaseVectorStore):
 
         for doc in documents:
             metadatas.append({**doc.get_metadata(), "hash": doc.hash})
-            
-            embeddings.append(doc.embedding if doc.embedding else self._embed_model.get_text_embedding(doc.get_content()))
+
+            embeddings.append(
+                doc.embedding
+                if doc.embedding
+                else self._embed_model.get_text_embedding(doc.get_content())
+            )
             ids.append(doc.id_ if doc.id_ else str(uuid.uuid4()))
             chroma_documents.append(doc.get_content())
 
-        self._collection.add(embeddings=embeddings,
-                             ids=ids,
-                             metadatas=metadatas,
-                             documents=chroma_documents)
+        self._collection.add(
+            embeddings=embeddings,
+            ids=ids,
+            metadatas=metadatas,
+            documents=chroma_documents,
+        )
 
         return ids
 
     def search_documents(self, query: str, top_k: int = 4) -> List[DocumentWithScore]:
-        """Performs a similarity search for the top-k most similar documents.
+        """
+        Performs a similarity search for the top-k most similar documents.
 
         Args:
             query (str): Query text.
@@ -90,16 +104,14 @@ class ChromaVectorStore(BaseVectorStore):
         query_embedding = self._embed_model.get_text_embedding(query)
 
         results = self._collection.query(
-            query_embeddings=query_embedding,
-            n_results=top_k
+            query_embeddings=query_embedding, n_results=top_k
         )
 
         return [
-            DocumentWithScore(document=Document(
-                id_=result[0],
-                text=result[1],
-                metadata=result[2]
-            ), score=result[3])
+            DocumentWithScore(
+                document=Document(id_=result[0], text=result[1], metadata=result[2]),
+                score=result[3],
+            )
             for result in zip(
                 results["ids"][0],
                 results["documents"][0],
@@ -109,13 +121,14 @@ class ChromaVectorStore(BaseVectorStore):
         ]
 
     def delete_documents(self, ids: List[str]) -> None:
-        """Delete documents from the ChromaDB collection.
+        """
+        Delete documents from the ChromaDB collection.
 
         Args:
             ids (List[str], optional): List of ``Document`` IDs to delete. Defaults to ``None``.
         """
         self._collection.delete(ids=ids)
-        
+
     def get_all_documents(self, include_fields: List[str] = None) -> List[Document]:
         """Get all documents from vector store."""
         default_fields = ["documents", "metadatas", "embeddings"]
@@ -124,16 +137,18 @@ class ChromaVectorStore(BaseVectorStore):
             "ids": "_id",
             "documents": "text",
             "metadatas": "metadata",
-            "embeddings": "embedding"
-            }
-        
+            "embeddings": "embedding",
+        }
+
         data = self._collection.get(include=include)
         num_items = len(data["ids"])
-            
+
         return [
-            Document(**{
-                mapped_key: data[original_key][i]
-                for original_key, mapped_key in field_map.items()
-            })
+            Document(
+                **{
+                    mapped_key: data[original_key][i]
+                    for original_key, mapped_key in field_map.items()
+                }
+            )
             for i in range(num_items)
-            ]
+        ]

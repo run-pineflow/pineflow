@@ -8,8 +8,8 @@ from pineflow.monitors.watsonx import (
 
 __all__ = [
     "CloudPakforDataCredentials",
-    "WatsonxExternalPromptMonitoring", # Deprecated remove in next release
-    "WatsonxPromptMonitoring", # Deprecated remove in next release
+    "WatsonxExternalPromptMonitoring",  # Deprecated remove in next release
+    "WatsonxPromptMonitoring",  # Deprecated remove in next release
     "WatsonxPromptMonitor",
-    "WatsonxExternalPromptMonitor"
+    "WatsonxExternalPromptMonitor",
 ]

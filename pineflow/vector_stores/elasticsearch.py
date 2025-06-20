@@ -10,7 +10,8 @@ logger = getLogger(__name__)
 
 
 class ElasticsearchVectorStore(BaseVectorStore):
-    """Provides functionality to interact with Elasticsearch for storing and querying document embeddings.
+    """
+    Provides functionality to interact with Elasticsearch for storing and querying document embeddings.
 
     Args:
         index_name (str): Name of the Elasticsearch index.
@@ -35,29 +36,32 @@ class ElasticsearchVectorStore(BaseVectorStore):
             es_vector_store = ElasticsearchVectorStore(
                 index_name="pineflow-index",
                 url="http://localhost:9200",
-                embed_model=embedding
+                embed_model=embedding,
             )
     """
 
-    def __init__(self,
-                 index_name: str,
-                 url: str,
-                 embed_model: BaseEmbedding,
-                 user: str = "",
-                 password: str = "",
-                 batch_size: int = 200,
-                 ssl: bool = False,
-                 distance_strategy: Literal["cosine", "dot_product", "l2_norm"] = "cosine",
-                 text_field: str = "text",
-                 vector_field: str = "embedding",
-                 ) -> None:
+    def __init__(
+        self,
+        index_name: str,
+        url: str,
+        embed_model: BaseEmbedding,
+        user: str = "",
+        password: str = "",
+        batch_size: int = 200,
+        ssl: bool = False,
+        distance_strategy: Literal["cosine", "dot_product", "l2_norm"] = "cosine",
+        text_field: str = "text",
+        vector_field: str = "embedding",
+    ) -> None:
         try:
             from elasticsearch import Elasticsearch
             from elasticsearch.helpers import bulk
 
             self._es_bulk = bulk
         except ImportError:
-            raise ImportError("elasticsearch package not found, please install it with `pip install elasticsearch`")
+            raise ImportError(
+                "elasticsearch package not found, please install it with `pip install elasticsearch`"
+            )
 
         #  TO-DO: Add connections types e.g: cloud
         self._embed_model = embed_model
@@ -69,12 +73,9 @@ class ElasticsearchVectorStore(BaseVectorStore):
 
         self._client = Elasticsearch(
             hosts=[url],
-            basic_auth=(
-                user,
-                password
-            ),
+            basic_auth=(user, password),
             verify_certs=ssl,
-            ssl_show_warn=False
+            ssl_show_warn=False,
         )
 
         try:
@@ -93,15 +94,14 @@ class ElasticsearchVectorStore(BaseVectorStore):
             dims_length = len(self._embed_model.get_text_embedding("Elasticsearch"))
 
             index_mappings = {
-                "dynamic_templates": 
-                    [{
-                    "dynamic_metadata": {
-                        "path_match": "metadata.*",
-                        "mapping": {
-                            "type": "keyword"
-                            }
+                "dynamic_templates": [
+                    {
+                        "dynamic_metadata": {
+                            "path_match": "metadata.*",
+                            "mapping": {"type": "keyword"},
                         }
-                    }],
+                    }
+                ],
                 "properties": {
                     self.text_field: {"type": "text"},
                     self.vector_field: {
@@ -110,7 +110,7 @@ class ElasticsearchVectorStore(BaseVectorStore):
                         "index": True,
                         "similarity": self.distance_strategy,
                     },
-                }
+                },
             }
 
             print(f"Creating index {self.index_name}")
@@ -123,9 +123,12 @@ class ElasticsearchVectorStore(BaseVectorStore):
         for key, value in metadata.items():
             metadata_mapping[f"metadata.{key}"] = value
         return metadata_mapping
-    
-    def add_documents(self, documents: List[Document], create_index_if_not_exists: bool = True) -> List[str]:
-        """Add documents to the Elasticsearch index.
+
+    def add_documents(
+        self, documents: List[Document], create_index_if_not_exists: bool = True
+    ) -> List[str]:
+        """
+        Add documents to the Elasticsearch index.
 
         Args:
             documents (List[Document]): List of documents to add to the index.
@@ -139,22 +142,29 @@ class ElasticsearchVectorStore(BaseVectorStore):
             _id = doc.id_ if doc.id_ else str(uuid.uuid4())
             _metadata = {**doc.get_metadata(), "hash": doc.hash}
             _metadata_mapping = self._dynamic_metadata_mapping(_metadata)
-            vector_store_data.append({
-                "_index": self.index_name,
-                "_id": _id,
-                self.text_field: doc.get_content(),
-                self.vector_field: doc.embedding if doc.embedding else self._embed_model.get_text_embedding(doc.get_content()),
-                "metadata": _metadata,
-                **_metadata_mapping
-            })
+            vector_store_data.append(
+                {
+                    "_index": self.index_name,
+                    "_id": _id,
+                    self.text_field: doc.get_content(),
+                    self.vector_field: doc.embedding
+                    if doc.embedding
+                    else self._embed_model.get_text_embedding(doc.get_content()),
+                    "metadata": _metadata,
+                    **_metadata_mapping,
+                }
+            )
 
-        self._es_bulk(self._client, vector_store_data, chunk_size=self.batch_size, refresh=True)
+        self._es_bulk(
+            self._client, vector_store_data, chunk_size=self.batch_size, refresh=True
+        )
         print(f"Added {len(vector_store_data)} documents to `{self.index_name}`")
-        
+
         return [doc.id_ for doc in documents]
 
     def search_documents(self, query: str, top_k: int = 4) -> List[DocumentWithScore]:
-        """Performs a similarity search for the top-k most similar documents.
+        """
+        Performs a similarity search for the top-k most similar documents.
 
         Args:
             query (str): Query text.
@@ -165,22 +175,25 @@ class ElasticsearchVectorStore(BaseVectorStore):
         """
         query_embedding = self._embed_model.get_text_embedding(query)
         #  TO-DO: Add elasticsearch `filter` option
-        es_query = {"knn": {
-            # "filter": filter,
-            "field": self.vector_field,
-            "query_vector": query_embedding,
-            "k": top_k,
-            "num_candidates": top_k * 10,
-        }}
-        
+        es_query = {
+            "knn": {
+                # "filter": filter,
+                "field": self.vector_field,
+                "query_vector": query_embedding,
+                "k": top_k,
+                "num_candidates": top_k * 10,
+            }
+        }
+
         from elasticsearch import NotFoundError
-        
-        try:    
+
+        try:
             data = self._client.search(
                 index=self.index_name,
                 **es_query,
                 size=top_k,
-                _source={"excludes": [self.vector_field]})
+                _source={"excludes": [self.vector_field]},
+            )
         except NotFoundError as e:
             if e.status_code == 404 and e.error == "index_not_found_exception":
                 return []
@@ -189,18 +202,21 @@ class ElasticsearchVectorStore(BaseVectorStore):
 
         hits = data.get("hits", {}).get("hits", [])
 
-        return [DocumentWithScore(
-            document=Document(
-                id_=hit["_id"],
-                text=hit["_source"]["text"],
-                metadata=hit["_source"]["metadata"],
-            ),
-            score=hit["_score"])
+        return [
+            DocumentWithScore(
+                document=Document(
+                    id_=hit["_id"],
+                    text=hit["_source"]["text"],
+                    metadata=hit["_source"]["metadata"],
+                ),
+                score=hit["_score"],
+            )
             for hit in hits
         ]
 
     def delete_documents(self, ids: List[str]) -> None:
-        """Delete documents from the Elasticsearch index.
+        """
+        Delete documents from the Elasticsearch index.
 
         Args:
             ids (List[str]): List of documents IDs to delete.
@@ -210,47 +226,55 @@ class ElasticsearchVectorStore(BaseVectorStore):
 
     def get_all_documents(self, include_fields: List[str] = []) -> List[Document]:
         """Get all documents from vector store."""
-        es_query = { "query": { "match_all": {} } }
-        
+        es_query = {"query": {"match_all": {}}}
+
         if len(include_fields):
             es_query["_source"] = include_fields
-            
+
         from elasticsearch import NotFoundError
-        
-        try:    
+
+        try:
             data = self._client.search(
-                index=self.index_name, 
+                index=self.index_name,
                 scroll="2m",
                 size=1000,
                 body=es_query,
-                )
+            )
         except NotFoundError as e:
             if e.status_code == 404 and e.error == "index_not_found_exception":
                 return []
             else:
                 raise e
-            
+
         scroll_id = data["_scroll_id"]
         hits = data.get("hits", {}).get("hits", [])
-        
-        documents = [Document(
-            id_=hit["_id"], 
-            metadata=hit["_source"].get("metadata", {}), 
-            embedding=hit["_source"].get(self.vector_field),
-            text=hit["_source"].get(self.text_field, "")) 
-                     for hit in hits]
+
+        documents = [
+            Document(
+                id_=hit["_id"],
+                metadata=hit["_source"].get("metadata", {}),
+                embedding=hit["_source"].get(self.vector_field),
+                text=hit["_source"].get(self.text_field, ""),
+            )
+            for hit in hits
+        ]
 
         while len(hits) > 0:
             scroll_data = self._client.scroll(scroll_id=scroll_id, scroll="2m")
             scroll_id = scroll_data["_scroll_id"]
-            
+
             hits = scroll_data.get("hits", {}).get("hits", [])
-            
-            documents.extend([Document(
-                id_=hit["_id"], 
-                metadata=hit["_source"].get("metadata", {}), 
-                embedding=hit["_source"].get(self.vector_field),
-                text=hit["_source"].get(self.text_field, "")) 
-                        for hit in hits])
-        
+
+            documents.extend(
+                [
+                    Document(
+                        id_=hit["_id"],
+                        metadata=hit["_source"].get("metadata", {}),
+                        embedding=hit["_source"].get(self.vector_field),
+                        text=hit["_source"].get(self.text_field, ""),
+                    )
+                    for hit in hits
+                ]
+            )
+
         return documents

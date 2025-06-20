@@ -7,7 +7,7 @@ from pineflow.readers.pdf import PDFReader
 from pineflow.readers.watson_discovery import WatsonDiscoveryReader
 
 __all__ = [
-    "DirectoryReader", # Deprecated import, remove in next release
+    "DirectoryReader",  # Deprecated import, remove in next release
     "DocxReader",
     "HTMLReader",
     "JSONReader",

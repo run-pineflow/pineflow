@@ -7,7 +7,8 @@ from pineflow.core.embeddings import BaseEmbedding, Embedding
 
 
 class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
-    """HuggingFace `sentence_transformers` embedding models.
+    """
+    HuggingFace `sentence_transformers` embedding models.
 
     Args:
         model_name (str): Hugging Face model to be used. Defaults to ``sentence-transformers/all-MiniLM-L6-v2``.
@@ -33,7 +34,8 @@ class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
         self._client = SentenceTransformer(self.model_name, device=self.device)
 
     def get_text_embedding(self, query: str) -> Embedding:
-        """Compute embedding for a text.
+        """
+        Compute embedding for a text.
 
         Args:
             query (str): Input query to compute the embedding.
@@ -48,7 +50,8 @@ class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
         return self.get_texts_embedding([query])[0]
 
     def get_texts_embedding(self, texts: List[str]) -> List[Embedding]:
-        """Compute embeddings for a list of texts.
+        """
+        Compute embeddings for a list of texts.
 
         Args:
             texts (List[str]): A list of input strings for which to compute embeddings.
@@ -56,15 +59,16 @@ class HuggingFaceEmbedding(BaseModel, BaseEmbedding):
         return self._client.encode(texts).tolist()
 
     def get_documents_embedding(self, documents: List[Document]) -> List[Document]:
-        """Compute embeddings for a list of documents.
+        """
+        Compute embeddings for a list of documents.
 
         Args:
             documents (List[Document]): List of documents to compute embeddings.
         """
         texts = [document.get_content() for document in documents]
         embeddings = self.get_texts_embedding(texts)
-        
+
         for document, embedding in zip(documents, embeddings):
             document.embedding = embedding
-        
+
         return documents
