@@ -36,13 +36,7 @@ class DoclingReader(BaseReader):
         Returns:
             List[Document]: A list of `Document` objects loaded from the file.
         """
-        try:
-            from docling.document_converter import DocumentConverter  # noqa: F401
-
-        except ImportError:
-            raise ImportError(
-                "docling package not found, please install it with `pip install docling`",
-            )
+        from docling.document_converter import DocumentConverter  # noqa: F401
 
         if not os.path.isfile(input_file):
             raise ValueError(f"File `{input_file}` does not exist")

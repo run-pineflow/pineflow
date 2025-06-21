@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "pineflow-readers-docling"
 version = "0.7.0"
-description = "pineflow readers docling integration"
+description = "pineflow readers docling extension"
 authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
 license = "MIT"
 readme = "README.md"
@@ -14,7 +14,7 @@ packages = [{include = "pineflow"}]
 
 [tool.poetry.dependencies]
 docling = "^2.37.0"
-pineflow-core = "^0.7.0"
+pineflow-core = "^0.7.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff="^0.11.13"
