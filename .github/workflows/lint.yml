@@ -25,4 +25,4 @@ jobs:
         run: poetry install --only dev
       - name: run linter
         shell: bash
-        run: poetry run ruff check
+        run: poetry run ruff check .

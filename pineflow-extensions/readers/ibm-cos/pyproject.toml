@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "pineflow-readers-ibm-cos"
 version = "0.7.0"
-description = "ppineflow readers ibm cloud object storage extension"
+description = "pineflow readers ibm cloud object storage extension"
 authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
 license = "MIT"
 readme = "README.md"

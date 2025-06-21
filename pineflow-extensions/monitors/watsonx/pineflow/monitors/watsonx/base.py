@@ -397,7 +397,6 @@ class WatsonxExternalPromptMonitor:
 
         return wml_client.deployments.get_uid(created_deployment)
 
-
     def add_prompt_monitor(
         self,
         name: str,
@@ -871,7 +870,6 @@ class WatsonxPromptMonitor:
 
         return wml_client.deployments.get_uid(created_deployment)
 
-
     def add_prompt_monitor(
         self,
         name: str,
@@ -1040,7 +1038,6 @@ class WatsonxPromptMonitor:
             "deployment_id": deployment_id,
             "subscription_id": generative_ai_monitor_details["subscription_id"],
         }
-
 
     def store_payload_records(
         self,
@@ -1284,8 +1281,8 @@ class WatsonxCustomMetric:
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | dict = None,
     ) -> None:
-        from ibm_cloud_sdk_core.authenticators import IAMAuthenticator # type: ignore
-        from ibm_watson_openscale import APIClient as WosAPIClient # type: ignore
+        from ibm_cloud_sdk_core.authenticators import IAMAuthenticator  # type: ignore
+        from ibm_watson_openscale import APIClient as WosAPIClient  # type: ignore
 
         self.region = region
         self._api_key = api_key
