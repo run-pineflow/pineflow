@@ -1,6 +1,5 @@
-import warnings
 from enum import Enum
-from typing import List, Literal, Optional
+from typing import List, Optional
 
 from pineflow.core.document.schema import Document, TransformerComponent
 from pineflow.core.readers.base import BaseReader

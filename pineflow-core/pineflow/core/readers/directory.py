@@ -8,7 +8,12 @@ from pineflow.core.readers import BaseReader
 
 
 def _loading_default_supported_readers():
-    from pineflow.readers.file import DocxReader, HTMLReader, PDFReader
+    try:
+        from pineflow.readers.file import DocxReader, HTMLReader, PDFReader
+    except ImportError:
+        raise ImportError(
+            "pineflow-readers-file package not found, please install it with `pip install pineflow-readers-file`",
+        )
 
     return {
         ".docx": DocxReader,
