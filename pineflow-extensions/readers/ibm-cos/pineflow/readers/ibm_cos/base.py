@@ -38,16 +38,11 @@ class IBMCOSReader(BaseReader):
         ibm_service_instance_id: str = None,
         s3_endpoint_url: str = None,
     ):
-        try:
-            import ibm_boto3
-            from ibm_botocore.client import Config
+        import ibm_boto3
+        from ibm_botocore.client import Config
 
-            self._ibm_boto3 = ibm_boto3
-            self._boto_config = Config
-        except ImportError:
-            raise ImportError(
-                "ibm-cos-sdk package not found, please install it with `pip install ibm-cos-sdk`",
-            )
+        self._ibm_boto3 = ibm_boto3
+        self._boto_config = Config
 
         self.bucket = bucket
         self.ibm_api_key_id = ibm_api_key_id
