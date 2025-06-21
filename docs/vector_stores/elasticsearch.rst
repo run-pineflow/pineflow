@@ -5,5 +5,5 @@ Elasticsearch
 
     pip install pineflow-vector-stores-elasticsearch
 
-.. automodule:: pineflow.vector_stores.elasticsearch.base
+.. automodule:: pineflow.vector_stores.elasticsearch
     :members:

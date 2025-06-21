@@ -23,8 +23,10 @@ jobs:
         cache: 'poetry'
     - name: install dependencies
       run: poetry install --with docs
+    - name: cleaning
+      run: poetry run make clean
     - name: running sphinx build
-      run: poetry run sphinx-build -b html ./docs ./sphinx-pages
+      run: poetry run make html
     - name: setup pages
       uses: actions/configure-pages@v4
     - name: upload pages artifact
