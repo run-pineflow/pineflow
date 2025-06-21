@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Tuple
 
-from deprecated import deprecated
-
 from pineflow.core.document.schema import Document
 
 
@@ -16,14 +14,6 @@ class BaseVectorStore(ABC):
     @abstractmethod
     def add_documents(self, documents: List[Document]) -> List[str]:
         """Add documents to vector store."""
-
-    @deprecated(
-        version="0.6.8",
-        reason="'query' is deprecated and will be removed in next release, use 'search_documents'.",
-    )
-    def query(self, query: str, top_k: int = 4) -> List[Document]:
-        """DEPRECATED: use 'search_documents'."""
-        return self.search_documents(query, top_k)
 
     @abstractmethod
     def search_documents(self, query: str, top_k: int = 4) -> List[Document]:

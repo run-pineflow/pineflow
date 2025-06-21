@@ -3,7 +3,6 @@ from enum import Enum
 from typing import List
 
 import numpy as np
-from deprecated import deprecated
 
 from pineflow.core.document.schema import Document, TransformerComponent
 from pineflow.core.utils.pairwise import cosine_similarity
@@ -41,14 +40,6 @@ class BaseEmbedding(TransformerComponent, ABC):
     @classmethod
     def class_name(cls) -> str:
         return "BaseEmbedding"
-
-    @deprecated(
-        version="0.6.8",
-        reason="'get_query_embedding' is deprecated and will be removed in next release, use 'get_text_embedding'.",
-    )
-    def get_query_embedding(self, query: str) -> Embedding:
-        """DEPRECATED: use 'get_text_embedding'."""
-        return self.get_text_embedding(query)
 
     @abstractmethod
     def get_text_embedding(self, query: str) -> Embedding:

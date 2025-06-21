@@ -8,7 +8,7 @@ from pineflow.core.readers import BaseReader
 
 
 def _loading_default_supported_readers():
-    from pineflow.readers import DocxReader, HTMLReader, PDFReader
+    from pineflow.readers.file import DocxReader, HTMLReader, PDFReader
 
     return {
         ".docx": DocxReader,

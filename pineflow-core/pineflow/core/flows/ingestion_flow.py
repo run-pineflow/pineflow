@@ -53,31 +53,12 @@ class IngestionFlow:
         post_transformer: bool = False,
         readers: Optional[List[BaseReader]] = None,
         vector_store: Optional[BaseVectorStore] = None,
-        dedup_stage: Literal["pre_transform", "post_transform"] = None,  # deprecated
-        dedup_strategy: DocStrategy = None,  # deprecated
     ) -> None:
         self.doc_strategy = doc_strategy
         self.post_transformer = post_transformer
         self.transformers = transformers
         self.readers = readers
         self.vector_store = vector_store
-
-        # START deprecated params message
-        if dedup_stage is not None:
-            warnings.warn(
-                "'dedup_stage' is deprecated and has no effect. It will be removed in future versions."
-                "Please use 'post_transformer' instead.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
-        if dedup_strategy is not None:
-            warnings.warn(
-                "'dedup_strategy' is deprecated and has no effect. It will be removed in future versions."
-                "Please use 'doc_strategy' instead.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
-        # END deprecated params message
 
     def _read_documents(self, documents: Optional[List[Document]]):
         input_documents = []
@@ -145,8 +126,8 @@ class IngestionFlow:
     ) -> List[Document]:
         _documents = documents.copy()
 
-        for transform in transformers:
-            _documents = transform(_documents)
+        for transformer in transformers:
+            _documents = transformer(_documents)
 
         return _documents
 
