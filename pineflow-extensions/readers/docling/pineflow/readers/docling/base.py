@@ -73,7 +73,7 @@ class DoclingReader(BaseReader):
         else:
             documents.append(
                 Document(
-                    text=docling_document.export_to_markdown(),
+                    text=docling_document.document.export_to_markdown(),
                     metadata={"source": input_file},
                 ),
             )
