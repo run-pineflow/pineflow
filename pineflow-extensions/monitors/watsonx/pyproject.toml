@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pineflow-monitors-watsonx"
-version = "0.7.0"
+version = "0.7.1"
 description = "pineflow monitors watsonx extension"
 authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
 license = "MIT"
@@ -17,7 +17,7 @@ certifi = "^2025.4.26"
 ibm-aigov-facts-client = "^1.0.95"
 ibm-watson-openscale = "^3.0.47"
 ibm-watsonx-ai = "^1.3.26"
-pineflow-core = "^0.7.1"
+pineflow-core = "^0.7.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff="^0.11.13"
