@@ -1,8 +1,6 @@
 from logging import getLogger
 from typing import List
 
-from deprecated import deprecated
-
 from pineflow.core.document import Document, DocumentWithScore
 
 logger = getLogger(__name__)
@@ -41,14 +39,8 @@ class WatsonDiscoveryRetriever:
         version: str = "2023-03-31",
         disable_passages: bool = False,
     ) -> None:
-        try:
-            from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-            from ibm_watson import DiscoveryV2
-
-        except ImportError:
-            raise ImportError(
-                "ibm-watson package not found, please install it with `pip install ibm-watson`",
-            )
+        from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+        from ibm_watson import DiscoveryV2
 
         self.disable_passages = disable_passages
         self.project_id = project_id
@@ -61,19 +53,6 @@ class WatsonDiscoveryRetriever:
         except Exception as e:
             logger.error(f"Error connecting to IBM Watson Discovery: {e}")
             raise
-
-    @deprecated(
-        version="0.6.8",
-        reason="'query' is deprecated and will be removed in next release, use 'search_documents'.",
-    )
-    def query(
-        self,
-        query: str,
-        filter: str = None,
-        top_k: int = 4,
-    ) -> List[DocumentWithScore]:
-        """DEPRECATED: use 'search_documents'."""
-        return self.search_documents(query, filter, top_k)
 
     def search_documents(
         self,

@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "pineflow-retrievers-watson-discovery"
 version = "0.7.0"
-description = "pineflow retrievers watson discovery integration"
+description = "pineflow retrievers watson discovery extension"
 authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
 license = "MIT"
 readme = "README.md"
@@ -14,7 +14,7 @@ packages = [{include = "pineflow"}]
 
 [tool.poetry.dependencies]
 ibm-watson = "^10.0.0"
-pineflow-core = "^0.7.0"
+pineflow-core = "^0.7.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff="^0.11.13"
