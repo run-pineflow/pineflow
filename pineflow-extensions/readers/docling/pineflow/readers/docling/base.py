@@ -6,7 +6,7 @@ from typing import List, Literal
 from pineflow.core.document import Document
 from pineflow.core.readers import BaseReader
 
-logging.getLogger("docling").setLevel(logging.ERROR)
+logging.getLogger("docling-core").setLevel(logging.ERROR)
 
 
 class DoclingReader(BaseReader):
