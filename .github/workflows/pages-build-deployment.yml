@@ -27,8 +27,7 @@ jobs:
       run: poetry run make clean
       working-directory: docs
     - name: running sphinx build
-      run: poetry run make html
-      working-directory: docs
+      run: poetry run sphinx-build -b html ./docs ./sphinx-pages
     - name: setup pages
       uses: actions/configure-pages@v4
     - name: upload pages artifact
