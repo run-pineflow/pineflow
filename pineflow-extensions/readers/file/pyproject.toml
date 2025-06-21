@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "pineflow-readers-file"
 version = "0.7.0"
-description = "pineflow readers file integration"
+description = "pineflow readers file extension"
 authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
 license = "MIT"
 readme = "README.md"
@@ -17,7 +17,7 @@ pypdf = "^5.6.0"
 jq = "^1.9.1"
 beautifulsoup4 = "^4.13.4"
 docx2txt = "^0.9"
-pineflow-core = "^0.7.0"
+pineflow-core = "^0.7.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff="^0.11.13"
