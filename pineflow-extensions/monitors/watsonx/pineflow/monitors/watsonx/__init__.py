@@ -1,15 +1,21 @@
 from pineflow.monitors.watsonx.base import (
     CloudPakforDataCredentials,
+    IntegratedSystemCredentials,
     WatsonxExternalPromptMonitor,
-    WatsonxExternalPromptMonitoring,
     WatsonxPromptMonitor,
-    WatsonxPromptMonitoring,
+    WatsonxLocalMetric,
+    WatsonxMetricThreshold,
+    WatsonxMetric,
+    WatsonxCustomMetric,
 )
 
 __all__ = [
     "CloudPakforDataCredentials",
-    "WatsonxExternalPromptMonitoring",  # Deprecated remove in next release
-    "WatsonxPromptMonitoring",  # Deprecated remove in next release
-    "WatsonxPromptMonitor",
+    "IntegratedSystemCredentials",
     "WatsonxExternalPromptMonitor",
+    "WatsonxPromptMonitor",
+    "WatsonxLocalMetric",
+    "WatsonxMetricThreshold",
+    "WatsonxMetric",
+    "WatsonxCustomMetric",
 ]

@@ -1,11 +1,9 @@
 JSON
 ============================================
 
-In order to use ``JSONReader`` you need to install the ``jq`` package.
-
 .. code-block:: bash
 
-    pip install jq
+    pip install pineflow-readers-file
 
-.. automodule:: pineflow.readers.json
+.. automodule:: pineflow.readers.file.json
     :members:

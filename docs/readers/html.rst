@@ -1,11 +1,9 @@
 HTML
 ============================================
 
-In order to use ``HTMLReader`` you need to install the ``beautifulsoup4`` package.
-
 .. code-block:: bash
 
-    pip install beautifulsoup4
+    pip install pineflow-readers-file
 
-.. automodule:: pineflow.readers.html
+.. automodule:: pineflow.readers.file.html
     :members:

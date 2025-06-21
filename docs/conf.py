@@ -18,7 +18,14 @@ release = version
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 """Setup project path for sphinx"""
-sys.path.insert(0, os.path.abspath("../"))
+sys.path.insert(0, os.path.abspath("../pineflow-core"))
+base_ext_dir = os.path.abspath('../pineflow-extensions')
+
+# Add every subdirectory that contains a `pineflow/` package to sys.path from extensions
+for root, dirs, files in os.walk(base_ext_dir):
+    if 'pineflow' in dirs:
+        pineflow_path = os.path.join(root)
+        sys.path.insert(0, pineflow_path)
 
 extensions = [
     "sphinx_copybutton",

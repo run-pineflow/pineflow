@@ -1,11 +1,9 @@
 Elasticsearch
 ============================================
 
-In order to use ``ElasticsearchVectorStore`` you need to install the ``elasticsearch`` package.
-
 .. code-block:: bash
 
-    pip install elasticsearch
+    pip install pineflow-vector-stores-elasticsearch
 
 .. automodule:: pineflow.vector_stores.elasticsearch
     :members:

@@ -46,14 +46,8 @@ class WatsonDiscoveryReader(BaseReader):
         created_date: str = datetime.today().strftime("%Y-%m-%d"),
         pre_additional_data_field: str = None,
     ) -> None:
-        try:
-            from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-            from ibm_watson import DiscoveryV2
-
-        except ImportError:
-            raise ImportError(
-                "ibm-watson package not found, please install it with `pip install ibm-watson`",
-            )
+        from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+        from ibm_watson import DiscoveryV2
 
         self.project_id = project_id
         self.batch_size = batch_size

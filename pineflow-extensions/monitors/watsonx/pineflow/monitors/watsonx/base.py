@@ -3,11 +3,9 @@ import json
 import logging
 import os
 import uuid
-import warnings
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import certifi
-from deprecated import deprecated
 from pydantic.v1 import BaseModel
 
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
@@ -270,17 +268,10 @@ class WatsonxExternalPromptMonitor:
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | dict = None,
     ) -> None:
-        try:
-            import ibm_aigov_facts_client  # noqa: F401
-            import ibm_cloud_sdk_core.authenticators  # noqa: F401
-            import ibm_watson_openscale  # noqa: F401
-            import ibm_watsonx_ai  # noqa: F401
-
-        except ImportError:
-            raise ImportError(
-                "ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, "
-                "please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`"
-            )
+        import ibm_aigov_facts_client  # noqa: F401
+        import ibm_cloud_sdk_core.authenticators  # noqa: F401
+        import ibm_watson_openscale  # noqa: F401
+        import ibm_watsonx_ai  # noqa: F401
 
         if (not (project_id or space_id)) or (project_id and space_id):
             raise ValueError(
@@ -406,44 +397,6 @@ class WatsonxExternalPromptMonitor:
 
         return wml_client.deployments.get_uid(created_deployment)
 
-    @deprecated(
-        version="0.6.8",
-        reason="'create_prompt_monitor' is deprecated and will be removed in next release, use 'add_prompt_monitor'.",
-    )
-    def create_prompt_monitor(
-        self,
-        name: str,
-        model_id: str,
-        task_id: Literal["retrieval_augmented_generation", "summarization"],
-        detached_model_provider: str,
-        description: str = "",
-        model_parameters: dict = None,
-        detached_model_name: str = None,
-        detached_model_url: str = None,
-        detached_prompt_url: str = None,
-        detached_prompt_additional_info: dict = None,
-        prompt_variables: List[str] = None,
-        input_text: str = None,
-        context_fields: List[str] = None,
-        question_field: str = None,
-    ) -> dict:
-        """DEPRECATED: use 'add_prompt_monitor'."""
-        return self.add_prompt_monitor(
-            name,
-            model_id,
-            task_id,
-            detached_model_provider,
-            description,
-            model_parameters,
-            detached_model_name,
-            detached_model_url,
-            detached_prompt_url,
-            detached_prompt_additional_info,
-            prompt_variables,
-            input_text,
-            context_fields,
-            question_field,
-        )
 
     def add_prompt_monitor(
         self,
@@ -647,34 +600,10 @@ class WatsonxExternalPromptMonitor:
             "subscription_id": generative_ai_monitor_details["subscription_id"],
         }
 
-    @deprecated(
-        version="0.6.8",
-    )
-    def payload_logging(
-        self,
-        payload_records: List[dict],
-        subscription_id: str,
-    ) -> None:
-        """DEPRECATED: use 'store_payload_records'."""
-        return self.store_payload_records(payload_records, subscription_id)
-
-    @deprecated(
-        version="0.6.11",
-        reason="'add_payload_records' is deprecated and will be removed in next release, use 'store_payload_records'.",
-    )
-    def add_payload_records(
-        self,
-        payload_records: List[dict],
-        subscription_id: str,
-    ) -> None:
-        """DEPRECATED: use 'store_payload_records'."""
-        return self.store_payload_records(payload_records, subscription_id)
-
     def store_payload_records(
         self,
         records_request: List[dict],
         subscription_id: str,
-        payload_records: List[dict] = None,
     ) -> List[str]:
         """
         Stores records to the payload logging system.
@@ -699,17 +628,6 @@ class WatsonxExternalPromptMonitor:
                     subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0",
                 )
         """
-        # START deprecated params message
-        if payload_records is not None:
-            warnings.warn(
-                "'payload_records' is deprecated and will be removed in a future version. "
-                "Please use 'records_request' instead.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
-            if records_request is None:
-                records_request = payload_records
-        # END deprecated params message
         from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
         from ibm_watson_openscale import APIClient as WosAPIClient
         from ibm_watson_openscale.supporting_classes.enums import (
@@ -776,18 +694,6 @@ class WatsonxExternalPromptMonitor:
         return [data["scoring_id"] + "-1" for data in payload_data]
 
 
-# DEPRECATED remove in next release
-class WatsonxExternalPromptMonitoring(WatsonxExternalPromptMonitor):
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            "'WatsonxExternalPromptMonitoring' is deprecated and will be removed. "
-            "Use 'WatsonxExternalPromptMonitor' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(*args, **kwargs)
-
-
 class WatsonxPromptMonitor:
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring IBM watsonx.ai LLMs.
@@ -837,17 +743,10 @@ class WatsonxPromptMonitor:
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | dict = None,
     ) -> None:
-        try:
-            import ibm_aigov_facts_client  # noqa: F401
-            import ibm_cloud_sdk_core.authenticators  # noqa: F401
-            import ibm_watson_openscale  # noqa: F401
-            import ibm_watsonx_ai  # noqa: F401
-
-        except ImportError:
-            raise ImportError(
-                "ibm-aigov-facts-client, ibm-watson-openscale or ibm-watsonx-ai module not found, "
-                "please install it with `pip install ibm-aigov-facts-client ibm-watson-openscale ibm-watsonx-ai`"
-            )
+        import ibm_aigov_facts_client  # noqa: F401
+        import ibm_cloud_sdk_core.authenticators  # noqa: F401
+        import ibm_watson_openscale  # noqa: F401
+        import ibm_watsonx_ai  # noqa: F401
 
         if (not (project_id or space_id)) or (project_id and space_id):
             raise ValueError(
@@ -972,34 +871,6 @@ class WatsonxPromptMonitor:
 
         return wml_client.deployments.get_uid(created_deployment)
 
-    @deprecated(
-        version="0.6.8",
-        reason="'create_prompt_monitor' is deprecated and will be removed in next release, use 'add_prompt_monitor'.",
-    )
-    def create_prompt_monitor(
-        self,
-        name: str,
-        model_id: str,
-        task_id: Literal["retrieval_augmented_generation", "summarization"],
-        description: str = "",
-        model_parameters: dict = None,
-        prompt_variables: List[str] = None,
-        input_text: str = None,
-        context_fields: List[str] = None,
-        question_field: str = None,
-    ) -> dict:
-        """DEPRECATED: use 'add_prompt_monitor'."""
-        return self.add_prompt_monitor(
-            name,
-            model_id,
-            task_id,
-            description,
-            model_parameters,
-            prompt_variables,
-            input_text,
-            context_fields,
-            question_field,
-        )
 
     def add_prompt_monitor(
         self,
@@ -1170,35 +1041,11 @@ class WatsonxPromptMonitor:
             "subscription_id": generative_ai_monitor_details["subscription_id"],
         }
 
-    @deprecated(
-        version="0.6.8",
-        reason="'payload_logging' is deprecated and will be removed in next release, use 'store_payload_records'.",
-    )
-    def payload_logging(
-        self,
-        payload_records: List[dict],
-        subscription_id: str,
-    ) -> None:
-        """DEPRECATED: use 'store_payload_records'."""
-        return self.store_payload_records(payload_records, subscription_id)
-
-    @deprecated(
-        version="0.6.11",
-        reason="'add_payload_records' is deprecated and will be removed in next release, use 'store_payload_records'.",
-    )
-    def add_payload_records(
-        self,
-        payload_records: List[dict],
-        subscription_id: str,
-    ) -> None:
-        """DEPRECATED: use 'store_payload_records'."""
-        return self.store_payload_records(payload_records, subscription_id)
 
     def store_payload_records(
         self,
         records_request: List[dict],
         subscription_id: str,
-        payload_records: List[dict] = None,
     ) -> List[str]:
         """
         Stores records to the payload logging system.
@@ -1223,17 +1070,6 @@ class WatsonxPromptMonitor:
                     subscription_id="5d62977c-a53d-4b6d-bda1-7b79b3b9d1a0",
                 )
         """
-        # START deprecated params message
-        if payload_records is not None:
-            warnings.warn(
-                "'payload_records' is deprecated and will be removed in a future version. "
-                "Please use 'records_request' instead.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
-            if records_request is None:
-                records_request = payload_records
-        # END deprecated params message
         from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
         from ibm_watson_openscale import APIClient as WosAPIClient
         from ibm_watson_openscale.supporting_classes.enums import (
@@ -1301,17 +1137,6 @@ class WatsonxPromptMonitor:
         return [data["scoring_id"] + "-1" for data in payload_data]
 
 
-# DEPRECATED remove in next release
-class WatsonxPromptMonitoring(WatsonxPromptMonitor):
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            "'WatsonxPromptMonitoring' is deprecated and will be removed. Use 'WatsonxPromptMonitor' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(*args, **kwargs)
-
-
 # Supporting class
 class WatsonxLocalMetric(BaseModel):
     """
@@ -1336,30 +1161,6 @@ class WatsonxLocalMetric(BaseModel):
 
     def to_dict(self) -> Dict:
         return {"name": self.name, "type": self.data_type, "nullable": self.nullable}
-
-
-# DEPRECATED remove in next release
-# Supporting class
-class WatsonxLocalMonitorMetric(WatsonxLocalMetric):
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            "'WatsonxLocalMonitorMetric' is deprecated and will be removed. Use 'WatsonxLocalMetric' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(*args, **kwargs)
-
-
-# DEPRECATED remove in next release
-# Supporting class
-class WatsonxTransactionMetric(WatsonxLocalMetric):
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            "'WatsonxTransactionMetric' is deprecated and will be removed. Use 'WatsonxLocalMetric' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(*args, **kwargs)
 
 
 # Supporting class
@@ -1444,18 +1245,6 @@ class WatsonxMetric(BaseModel):
         return monitor_metric
 
 
-# DEPRECATED remove in next release
-# Supporting class
-class WatsonxMonitorMetric(WatsonxMetric):
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            "'WatsonxMonitorMetric' is deprecated and will be removed. Use 'WatsonxMetric' instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(*args, **kwargs)
-
-
 class WatsonxCustomMetric:
     """
     Provides functionality to set up a custom metric to measure your model's performance with IBM watsonx.governance.
@@ -1495,16 +1284,8 @@ class WatsonxCustomMetric:
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | dict = None,
     ) -> None:
-        try:
-            from ibm_cloud_sdk_core.authenticators import (
-                IAMAuthenticator,  # type: ignore
-            )
-            from ibm_watson_openscale import APIClient as WosAPIClient  # type: ignore
-
-        except ImportError:
-            raise ImportError(
-                "ibm-watson-openscale not found, please install it with `pip install ibm-watson-openscale`"
-            )
+        from ibm_cloud_sdk_core.authenticators import IAMAuthenticator # type: ignore
+        from ibm_watson_openscale import APIClient as WosAPIClient # type: ignore
 
         self.region = region
         self._api_key = api_key
@@ -1685,26 +1466,6 @@ class WatsonxCustomMetric:
         return data_marts[0].metadata.id
 
     # ## Global custom metrics methods
-    @deprecated(
-        version="0.6.8",
-        reason="'create_metric_definition' is deprecated and will be removed in next release, use 'add_metric_definition'.",
-    )
-    def create_metric_definition(
-        self,
-        name: str,
-        monitor_metrics: List[WatsonxMetric],
-        integrated_system_url: str,
-        integrated_system_credentials: IntegratedSystemCredentials,
-        schedule: bool = False,
-    ):
-        return self.add_metric_definition(
-            name,
-            monitor_metrics,
-            integrated_system_url,
-            integrated_system_credentials,
-            schedule,
-        )
-
     def add_metric_definition(
         self,
         name: str,
@@ -1846,47 +1607,11 @@ class WatsonxCustomMetric:
 
         return monitor_instance_details
 
-    @deprecated(
-        version="0.6.8",
-        reason="'publish_measurements' is deprecated and will be removed in next release, use 'publish_metrics'.",
-    )
-    def publish_measurements(
-        self,
-        monitor_instance_id: str,
-        monitor_run_id: str,
-        measurements_request: Dict[str, Union[float, int]],
-    ):
-        return self.publish_metrics(
-            monitor_instance_id,
-            monitor_run_id,
-            measurements_request,
-        )
-
-    @deprecated(
-        version="0.6.11",
-        reason="'add_measurements' is deprecated and will be removed in next release, use 'publish_metrics'.",
-    )
-    def add_measurements(
-        self,
-        monitor_instance_id: str,
-        monitor_run_id: str,
-        measurements_request: Dict[str, Union[float, int]],
-    ):
-        return self.publish_metrics(
-            monitor_instance_id,
-            monitor_run_id,
-            measurements_request,
-        )
-
     def publish_metrics(
         self,
         monitor_instance_id: str,
         monitor_run_id: str,
         records_request: Dict[str, Union[float, int]],
-        measurements_request: Dict[
-            str,
-            Union[float, int],
-        ] = None,  # DEPRECATED remove in next release
     ):
         """
         Publishes custom metrics for a specific monitor instance.
@@ -1905,17 +1630,6 @@ class WatsonxCustomMetric:
                     records_request={"context_quality": 0.914, "sensitivity": 0.85},
                 )
         """
-        # START deprecated params message
-        if measurements_request is not None:
-            warnings.warn(
-                "'measurements_request' is deprecated and will be removed in a future version. "
-                "Please use 'records_request' instead.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
-            if records_request is None:
-                records_request = measurements_request
-        # END deprecated params message
         from ibm_watson_openscale.base_classes.watson_open_scale_v2 import (
             MonitorMeasurementRequest,
             Runs,
@@ -1953,18 +1667,6 @@ class WatsonxCustomMetric:
         ).result
 
     # ## Local custom metrics methods (transaction/record level metrics)
-    @deprecated(
-        version="0.6.12",
-        reason="'add_transaction_metric' is deprecated and will be removed in next release, use 'add_local_metric_definition'.",
-    )
-    def add_transaction_metric(
-        self,
-        name: str,
-        monitor_metrics: List[WatsonxLocalMetric],
-        subscription_id: str,
-    ):
-        return self.add_metric_definition_local(name, monitor_metrics, subscription_id)
-
     def add_local_metric_definition(
         self,
         name: str,
@@ -2038,17 +1740,6 @@ class WatsonxCustomMetric:
             ),
             background_mode=True,
         ).result.metadata.id
-
-    @deprecated(
-        version="0.6.12",
-        reason="'store_metric_records' is deprecated and will be removed in next release, use 'store_payload_records'.",
-    )
-    def store_metric_records(
-        self,
-        custom_local_metric_id: str,
-        records_request: List[Dict],
-    ):
-        return self.store_payload_records(custom_local_metric_id, records_request)
 
     def store_payload_records(
         self,

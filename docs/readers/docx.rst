@@ -1,11 +1,9 @@
 Docx
 ============================================
 
-In order to use ``DocxReader`` you need to install the ``docx2txt`` package.
-
 .. code-block:: bash
 
-    pip install docx2txt
+    pip install pineflow-readers-file
 
-.. automodule:: pineflow.readers.docx
+.. automodule:: pineflow.readers.file.docx
     :members:

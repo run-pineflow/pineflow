@@ -47,14 +47,8 @@ class WatsonxEmbedding(BaseModel, BaseEmbedding):
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        try:
-            from ibm_watsonx_ai import Credentials
-            from ibm_watsonx_ai.foundation_models import Embeddings as WatsonxEmbeddings
-
-        except ImportError:
-            raise ImportError(
-                "ibm-watsonx-ai package not found, please install it with `pip install ibm-watsonx-ai`",
-            )
+        from ibm_watsonx_ai import Credentials
+        from ibm_watsonx_ai.foundation_models import Embeddings as WatsonxEmbeddings
 
         if (not (self.project_id or self.space_id)) or (
             self.project_id and self.space_id

@@ -1,11 +1,9 @@
 PDF
 ============================================
 
-In order to use ``PDFReader`` you need to install the ``pypdf`` package.
-
 .. code-block:: bash
 
-    pip install pypdf
+    pip install pineflow-readers-file
 
-.. automodule:: pineflow.readers.pdf
+.. automodule:: pineflow.readers.file.pdf
     :members:
