@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pineflow-readers-docling"
-version = "0.7.1"
+version = "0.7.2"
 description = "pineflow readers docling extension"
 authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
 license = "MIT"

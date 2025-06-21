@@ -48,15 +48,9 @@ class DoclingReader(BaseReader):
         docling_document = doc_converter.convert(input_file)
 
         if self.detached_tables is True:
-            for text in docling_document.document.texts:
-                documents.append(
-                    Document(
-                        text=text,
-                        metadata={"source": input_file},
-                    ),
-                )
-
+            tables_to_remove = []
             for i, table in enumerate(docling_document.document.tables):
+                tables_to_remove.append(table)
                 table_text = (
                     table.export_to_html(docling_document.document)
                     if self.export_table_format == "html"
@@ -69,6 +63,14 @@ class DoclingReader(BaseReader):
                         metadata={"source": input_file, "table_index": i},
                     ),
                 )
+
+            docling_document.document.delete_items(node_items=tables_to_remove)
+            documents.append(
+                Document(
+                    text=docling_document.document.export_to_markdown(),
+                    metadata={"source": input_file},
+                ),
+            )
 
         else:
             documents.append(
