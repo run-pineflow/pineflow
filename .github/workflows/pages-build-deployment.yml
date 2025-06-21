@@ -25,6 +25,7 @@ jobs:
       run: poetry install --with docs
     - name: cleaning
       run: poetry run make clean
+      working-directory: docs
     - name: running sphinx build
       run: poetry run make html
     - name: setup pages
