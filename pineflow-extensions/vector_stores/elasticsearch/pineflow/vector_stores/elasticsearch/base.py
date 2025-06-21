@@ -53,15 +53,10 @@ class ElasticsearchVectorStore(BaseVectorStore):
         text_field: str = "text",
         vector_field: str = "embedding",
     ) -> None:
-        try:
-            from elasticsearch import Elasticsearch
-            from elasticsearch.helpers import bulk
+        from elasticsearch import Elasticsearch
+        from elasticsearch.helpers import bulk
 
-            self._es_bulk = bulk
-        except ImportError:
-            raise ImportError(
-                "elasticsearch package not found, please install it with `pip install elasticsearch`",
-            )
+        self._es_bulk = bulk
 
         #  TO-DO: Add connections types e.g: cloud
         self._embed_model = embed_model
