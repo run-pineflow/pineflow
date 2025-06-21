@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "pineflow-vector-stores-chroma"
 version = "0.7.0"
-description = "pineflow vector stores chroma integration"
+description = "pineflow vector_stores chroma extension chroma"
 authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
 license = "MIT"
 readme = "README.md"
@@ -14,7 +14,7 @@ packages = [{include = "pineflow"}]
 
 [tool.poetry.dependencies]
 chromadb = "^1.0.13"
-pineflow-core = "^0.7.0"
+pineflow-core = "^0.7.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff="^0.11.13"

@@ -4,7 +4,7 @@ from typing import List, Literal
 
 from pineflow.core.document import Document, DocumentWithScore
 from pineflow.core.embeddings import BaseEmbedding
-from pineflow.core.vector_stores.base import BaseVectorStore
+from pineflow.core.vector_stores import BaseVectorStore
 
 logger = getLogger(__name__)
 
@@ -36,14 +36,8 @@ class ChromaVectorStore(BaseVectorStore):
         collection_name: str = None,
         distance_strategy: Literal["cosine", "ip", "l2"] = "cosine",
     ) -> None:
-        try:
-            import chromadb
-            import chromadb.config
-
-        except ImportError:
-            raise ImportError(
-                "chromadb package not found, please install it with `pip install chromadb`",
-            )
+        import chromadb
+        import chromadb.config
 
         self._embed_model = embed_model
         self._client_settings = chromadb.config.Settings()
