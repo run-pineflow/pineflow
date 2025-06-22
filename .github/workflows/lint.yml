@@ -25,7 +25,7 @@ jobs:
         run: pipx install uv
 
       - name: install dependencies (dev)
-        run: uv pip install --require-locked .[dev]
+        run: uv pip install .[dev]
 
       - name: run linter
         shell: bash
