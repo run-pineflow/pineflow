@@ -26,10 +26,15 @@ jobs:
 
       - name: create uv venv
         run: uv venv create
-        
-      - name: install dependencies (dev)
-        run: uv pip install .[dev]
 
-      - name: run linter
+      - name: activate venv and install dependencies (dev)
         shell: bash
-        run: uv run ruff check .
+        run: |
+          source .venv/bin/activate
+          uv pip install .[dev]
+
+      - name: activate venv and run linter
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          uv run ruff check .
