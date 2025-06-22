@@ -18,7 +18,7 @@ jobs:
         run: uv python install 3.10
       
       - name: install dependencies (dev)
-        run: uv sync --locked --dev
+        run: uv sync --locked --all-extras --dev
 
       - name: run linter
         shell: bash
