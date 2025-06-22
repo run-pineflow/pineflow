@@ -24,6 +24,9 @@ jobs:
       - name: install uv
         run: pipx install uv
 
+      - name: create uv venv
+        run: uv venv create
+        
       - name: install dependencies (dev)
         run: uv pip install .[dev]
 
