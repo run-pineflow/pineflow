@@ -16,6 +16,9 @@ jobs:
 
       - name: set up Python
         run: uv python install 3.10
+      
+      - name: install dependencies (dev)
+        run: uv pip install .[dev]
 
       - name: run linter
         shell: bash
