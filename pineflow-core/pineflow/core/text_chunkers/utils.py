@@ -61,7 +61,7 @@ def _split_by_sentence_tokenizer(text: str, sentence_tokenizer) -> List[str]:
     return sentences
 
 
-def split_by_fns(
+def split_by_fns(  # noqa: RET503
     text: str,
     split_fns: List[Callable],
     sub_split_fns: List[Callable] = None,
