@@ -44,13 +44,7 @@ Repository = "https://github.com/run-pine/pineflow"
 allow-direct-references = true
 
 [tool.hatch.build.targets.sdist]
-include = ["_pineflow/pineflow"]
-
-[tool.hatch.build.targets.wheel]
-include = ["_pineflow/pineflow"]
-
-[tool.hatch.build.targets.wheel.sources]
-"_pineflow/pineflow" = "pineflow"
+include = ["pineflow"]
 
 [tool.ruff]
 extend-exclude = ["docs"]
