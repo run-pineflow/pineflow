@@ -15,7 +15,7 @@ packages = [{include = "pineflow"}]
 [tool.poetry.dependencies]
 accelerate = "^1.7.0"
 sentence-transformers = "^4.1.0"
-torch = "^2.2.2"
+torch = "2.2.2"
 pineflow-core = "^0.7.2"
 
 [tool.poetry.group.dev.dependencies]
