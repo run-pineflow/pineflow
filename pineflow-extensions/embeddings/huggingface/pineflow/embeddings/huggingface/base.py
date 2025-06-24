@@ -1,9 +1,8 @@
 from typing import Any, List, Literal
 
-from pydantic.v1 import BaseModel, PrivateAttr
-
 from pineflow.core.document import Document
 from pineflow.core.embeddings import BaseEmbedding, Embedding
+from pydantic.v1 import BaseModel, PrivateAttr
 
 
 class HuggingFaceEmbedding(BaseModel, BaseEmbedding):

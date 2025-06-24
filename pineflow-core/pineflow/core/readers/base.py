@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from pydantic.v1 import BaseModel
-
 from pineflow.core.document import Document
+from pydantic.v1 import BaseModel
 
 
 class BaseReader(ABC, BaseModel):

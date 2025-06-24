@@ -1,9 +1,8 @@
 from typing import Dict, List
 
 import numpy as np
-from pydantic.v1 import BaseModel
-
 from pineflow.core.embeddings import BaseEmbedding, SimilarityMode
+from pydantic.v1 import BaseModel
 
 
 class ContextSimilarityEvaluator(BaseModel):

@@ -15,6 +15,7 @@ packages = [{include = "pineflow"}]
 [tool.poetry.dependencies]
 docling = "^2.37.0"
 pineflow-core = "^0.7.2"
+torch = "2.2.2"
 
 [tool.poetry.group.dev.dependencies]
 ruff="^0.11.13"
