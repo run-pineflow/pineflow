@@ -29,8 +29,8 @@ dev = [
 ]
 
 [project.urls]
-Documentation = "https://run-pine.github.io/pineflow/"
-Repository = "https://github.com/run-pine/pineflow"
+Documentation = "https://run-pineflow.github.io/pineflow/"
+Repository = "https://github.com/run-pineflow/pineflow"
 
 [tool.hatch.build.targets.sdist]
 include = ["pineflow/"]

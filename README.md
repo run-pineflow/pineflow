@@ -14,6 +14,6 @@ pip install pineflow
 
 ## 📄 Documentation
 
-The documentation can be found Click [here](https://run-pine.github.io/pineflow/)!
+The documentation can be found Click [here](https://run-pineflow.github.io/pineflow/)!
 
 Please check it out for overview of the interfaces, components, integrations and other resources!
