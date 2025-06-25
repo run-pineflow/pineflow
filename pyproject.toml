@@ -6,12 +6,10 @@ build-backend = "hatchling.build"
 name = "pineflow"
 version = "0.7.0"
 description = "Load any data in one line of code and connect with AI applications"
-authors = [
-    { name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" },
-]
+authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
 license = { text = "MIT" }
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<4.0"
 keywords = ["AI", "LLM", "QA", "RAG", "data", "monitor", "retrieval", "semantic-search"]
 classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
@@ -39,9 +37,6 @@ docs = [
 [project.urls]
 Documentation = "https://run-pine.github.io/pineflow/"
 Repository = "https://github.com/run-pine/pineflow"
-
-[tool.hatch.metadata]
-allow-direct-references = true
 
 [tool.hatch.build.targets.sdist]
 include = ["_pineflow/pineflow"]

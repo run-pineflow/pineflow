@@ -1,35 +1,39 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "pineflow-core"
 version = "0.7.2"
 description = "Load any data in one line of code and connect with AI applications"
-authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
-license = "MIT"
+authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
+license = { text = "MIT" }
 readme = "README.md"
+requires-python = ">=3.10,<4.0"
+keywords = ["AI", "LLM", "QA", "RAG", "data", "monitor", "retrieval", "semantic-search"]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-documentation = "https://run-pine.github.io/pineflow/"
-repository = "https://github.com/run-pine/pineflow"
-packages = [{include = "pineflow"}]
-keywords = ["AI", "LLM", "QA", "RAG", "data", "monitor", "retrieval", "semantic-search"]
+dependencies = [
+    "nltk>=3.9.1,<4.0.0",
+    "numpy>=1.26.4,<1.27.0",
+    "pydantic>=2.11.5,<3.0.0",
+    "tiktoken>=0.9.0,<0.10.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-nltk = "^3.9.1"
-numpy = "^1.26.4"
-pydantic = "^2.11.5"
-tiktoken = "^0.9.0"
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.11.13",
+]
 
-[tool.poetry.group.dev.dependencies]
-ruff="^0.11.13"
+[project.urls]
+Documentation = "https://run-pine.github.io/pineflow/"
+Repository = "https://github.com/run-pine/pineflow"
+
+[tool.hatch.build.targets.sdist]
+include = ["pineflow/"]
+
+[tool.hatch.build.targets.wheel]
+include = ["pineflow/"]

@@ -1,20 +1,26 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "pineflow-vector-stores-chroma"
 version = "0.7.1"
 description = "pineflow vector_stores chroma extension chroma"
-authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
-license = "MIT"
+authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
+license = { text = "MIT" }
 readme = "README.md"
+dependencies = [
+    "chromadb>=1.0.13,<1.1.0",
+    "pineflow-core>=0.7.2,<0.8.0",
+]
 
-packages = [{include = "pineflow"}]
+[tool.hatch.build.targets.sdist]
+include = ["pineflow/"]
 
-[tool.poetry.dependencies]
-chromadb = "^1.0.13"
-pineflow-core = "^0.7.2"
+[tool.hatch.build.targets.wheel]
+include = ["pineflow/"]
 
-[tool.poetry.group.dev.dependencies]
-ruff="^0.11.13"
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.11.13",
+]

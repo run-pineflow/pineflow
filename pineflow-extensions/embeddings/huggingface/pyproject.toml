@@ -1,22 +1,28 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "pineflow-embeddings-huggingface"
 version = "0.7.1"
 description = "pineflow embeddings huggingface extension"
-authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
-license = "MIT"
+authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
+license = { text = "MIT" }
 readme = "README.md"
+dependencies = [
+    "accelerate>=1.7.0,<2.0.0",
+    "sentence-transformers>=4.1.0,<5.0.0",
+    "torch==2.2.2",
+    "pineflow-core>=0.7.2,<0.8.0",
+]
 
-packages = [{include = "pineflow"}]
+[tool.hatch.build.targets.sdist]
+include = ["pineflow/"]
 
-[tool.poetry.dependencies]
-accelerate = "^1.7.0"
-sentence-transformers = "^4.1.0"
-torch = "2.2.2"
-pineflow-core = "^0.7.2"
+[tool.hatch.build.targets.wheel]
+include = ["pineflow/"]
 
-[tool.poetry.group.dev.dependencies]
-ruff="^0.11.13"
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.11.13",
+]

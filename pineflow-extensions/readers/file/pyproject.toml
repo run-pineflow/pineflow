@@ -1,23 +1,29 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "pineflow-readers-file"
 version = "0.7.1"
 description = "pineflow readers file extension"
-authors = ["Leonardo Furnielis <leonardofurnielis@outlook.com>"]
-license = "MIT"
+authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
+license = { text = "MIT" }
 readme = "README.md"
+dependencies = [
+    "beautifulsoup4>=4.13.4,<5.0.0",
+    "pypdf>=5.6.0,<6.0.0",
+    "jq>=1.9.1,<2.0.0",
+    "docx2txt>=0.9,<1.0.0",
+    "pineflow-core>=0.7.2,<0.8.0",
+]
 
-packages = [{include = "pineflow"}]
+[tool.hatch.build.targets.sdist]
+include = ["pineflow/"]
 
-[tool.poetry.dependencies]
-pypdf = "^5.6.0"
-jq = "^1.9.1"
-beautifulsoup4 = "^4.13.4"
-docx2txt = "^0.9"
-pineflow-core = "^0.7.2"
+[tool.hatch.build.targets.wheel]
+include = ["pineflow/"]
 
-[tool.poetry.group.dev.dependencies]
-ruff="^0.11.13"
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.11.13",
+]
