@@ -1,0 +1,26 @@
+from abc import ABC, abstractmethod
+from typing import Any, List
+
+from pineflow.core.llms.types import ChatMessage, ChatResponse, GenerateResponse
+
+
+class BaseLLM(ABC):
+    """An interface for LLMs."""
+
+    @classmethod
+    def class_name(cls) -> str:
+        return "BaseLLM"
+
+    @abstractmethod
+    def generate(self, prompt: str, **kwargs: Any) -> GenerateResponse:
+        """Generates a completion for LLM."""
+
+    @abstractmethod
+    def generate_text(self, prompt: str, **kwargs: Any) -> str:
+        """Generates a completion text for LLM."""
+
+    @abstractmethod
+    def chat_completion(
+        self, messages: List[ChatMessage], **kwargs: Any
+    ) -> ChatResponse:
+        """Generates a chat completion for LLM."""
