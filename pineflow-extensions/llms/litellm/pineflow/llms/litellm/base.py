@@ -7,6 +7,22 @@ import litellm
 
 
 class LiteLLM(BaseLLM):
+    """
+    A wrapper class for interacting with a LiteLLM-compatible large language model (LLM). 
+    https://docs.litellm.ai/
+    
+    
+    Args:
+        model (str): The identifier of the LLM model to use (e.g., "gpt-4", "llama-3").
+        temperature (float): Sampling temperature to use. Must be between 0.0 and 1.0.
+            Higher values result in more random outputs, while lower values make the 
+            output more deterministic. Default is 1.0.
+        max_tokens (int): The maximum number of tokens to generate in the completion.
+        api_key (str): API key used for authenticating with the LLM provider.
+        additional_kwargs (Dict[str, Any]): A dictionary of additional parameters passed 
+            to the LLM during completion. This allows customization of the request beyond 
+            the standard parameters.
+    """
     model: str
     temperature: float = Field(
         default=1.0,
@@ -30,7 +46,13 @@ class LiteLLM(BaseLLM):
         }
 
     def completion(self, prompt: str, **kwargs: Any) -> GenerateResponse:
-        """Generates a chat completion for LLM."""
+        """
+        Generates a chat completion for LLM. (/completions)
+        
+        Args:
+            prompt (str): The input prompt to generate a completion for.
+            **kwargs (Any): Additional keyword arguments to customize the LLM completion request.
+        """
         all_kwargs = self._get_all_kwargs(**kwargs)
 
         response = litellm.text_completion(prompt=prompt, **all_kwargs).model_dump()
@@ -41,7 +63,13 @@ class LiteLLM(BaseLLM):
         )
 
     def text_completion(self, prompt: str, **kwargs: Any) -> str:
-        """Generates a chat completion for LLM."""
+        """
+        Generates a chat completion for LLM. (/completions)
+        
+        Args:
+            prompt (str): The input prompt to generate a completion for.
+            **kwargs (Any): Additional keyword arguments to customize the LLM completion request.
+        """
         all_kwargs = self._get_all_kwargs(**kwargs)
 
         response = litellm.text_completion(prompt=prompt, **all_kwargs).model_dump()
@@ -51,7 +79,13 @@ class LiteLLM(BaseLLM):
     def chat_completion(
         self, messages: List[ChatMessage], **kwargs: Any
     ) -> ChatResponse:
-        """Generates a chat completion for LLM."""
+        """
+        Generates a chat completion for LLM. (/chat/completions)
+        
+        Args:
+            messages (List[ChatMessage]): A list of chat messages as input for the LLM.
+            **kwargs (Any): Additional keyword arguments to customize the LLM completion request.
+        """
         all_kwargs = self._get_all_kwargs(**kwargs)
         input_messages_dict = self.convert_chat_messages(messages)
 
