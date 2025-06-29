@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Any, Optional
 
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel, Field
 
 
 class MessageRole(str, Enum):
@@ -14,21 +14,17 @@ class MessageRole(str, Enum):
 class ChatMessage(BaseModel):
     """Chat message."""
 
-    role: MessageRole = MessageRole.USER
-    content: Optional[str]
+    role: MessageRole = Field(default=MessageRole.USER)
+    content: Optional[str] = Field(default=None)
 
-    def __str__(self):
-        return f"{self.role}: {self.content}"
+    model_config = {"use_enum_values": True}
 
 
 class GenerateResponse(BaseModel):
     """Generate response."""
 
-    text: str
-    raw: Optional[Any] = None
-
-    def __str__(self) -> str:
-        return self.text
+    text: str = Field(..., description="Generated text response")
+    raw: Optional[Any] = Field(default=None)
 
 
 class ChatResponse(BaseModel):
@@ -36,6 +32,3 @@ class ChatResponse(BaseModel):
 
     message: ChatMessage
     raw: Optional[Any] = None
-
-    def __str__(self) -> str:
-        return self.message
