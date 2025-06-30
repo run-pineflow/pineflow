@@ -438,7 +438,7 @@ class WatsonxExternalPromptMonitor:
         Example:
             .. code-block:: python
 
-                wxgov_client.create_prompt_monitor(
+                wxgov_client.add_prompt_monitor(
                     name="Detached prompt (model AWS Anthropic)",
                     model_id="anthropic.claude-v2",
                     task_id="retrieval_augmented_generation",
@@ -620,6 +620,7 @@ class WatsonxExternalPromptMonitor:
                             "context1": "value_context1",
                             "context2": "value_context1",
                             "input_query": "What's Pineflow?",
+                            "generated_text": "Pineflow is a data framework to make AI easier to work with.",
                             "input_token_count": 25,
                             "generated_token_count": 150,
                         }
@@ -901,7 +902,7 @@ class WatsonxPromptMonitor:
         Example:
             .. code-block:: python
 
-                wxgov_client.create_prompt_monitor(
+                wxgov_client.add_prompt_monitor(
                     name="IBM prompt template",
                     model_id="ibm/granite-3-2b-instruct",
                     task_id="retrieval_augmented_generation",
@@ -1060,6 +1061,7 @@ class WatsonxPromptMonitor:
                             "context1": "value_context1",
                             "context2": "value_context1",
                             "input_query": "What's Pineflow?",
+                            "generated_text": "Pineflow is a data framework to make AI easier to work with.",
                             "input_token_count": 25,
                             "generated_token_count": 150,
                         }
