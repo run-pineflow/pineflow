@@ -7,3 +7,4 @@ LiteLLM
 
 .. automodule:: pineflow.llms.litellm
     :members:
+    :exclude-members: model_config
