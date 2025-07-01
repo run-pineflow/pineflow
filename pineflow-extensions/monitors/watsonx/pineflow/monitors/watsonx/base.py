@@ -1465,7 +1465,7 @@ class WatsonxCustomMetric:
 
         return data_marts[0].metadata.id
 
-    # ## Global custom metrics methods
+    # ===== Global Custom Metrics =====
     def add_metric_definition(
         self,
         name: str,
@@ -1614,7 +1614,7 @@ class WatsonxCustomMetric:
         records_request: Dict[str, Union[float, int]],
     ):
         """
-        Publishes custom metrics for a specific monitor instance.
+        Publishes computed custom metrics for a specific global monitor instance.
 
         Args:
             monitor_instance_id (str): The unique ID of the monitor instance.
@@ -1666,7 +1666,7 @@ class WatsonxCustomMetric:
             json_patch_operation=patch_payload,
         ).result
 
-    # ## Local custom metrics methods (transaction/record level metrics)
+    # ===== Local Custom Metrics =====
     def add_local_metric_definition(
         self,
         name: str,
@@ -1747,7 +1747,7 @@ class WatsonxCustomMetric:
         records_request: List[Dict],
     ):
         """
-        Stores custom metrics to payload records (transaction/record level).
+        Stores computed custom metrics for a specific transaction record.
 
         Args:
             custom_local_metric_id (str): The unique ID of the custom transaction metric.
