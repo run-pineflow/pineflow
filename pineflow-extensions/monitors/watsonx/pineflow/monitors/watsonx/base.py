@@ -6,6 +6,7 @@ import uuid
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import certifi
+from deprecated import deprecated
 from pydantic.v1 import BaseModel
 
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
@@ -1672,7 +1673,7 @@ class WatsonxCustomMetric:
         name: str,
         monitor_metrics: List[WatsonxLocalMetric],
         subscription_id: str,
-    ):
+    ) -> str:
         """
         Creates a custom metric definition to compute metrics at the local (transaction) level for IBM watsonx.governance.
 
@@ -1741,13 +1742,27 @@ class WatsonxCustomMetric:
             background_mode=True,
         ).result.metadata.id
 
+    @deprecated(
+        version="0.7.1",
+        reason="'store_payload_records' is deprecated and will be removed, use 'store_metric_records'.",
+    )
     def store_payload_records(
         self,
         custom_local_metric_id: str,
         records_request: List[Dict],
     ):
+        return self.store_metric_records(
+            custom_local_metric_id,
+            records_request
+        )
+    
+    def publish_local_metrics(
+        self,
+        custom_local_metric_id: str,
+        records_request: List[Dict],
+    ):
         """
-        Stores computed custom metrics for a specific transaction record.
+        Publishes computed custom metrics for a specific transaction record.
 
         Args:
             custom_local_metric_id (str): The unique ID of the custom transaction metric.
@@ -1756,11 +1771,11 @@ class WatsonxCustomMetric:
         Example:
             .. code-block:: python
 
-                wxgov_client.store_payload_records(
+                wxgov_client.publish_local_metrics(
                     custom_local_metric_id="0196ad39-1b75-7e77-bddb-cc5393d575c2",
                     records_request=[
                         {
-                            "scoring_id": "123-123",
+                            "scoring_id": "304a9270-44a1-4c4d-bfd4-f756541011f8",
                             "run_id": "RUN_ID",
                             "computed_on": "payload",
                             "context_quality": 0.786,
