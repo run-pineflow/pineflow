@@ -1744,14 +1744,14 @@ class WatsonxCustomMetric:
 
     @deprecated(
         version="0.7.1",
-        reason="'store_payload_records' is deprecated and will be removed, use 'store_metric_records'.",
+        reason="'store_payload_records' is deprecated and will be removed, use 'publish_local_metrics'.",
     )
     def store_payload_records(
         self,
         custom_local_metric_id: str,
         records_request: List[Dict],
     ):
-        return self.store_metric_records(
+        return self.publish_local_metrics(
             custom_local_metric_id,
             records_request
         )
