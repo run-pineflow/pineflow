@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import uuid
+import warnings
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import certifi
@@ -1748,31 +1749,34 @@ class WatsonxCustomMetric:
     )
     def store_payload_records(
         self,
-        custom_local_metric_id: str,
+        metric_instance_id: str,
         records_request: List[Dict],
+        custom_local_metric_id: str = None, # deprecated, use 'metric_instance_id'
     ):
         return self.publish_local_metrics(
+            metric_instance_id,
+            records_request,
             custom_local_metric_id,
-            records_request
         )
     
     def publish_local_metrics(
         self,
-        custom_local_metric_id: str,
+        metric_instance_id: str,
         records_request: List[Dict],
+        custom_local_metric_id: str = None, # deprecated, use 'metric_instance_id'
     ):
         """
         Publishes computed custom metrics for a specific transaction record.
 
         Args:
-            custom_local_metric_id (str): The unique ID of the custom transaction metric.
+            metric_instance_id (str): The unique ID of the custom transaction metric.
             records_request (List[Dict]): A list of dictionaries containing the records to be stored.
 
         Example:
             .. code-block:: python
 
                 wxgov_client.publish_local_metrics(
-                    custom_local_metric_id="0196ad39-1b75-7e77-bddb-cc5393d575c2",
+                    metric_instance_id="0196ad39-1b75-7e77-bddb-cc5393d575c2",
                     records_request=[
                         {
                             "scoring_id": "304a9270-44a1-4c4d-bfd4-f756541011f8",
@@ -1783,23 +1787,49 @@ class WatsonxCustomMetric:
                     ],
                 )
         """
+        # START deprecated params message
+        if custom_local_metric_id is not None:
+            warnings.warn(
+                "'custom_local_metric_id' is deprecated and will be removed. "
+                "Please use 'metric_instance_id' instead.",
+                DeprecationWarning,
+                stacklevel=2
+            )
+            if metric_instance_id is None:
+                metric_instance_id = custom_local_metric_id
+        # END deprecated params message 
         return self._wos_client.data_sets.store_records(
-            data_set_id=custom_local_metric_id,
+            data_set_id=metric_instance_id,
             request_body=records_request,
         ).result
 
-    def list_local_metrics(self, custom_local_metric_id: str):
+    def list_local_metrics(
+        self, 
+        metric_instance_id: str,
+        custom_local_metric_id: str # deprecated, use 'metric_instance_id'
+        ):
         """
         Lists records from a custom local metric definition.
 
         Args:
-            custom_local_metric_id (str): The unique ID of the custom transaction metric.
+            metric_instance_id (str): The unique ID of the custom transaction metric.
 
         Example:
             .. code-block:: python
 
                 wxgov_client.list_local_metrics(
-                    custom_local_metric_id="0196ad47-c505-73c0-9d7b-91c082b697e3"
+                    metric_instance_id="0196ad47-c505-73c0-9d7b-91c082b697e3"
                 )
         """
-        return self._get_dataset_data(custom_local_metric_id)
+        # START deprecated params message
+        if custom_local_metric_id is not None:
+            warnings.warn(
+                "'custom_local_metric_id' is deprecated and will be removed. "
+                "Please use 'metric_instance_id' instead.",
+                DeprecationWarning,
+                stacklevel=2
+            )
+            if metric_instance_id is None:
+                metric_instance_id = custom_local_metric_id
+        # END deprecated params message 
+        return self._get_dataset_data(metric_instance_id)
