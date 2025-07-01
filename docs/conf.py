@@ -45,6 +45,7 @@ autodoc_typehints_format = "short"
 autodoc_typehints_description_target = "documented"
 autodoc_class_signature = "separated"
 autodoc_default_options = {"exclude-members": "__init__"}
+autodoc_mock_imports = ["litellm"]
 
 # -- Options for Sphinx Favicon -------------------------------------------------
 # https://sphinx-favicon.readthedocs.io/en/latest/index.html
