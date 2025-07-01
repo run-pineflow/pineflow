@@ -17,7 +17,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
-    "pineflow-core==0.7.3",
+    "pineflow-core==0.7.4",
     "pineflow-embeddings-huggingface>=0.7.1,<0.8.0",
     "pineflow-readers-docling>=0.7.2,<0.8.0",
     "pineflow-readers-file>=0.7.1,<0.8.0",
