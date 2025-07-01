@@ -5,5 +5,5 @@ LiteLLM
 
     pip install pineflow-llms-litellm
 
-.. automodule:: pineflow.llms.litellm.base
+.. automodule:: pineflow.llms.litellm
     :members:
