@@ -31,16 +31,16 @@ REGIONS_URL = {
 }
 
 
-def _filter_dict(original_dict: dict, optional_keys: List, required_keys: List = []):
+def _filter_dict(original_dict: Dict, optional_keys: List, required_keys: List = []):
     """
     Filters a dictionary to keep only the specified keys and checks for required keys.
 
     Args:
-        original_dict (dict): The original dictionary.
+        original_dict (Dict): The original dictionary.
         optional_keys (list): A list of keys to retain.
         required_keys (list, optional): A list of keys that must be present in the dictionary. Defaults to None.
     """
-    # Ensure all required keys are in the source dictionary
+    # Ensure all required keys are in the source dict
     missing_keys = [key for key in required_keys if key not in original_dict]
     if missing_keys:
         raise KeyError(f"Missing required parameter: {missing_keys}")
@@ -56,9 +56,9 @@ def _filter_dict(original_dict: dict, optional_keys: List, required_keys: List =
 
 
 def _convert_payload_format(
-    records: List[dict],
+    records: List[Dict],
     feature_fields: List[str],
-) -> List[dict]:
+) -> List[Dict]:
     payload_data = []
     response_fields = ["generated_text", "input_token_count", "generated_token_count"]
 
@@ -84,6 +84,7 @@ def _convert_payload_format(
     return payload_data
 
 
+# ===== Credentials Classes =====
 class CloudPakforDataCredentials(BaseModel):
     """
     Encapsulates the credentials required for IBM Cloud Pak for Data.
@@ -131,8 +132,8 @@ class CloudPakforDataCredentials(BaseModel):
             disable_ssl_verification=disable_ssl_verification,
         )
 
-    def to_dict(self) -> dict[str, Any]:
-        cpd_creds = dict([(k, v) for k, v in self.__dict__.items()])  # noqa: C404
+    def to_dict(self) -> Dict[str, Any]:
+        cpd_creds = Dict([(k, v) for k, v in self.__dict__.items()])  # noqa: C404
 
         if "instance_id" in cpd_creds and self.instance_id.lower() not in [
             "icp",
@@ -155,7 +156,7 @@ class IntegratedSystemCredentials(BaseModel):
         password (str, optional): The password for Basic Authentication.
         token_url (str, optional): The URL of the authentication endpoint used to request a Bearer token.
         token_method (str, optional): The HTTP method (e.g., "POST", "GET") used to request the Bearer token.
-        token_headers (dict, optional): Optional headers to include when requesting the Bearer token.
+        token_headers (Dict, optional): Optional headers to include when requesting the Bearer token.
             Defaults to `None`.
         token_payload (str, optional): The body or payload to send when requesting the Bearer token.
             Can be a string (e.g., raw JSON).
@@ -217,6 +218,7 @@ class IntegratedSystemCredentials(BaseModel):
         return integrated_system_creds
 
 
+# ===== Monitor Classes =====
 class WatsonxExternalPromptMonitor:
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring external LLMs.
@@ -266,7 +268,7 @@ class WatsonxExternalPromptMonitor:
         space_id: str = None,
         project_id: str = None,
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
-        cpd_creds: CloudPakforDataCredentials | dict = None,
+        cpd_creds: CloudPakforDataCredentials | Dict = None,
     ) -> None:
         import ibm_aigov_facts_client  # noqa: F401
         import ibm_cloud_sdk_core.authenticators  # noqa: F401
@@ -315,9 +317,9 @@ class WatsonxExternalPromptMonitor:
 
     def _create_detached_prompt(
         self,
-        detached_details: dict,
-        prompt_template_details: dict,
-        detached_asset_details: dict,
+        detached_details: Dict,
+        prompt_template_details: Dict,
+        detached_asset_details: Dict,
     ) -> str:
         from ibm_aigov_facts_client import (  # type: ignore
             AIGovFactsClient,
@@ -404,16 +406,16 @@ class WatsonxExternalPromptMonitor:
         task_id: Literal["retrieval_augmented_generation", "summarization"],
         detached_model_provider: str,
         description: str = "",
-        model_parameters: dict = None,
+        model_parameters: Dict = None,
         detached_model_name: str = None,
         detached_model_url: str = None,
         detached_prompt_url: str = None,
-        detached_prompt_additional_info: dict = None,
+        detached_prompt_additional_info: Dict = None,
         prompt_variables: List[str] = None,
         input_text: str = None,
         context_fields: List[str] = None,
         question_field: str = None,
-    ) -> dict:
+    ) -> Dict:
         """
         Creates a Detached/External Prompt Template Asset and sets up monitors for a given prompt template asset.
 
@@ -423,11 +425,11 @@ class WatsonxExternalPromptMonitor:
             task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
             detached_model_provider (str): The external model provider.
             description (str, optional): A description of the External Prompt Template Asset.
-            model_parameters (dict, optional): Model parameters and their respective values.
+            model_parameters (Dict, optional): Model parameters and their respective values.
             detached_model_name (str, optional): The name of the external model.
             detached_model_url (str, optional): The URL of the external model.
             detached_prompt_url (str, optional): The URL of the external prompt.
-            detached_prompt_additional_info (dict, optional): Additional information related to the external prompt.
+            detached_prompt_additional_info (Dict, optional): Additional information related to the external prompt.
             prompt_variables (List[str], optional): Values for the prompt variables.
             input_text (str, optional): The input text for the prompt.
             context_fields (List[str], optional): A list of fields that will provide context to the prompt.
@@ -452,12 +454,12 @@ class WatsonxExternalPromptMonitor:
                 )
         """
         prompt_metadata = locals()
-        # remove unused vars from dict
+        # Remove unused vars from dict
         prompt_metadata.pop("self", None)
         prompt_metadata.pop("context_fields", None)
         prompt_metadata.pop("question_field", None)
 
-        # update name of keys to aigov_facts api
+        # Update name of keys to aigov_facts api
         prompt_metadata["input"] = prompt_metadata.pop("input_text", None)
         prompt_metadata["model_provider"] = prompt_metadata.pop(
             "detached_model_provider",
@@ -471,8 +473,8 @@ class WatsonxExternalPromptMonitor:
             None,
         )
 
-        # update list of vars to dict
-        prompt_metadata["prompt_variables"] = dict.fromkeys(
+        # Update list of vars to dict
+        prompt_metadata["prompt_variables"] = Dict.fromkeys(
             prompt_metadata["prompt_variables"], ""
         )
 
@@ -601,14 +603,14 @@ class WatsonxExternalPromptMonitor:
 
     def store_payload_records(
         self,
-        records_request: List[dict],
+        records_request: List[Dict],
         subscription_id: str,
     ) -> List[str]:
         """
         Stores records to the payload logging system.
 
         Args:
-            records_request (List[dict]): A list of records to be logged, where each record is represented as a dictionary.
+            records_request (List[Dict]): A list of records to be logged, where each record is represented as a dictionary.
             subscription_id (str): The subscription ID associated with the records being logged.
 
         Example:
@@ -741,7 +743,7 @@ class WatsonxPromptMonitor:
         space_id: str = None,
         project_id: str = None,
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
-        cpd_creds: CloudPakforDataCredentials | dict = None,
+        cpd_creds: CloudPakforDataCredentials | Dict = None,
     ) -> None:
         import ibm_aigov_facts_client  # noqa: F401
         import ibm_cloud_sdk_core.authenticators  # noqa: F401
@@ -790,8 +792,8 @@ class WatsonxPromptMonitor:
 
     def _create_prompt_template(
         self,
-        prompt_template_details: dict,
-        asset_details: dict,
+        prompt_template_details: Dict,
+        asset_details: Dict,
     ) -> str:
         from ibm_aigov_facts_client import (
             AIGovFactsClient,
@@ -877,12 +879,12 @@ class WatsonxPromptMonitor:
         model_id: str,
         task_id: Literal["retrieval_augmented_generation", "summarization"],
         description: str = "",
-        model_parameters: dict = None,
+        model_parameters: Dict = None,
         prompt_variables: List[str] = None,
         input_text: str = None,
         context_fields: List[str] = None,
         question_field: str = None,
-    ) -> dict:
+    ) -> Dict:
         """
         Creates an IBM Prompt Template Asset and sets up monitors for the given prompt template asset.
 
@@ -891,7 +893,7 @@ class WatsonxPromptMonitor:
             model_id (str): The ID of the model associated with the prompt.
             task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
             description (str, optional): A description of the Prompt Template Asset.
-            model_parameters (dict, optional): A dictionary of model parameters and their respective values.
+            model_parameters (Dict, optional): A dictionary of model parameters and their respective values.
             prompt_variables (List[str], optional): A list of values for prompt input variables.
             input_text (str, optional): The input text for the prompt.
             context_fields (List[str], optional): A list of fields that will provide context to the prompt.
@@ -913,16 +915,16 @@ class WatsonxPromptMonitor:
                 )
         """
         prompt_metadata = locals()
-        # remove unused vars from dict
+        # Remove unused vars from dict
         prompt_metadata.pop("self", None)
         prompt_metadata.pop("context_fields", None)
         prompt_metadata.pop("question_field", None)
 
-        # update name of keys to aigov_facts api
+        # Update name of keys to aigov_facts api
         prompt_metadata["input"] = prompt_metadata.pop("input_text", None)
 
-        # update list of vars to dict
-        prompt_metadata["prompt_variables"] = dict.fromkeys(
+        # Update list of vars to dict
+        prompt_metadata["prompt_variables"] = Dict.fromkeys(
             prompt_metadata["prompt_variables"], ""
         )
 
@@ -1042,14 +1044,14 @@ class WatsonxPromptMonitor:
 
     def store_payload_records(
         self,
-        records_request: List[dict],
+        records_request: List[Dict],
         subscription_id: str,
     ) -> List[str]:
         """
         Stores records to the payload logging system.
 
         Args:
-            records_request (List[dict]): A list of records to be logged. Each record is represented as a dictionary.
+            records_request (List[Dict]): A list of records to be logged. Each record is represented as a dictionary.
             subscription_id (str): The subscription ID associated with the records being logged.
 
         Example:
@@ -1136,7 +1138,7 @@ class WatsonxPromptMonitor:
         return [data["scoring_id"] + "-1" for data in payload_data]
 
 
-# Supporting class
+# ===== Supporting Classes =====
 class WatsonxLocalMetric(BaseModel):
     """
     Provides the IBM watsonx.governance local monitor metric definition.
@@ -1162,7 +1164,6 @@ class WatsonxLocalMetric(BaseModel):
         return {"name": self.name, "type": self.data_type, "nullable": self.nullable}
 
 
-# Supporting class
 class WatsonxMetricThreshold(BaseModel):
     """
     Defines the metric threshold for IBM watsonx.governance.
@@ -1186,7 +1187,6 @@ class WatsonxMetricThreshold(BaseModel):
         return {"type": self.threshold_type, "default": self.default_value}
 
 
-# Supporting class
 class WatsonxMetric(BaseModel):
     """
     Defines the IBM watsonx.governance global monitor metric.
@@ -1244,6 +1244,7 @@ class WatsonxMetric(BaseModel):
         return monitor_metric
 
 
+# ===== Metric Classes =====
 class WatsonxCustomMetric:
     """
     Provides functionality to set up a custom metric to measure your model's performance with IBM watsonx.governance.
@@ -1281,7 +1282,7 @@ class WatsonxCustomMetric:
         self,
         api_key: str = None,
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
-        cpd_creds: CloudPakforDataCredentials | dict = None,
+        cpd_creds: CloudPakforDataCredentials | Dict = None,
     ) -> None:
         from ibm_cloud_sdk_core.authenticators import IAMAuthenticator  # type: ignore
         from ibm_watson_openscale import APIClient as WosAPIClient  # type: ignore
@@ -1618,7 +1619,7 @@ class WatsonxCustomMetric:
         Args:
             monitor_instance_id (str): The unique ID of the monitor instance.
             monitor_run_id (str): The ID of the monitor run that generated the metrics.
-            records_request (dict[str | float | int]): Dict containing the metrics to be published.
+            records_request (Dict[str | float | int]): Dict containing the metrics to be published.
 
         Example:
             .. code-block:: python
