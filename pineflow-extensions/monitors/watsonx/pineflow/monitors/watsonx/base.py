@@ -1751,19 +1751,19 @@ class WatsonxCustomMetric:
         self,
         metric_instance_id: str,
         records_request: List[Dict],
-        custom_local_metric_id: str = None, # deprecated, use 'metric_instance_id'
+        custom_local_metric_id: str = None,  # deprecated, use 'metric_instance_id'
     ):
         return self.publish_local_metrics(
             metric_instance_id,
             records_request,
             custom_local_metric_id,
         )
-    
+
     def publish_local_metrics(
         self,
         metric_instance_id: str,
         records_request: List[Dict],
-        custom_local_metric_id: str = None, # deprecated, use 'metric_instance_id'
+        custom_local_metric_id: str = None,  # deprecated, use 'metric_instance_id'
     ):
         """
         Publishes computed custom metrics for a specific transaction record.
@@ -1793,21 +1793,21 @@ class WatsonxCustomMetric:
                 "'custom_local_metric_id' is deprecated and will be removed. "
                 "Please use 'metric_instance_id' instead.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
             if metric_instance_id is None:
                 metric_instance_id = custom_local_metric_id
-        # END deprecated params message 
+        # END deprecated params message
         return self._wos_client.data_sets.store_records(
             data_set_id=metric_instance_id,
             request_body=records_request,
         ).result
 
     def list_local_metrics(
-        self, 
+        self,
         metric_instance_id: str,
-        custom_local_metric_id: str # deprecated, use 'metric_instance_id'
-        ):
+        custom_local_metric_id: str,  # deprecated, use 'metric_instance_id'
+    ):
         """
         Lists records from a custom local metric definition.
 
@@ -1827,9 +1827,9 @@ class WatsonxCustomMetric:
                 "'custom_local_metric_id' is deprecated and will be removed. "
                 "Please use 'metric_instance_id' instead.",
                 DeprecationWarning,
-                stacklevel=2
+                stacklevel=2,
             )
             if metric_instance_id is None:
                 metric_instance_id = custom_local_metric_id
-        # END deprecated params message 
+        # END deprecated params message
         return self._get_dataset_data(metric_instance_id)
