@@ -9,6 +9,7 @@ description = "pineflow monitors watsonx extension"
 authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
 license = { text = "MIT" }
 readme = "README.md"
+requires-python = ">=3.10,<4.0"
 dependencies = [
     "certifi>=2025.4.26,<2026.0.0",
     "ibm-aigov-facts-client>=1.0.95,<1.1.0",
