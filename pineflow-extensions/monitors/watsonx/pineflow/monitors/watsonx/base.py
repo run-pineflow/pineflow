@@ -10,6 +10,8 @@ import certifi
 from deprecated import deprecated
 from pydantic.v1 import BaseModel
 
+from pineflow.core.monitors.base import BaseMonitor
+
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 logging.getLogger("ibm_watsonx_ai.client").setLevel(logging.ERROR)
 logging.getLogger("ibm_watsonx_ai.wml_resource").setLevel(logging.ERROR)
@@ -221,7 +223,7 @@ class IntegratedSystemCredentials(BaseModel):
 
 
 # ===== Monitor Classes =====
-class WatsonxExternalPromptMonitor:
+class WatsonxExternalPromptMonitor(BaseMonitor):
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring external LLMs.
 
@@ -236,6 +238,7 @@ class WatsonxExternalPromptMonitor:
         region (str, optional): The region where watsonx.governance is hosted when using IBM Cloud.
             Defaults to `us-south`.
         cpd_creds (CloudPakforDataCredentials, optional): The Cloud Pak for Data environment credentials.
+        subscription_id (str, optional): The subscription ID associated with the records being logged.
 
     Example:
         .. code-block:: python
@@ -271,6 +274,7 @@ class WatsonxExternalPromptMonitor:
         project_id: str = None,
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | Dict = None,
+        subscription_id: str = None
     ) -> None:
         import ibm_aigov_facts_client  # noqa: F401
         import ibm_cloud_sdk_core.authenticators  # noqa: F401
@@ -285,6 +289,7 @@ class WatsonxExternalPromptMonitor:
         self.space_id = space_id
         self.project_id = project_id
         self.region = region
+        self.subscription_id = subscription_id
         self._api_key = api_key
         self._wos_client = None
 
@@ -698,7 +703,7 @@ class WatsonxExternalPromptMonitor:
         return [data["scoring_id"] + "-1" for data in payload_data]
 
 
-class WatsonxPromptMonitor:
+class WatsonxPromptMonitor(BaseMonitor):
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring IBM watsonx.ai LLMs.
 
@@ -713,6 +718,7 @@ class WatsonxPromptMonitor:
         region (str, optional): The region where watsonx.governance is hosted when using IBM Cloud.
             Defaults to `us-south`.
         cpd_creds (CloudPakforDataCredentials, optional): The Cloud Pak for Data environment credentials.
+        subscription_id (str, optional): The subscription ID associated with the records being logged.
 
     Example:
         .. code-block:: python
@@ -746,6 +752,7 @@ class WatsonxPromptMonitor:
         project_id: str = None,
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | Dict = None,
+        subscription_id: str = None
     ) -> None:
         import ibm_aigov_facts_client  # noqa: F401
         import ibm_cloud_sdk_core.authenticators  # noqa: F401
@@ -760,6 +767,7 @@ class WatsonxPromptMonitor:
         self.space_id = space_id
         self.project_id = project_id
         self.region = region
+        self.subscription_id = subscription_id
         self._api_key = api_key
         self._wos_client = None
 
