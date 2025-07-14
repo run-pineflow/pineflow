@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 from pineflow.core.llms import BaseLLM, ChatMessage, ChatResponse, GenerateResponse
+from pineflow.core.llms.decorators import llm_chat_handler
 from pydantic import Field
 
 import litellm
@@ -22,6 +23,7 @@ class LiteLLM(BaseLLM):
         additional_kwargs (Dict[str, Any]): A dictionary of additional parameters passed
             to the LLM during completion. This allows customization of the request beyond
             the standard parameters.
+        monitor_manager: (BaseMonitor): The monitor manager is used for observability.
     """
 
     model: str
@@ -77,6 +79,7 @@ class LiteLLM(BaseLLM):
 
         return response["choices"][0]["text"]
 
+    @llm_chat_handler()
     def chat_completion(
         self, messages: List[ChatMessage], **kwargs: Any
     ) -> ChatResponse:
