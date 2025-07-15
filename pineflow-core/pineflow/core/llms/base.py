@@ -1,12 +1,16 @@
 from abc import ABC, abstractmethod
-from typing import Any, List
+from typing import Any, List, Optional
 
 from pineflow.core.llms.types import ChatMessage, ChatResponse, GenerateResponse
+from pineflow.core.observability import BaseObservability
 from pydantic import BaseModel
 
 
 class BaseLLM(ABC, BaseModel):
     """An interface for LLMs."""
+
+    model_config = {"arbitrary_types_allowed": True}
+    callback_manager: Optional[BaseObservability]
 
     @classmethod
     def class_name(cls) -> str:

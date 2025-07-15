@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pineflow-llms-litellm"
-version = "0.7.0"
+version = "0.7.1"
 description = "pineflow llms litellm extension"
 authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
 license = { text = "MIT" }
 readme = "README.md"
 dependencies = [
     "litellm>=1.73.2,<2.0.0",
-    "pineflow-core>=0.7.3,<0.8.0",
+    "pineflow-core>=0.7.5,<0.8.0",
 ]
 
 [tool.hatch.build.targets.sdist]

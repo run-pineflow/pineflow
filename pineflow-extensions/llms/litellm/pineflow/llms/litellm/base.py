@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 from pineflow.core.llms import BaseLLM, ChatMessage, ChatResponse, GenerateResponse
+from pineflow.core.llms.decorators import llm_chat_observer
 from pydantic import Field
 
 import litellm
@@ -14,14 +15,15 @@ class LiteLLM(BaseLLM):
 
     Args:
         model (str): The identifier of the LLM model to use (e.g., "gpt-4", "llama-3").
-        temperature (float): Sampling temperature to use. Must be between 0.0 and 1.0.
+        temperature (float, optional): Sampling temperature to use. Must be between 0.0 and 1.0.
             Higher values result in more random outputs, while lower values make the
             output more deterministic. Default is 1.0.
-        max_tokens (int): The maximum number of tokens to generate in the completion.
+        max_tokens (int, optional): The maximum number of tokens to generate in the completion.
         api_key (str): API key used for authenticating with the LLM provider.
-        additional_kwargs (Dict[str, Any]): A dictionary of additional parameters passed
+        additional_kwargs (Dict[str, Any], optional): A dictionary of additional parameters passed
             to the LLM during completion. This allows customization of the request beyond
             the standard parameters.
+        callback_manager: (ModelObservability, optional): The callback manager is used for observability.
     """
 
     model: str
@@ -77,6 +79,7 @@ class LiteLLM(BaseLLM):
 
         return response["choices"][0]["text"]
 
+    @llm_chat_observer()
     def chat_completion(
         self, messages: List[ChatMessage], **kwargs: Any
     ) -> ChatResponse:
