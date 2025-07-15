@@ -10,7 +10,7 @@ import litellm
 class LiteLLM(BaseLLM):
     """
     A wrapper class for interacting with a LiteLLM-compatible large language model (LLM).
-    For more information, see: <https://docs.litellm.ai/>_.
+    For more information, see: https://docs.litellm.ai/.
 
 
     Args:
