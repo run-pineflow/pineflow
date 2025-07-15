@@ -10,7 +10,7 @@ class BaseLLM(ABC, BaseModel):
     """An interface for LLMs."""
 
     model_config = {"arbitrary_types_allowed": True}
-    callback_manager: Optional[BaseObservability]
+    callback_manager: Optional[BaseObservability] = None
 
     @classmethod
     def class_name(cls) -> str:
