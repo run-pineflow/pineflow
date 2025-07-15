@@ -10,7 +10,7 @@ class SafeFormatter(dict):
 
 def extract_template_vars(template_str: str, input_text: str):
     """
-    Extracts variables values from template string into a dictionary. 
+    Extracts variables values from template string into a dictionary.
     Support fuzzy changes between `template_str` and `input_text`.
     """
     parts = re.split(r"({.*?})", template_str)

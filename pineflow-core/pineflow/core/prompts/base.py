@@ -16,6 +16,7 @@ class PromptTemplate(BaseModel):
 
             PromptTemplate("Summarize the following text: {input_text}")
     """
+
     template: str
 
     def __init__(self, template: str):
