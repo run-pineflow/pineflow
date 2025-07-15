@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pineflow"
-version = "0.7.1"
+version = "0.7.2"
 description = "Load any data in one line of code and connect with AI applications"
 authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
 license = { text = "MIT" }
@@ -17,8 +17,9 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
-    "pineflow-core>=0.7.4,<0.8.0",
+    "pineflow-core>=0.7.5,<0.8.0",
     "pineflow-embeddings-huggingface>=0.7.1,<0.8.0",
+    "pineflow-llms-litellm>=0.7.1,<0.8.0",
     "pineflow-readers-docling>=0.7.2,<0.8.0",
     "pineflow-readers-file>=0.7.1,<0.8.0",
 ]

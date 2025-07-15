@@ -6,7 +6,7 @@ IBM watsonx.governance
     pip install pineflow-monitors-watsonx
 
 
-Monitors
+Observability
 ---------------------
 
 .. autoclass:: pineflow.monitors.watsonx.WatsonxPromptMonitor
