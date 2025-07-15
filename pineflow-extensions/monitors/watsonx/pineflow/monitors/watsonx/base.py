@@ -1498,7 +1498,7 @@ class WatsonxCustomMetric:
         field_value: Any,
         op_name: str = "replace",
     ) -> Dict:
-        return {"op": op_name, "va": field_path, "value": field_value}
+        return {"op": op_name, "path": field_path, "value": field_value}
 
     def _get_dataset_id(
         self,
