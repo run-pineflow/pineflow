@@ -8,9 +8,10 @@ from typing import Any, Dict, List, Literal, Optional, Union
 
 import certifi
 from deprecated import deprecated
+from pineflow.core.observability import ModelObservability
+from pineflow.core.observability.types import PayloadRecord
+from pineflow.core.prompts.utils import extract_template_vars
 from pydantic.v1 import BaseModel
-
-from pineflow.core.monitors.base import BaseMonitor
 
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 logging.getLogger("ibm_watsonx_ai.client").setLevel(logging.ERROR)
@@ -83,6 +84,10 @@ def _convert_payload_format(
             "response": {"results": [results]},
             "scoring_id": str(uuid.uuid4()),
         }
+
+        if "response_time" in record:
+            pl_record["response_time"] = record["response_time"]
+
         payload_data.append(pl_record)
 
     return payload_data
@@ -222,8 +227,8 @@ class IntegratedSystemCredentials(BaseModel):
         return integrated_system_creds
 
 
-# ===== Monitor Classes =====
-class WatsonxExternalPromptMonitor(BaseMonitor):
+# ===== Observability Classes =====
+class WatsonxExternalPromptMonitor(ModelObservability):
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring external LLMs.
 
@@ -274,17 +279,15 @@ class WatsonxExternalPromptMonitor(BaseMonitor):
         project_id: str = None,
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | Dict = None,
-        subscription_id: str = None
+        subscription_id: str = None,
+        **kwargs,
     ) -> None:
         import ibm_aigov_facts_client  # noqa: F401
         import ibm_cloud_sdk_core.authenticators  # noqa: F401
         import ibm_watson_openscale  # noqa: F401
         import ibm_watsonx_ai  # noqa: F401
 
-        if (not (project_id or space_id)) or (project_id and space_id):
-            raise ValueError(
-                "`project_id` and `space_id` parameter cannot be set at the same time.",
-            )
+        super().__init__(**kwargs)
 
         self.space_id = space_id
         self.project_id = project_id
@@ -460,6 +463,14 @@ class WatsonxExternalPromptMonitor(BaseMonitor):
                     question_field="input_query",
                 )
         """
+        if (not (self.project_id or self.space_id)) or (
+            self.project_id and self.space_id
+        ):
+            raise ValueError(
+                "Invalid configuration: Neither was provided: please set either 'project_id' or 'space_id'. "
+                "Both were provided: 'project_id' and 'space_id' cannot be set at the same time."
+            )
+
         prompt_metadata = locals()
         # Remove unused vars from dict
         prompt_metadata.pop("self", None)
@@ -611,14 +622,14 @@ class WatsonxExternalPromptMonitor(BaseMonitor):
     def store_payload_records(
         self,
         records_request: List[Dict],
-        subscription_id: str,
+        subscription_id: str = None,
     ) -> List[str]:
         """
         Stores records to the payload logging system.
 
         Args:
             records_request (List[Dict]): A list of records to be logged, where each record is represented as a dictionary.
-            subscription_id (str): The subscription ID associated with the records being logged.
+            subscription_id (str, optional): The subscription ID associated with the records being logged.
 
         Example:
             .. code-block:: python
@@ -643,6 +654,15 @@ class WatsonxExternalPromptMonitor(BaseMonitor):
             DataSetTypes,
             TargetTypes,
         )
+
+        # Expected behavior: Prefer using fn `subscription_id`.
+        # Fallback to `self.subscription_id` if `subscription_id` None or empty.
+        _subscription_id = subscription_id or self.subscription_id
+
+        if _subscription_id is None or _subscription_id == "":
+            raise ValueError(
+                "Unexpected value for 'subscription_id': Cannot be None or empty string."
+            )
 
         if not self._wos_client:
             try:
@@ -675,7 +695,7 @@ class WatsonxExternalPromptMonitor(BaseMonitor):
                 raise
 
         subscription_details = self._wos_client.subscriptions.get(
-            subscription_id,
+            _subscription_id,
         ).result
         subscription_details = json.loads(str(subscription_details))
 
@@ -686,7 +706,7 @@ class WatsonxExternalPromptMonitor(BaseMonitor):
         payload_data_set_id = (
             self._wos_client.data_sets.list(
                 type=DataSetTypes.PAYLOAD_LOGGING,
-                target_target_id=subscription_id,
+                target_target_id=_subscription_id,
                 target_target_type=TargetTypes.SUBSCRIPTION,
             )
             .result.data_sets[0]
@@ -694,16 +714,28 @@ class WatsonxExternalPromptMonitor(BaseMonitor):
         )
 
         payload_data = _convert_payload_format(records_request, feature_fields)
+
         self._wos_client.data_sets.store_records(
             data_set_id=payload_data_set_id,
             request_body=payload_data,
-            background_mode=True,
+            background_mode=False,
         )
 
         return [data["scoring_id"] + "-1" for data in payload_data]
 
+    def __call__(self, payload: PayloadRecord) -> None:
+        if self.prompt_template:
+            template_vars = extract_template_vars(
+                self.prompt_template.template, payload.input_text
+            )
 
-class WatsonxPromptMonitor(BaseMonitor):
+        if not template_vars:
+            self.store_payload_records([payload.model_dump()])
+        else:
+            self.store_payload_records([{**payload.model_dump(), **template_vars}])
+
+
+class WatsonxPromptMonitor(ModelObservability):
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring IBM watsonx.ai LLMs.
 
@@ -752,17 +784,15 @@ class WatsonxPromptMonitor(BaseMonitor):
         project_id: str = None,
         region: Literal["us-south", "eu-de", "au-syd"] = "us-south",
         cpd_creds: CloudPakforDataCredentials | Dict = None,
-        subscription_id: str = None
+        subscription_id: str = None,
+        **kwargs,
     ) -> None:
         import ibm_aigov_facts_client  # noqa: F401
         import ibm_cloud_sdk_core.authenticators  # noqa: F401
         import ibm_watson_openscale  # noqa: F401
         import ibm_watsonx_ai  # noqa: F401
 
-        if (not (project_id or space_id)) or (project_id and space_id):
-            raise ValueError(
-                "`project_id` and `space_id` parameter cannot be set at the same time.",
-            )
+        super().__init__(**kwargs)
 
         self.space_id = space_id
         self.project_id = project_id
@@ -924,6 +954,14 @@ class WatsonxPromptMonitor(BaseMonitor):
                     question_field="input_query",
                 )
         """
+        if (not (self.project_id or self.space_id)) or (
+            self.project_id and self.space_id
+        ):
+            raise ValueError(
+                "Invalid configuration: Neither was provided: please set either 'project_id' or 'space_id'. "
+                "Both were provided: 'project_id' and 'space_id' cannot be set at the same time."
+            )
+
         prompt_metadata = locals()
         # Remove unused vars from dict
         prompt_metadata.pop("self", None)
@@ -1055,14 +1093,14 @@ class WatsonxPromptMonitor(BaseMonitor):
     def store_payload_records(
         self,
         records_request: List[Dict],
-        subscription_id: str,
+        subscription_id: str = None,
     ) -> List[str]:
         """
         Stores records to the payload logging system.
 
         Args:
             records_request (List[Dict]): A list of records to be logged. Each record is represented as a dictionary.
-            subscription_id (str): The subscription ID associated with the records being logged.
+            subscription_id (str, optional): The subscription ID associated with the records being logged.
 
         Example:
             .. code-block:: python
@@ -1087,6 +1125,15 @@ class WatsonxPromptMonitor(BaseMonitor):
             DataSetTypes,
             TargetTypes,
         )
+
+        # Expected behavior: Prefer using fn `subscription_id`.
+        # Fallback to `self.subscription_id` if `subscription_id` None or empty.
+        _subscription_id = subscription_id or self.subscription_id
+
+        if _subscription_id is None or _subscription_id == "":
+            raise ValueError(
+                "Unexpected value for 'subscription_id': Cannot be None or empty string."
+            )
 
         if not self._wos_client:
             try:
@@ -1120,7 +1167,7 @@ class WatsonxPromptMonitor(BaseMonitor):
                 raise
 
         subscription_details = self._wos_client.subscriptions.get(
-            subscription_id,
+            _subscription_id,
         ).result
         subscription_details = json.loads(str(subscription_details))
 
@@ -1131,7 +1178,7 @@ class WatsonxPromptMonitor(BaseMonitor):
         payload_data_set_id = (
             self._wos_client.data_sets.list(
                 type=DataSetTypes.PAYLOAD_LOGGING,
-                target_target_id=subscription_id,
+                target_target_id=_subscription_id,
                 target_target_type=TargetTypes.SUBSCRIPTION,
             )
             .result.data_sets[0]
@@ -1139,13 +1186,25 @@ class WatsonxPromptMonitor(BaseMonitor):
         )
 
         payload_data = _convert_payload_format(records_request, feature_fields)
+
         self._wos_client.data_sets.store_records(
             data_set_id=payload_data_set_id,
             request_body=payload_data,
-            background_mode=True,
+            background_mode=False,
         )
 
         return [data["scoring_id"] + "-1" for data in payload_data]
+
+    def __call__(self, payload: PayloadRecord) -> None:
+        if self.prompt_template:
+            template_vars = extract_template_vars(
+                self.prompt_template.template, payload.input_text
+            )
+
+        if not template_vars:
+            self.store_payload_records([payload.model_dump()])
+        else:
+            self.store_payload_records([{**payload.model_dump(), **template_vars}])
 
 
 # ===== Supporting Classes =====
@@ -1394,7 +1453,7 @@ class WatsonxCustomMetric:
             schedule=_monitor_schedule,
             applies_to=ApplicabilitySelection(input_data_type=["unstructured_text"]),
             monitor_runtime=_monitor_runtime,
-            background_mode=True,
+            background_mode=False,
         ).result
 
         return custom_monitor_details.metadata.id
@@ -1748,7 +1807,7 @@ class WatsonxCustomMetric:
             location=LocationTableName(
                 table_name=name.lower().replace(" ", "_") + "_" + str(uuid.uuid4())[:8],
             ),
-            background_mode=True,
+            background_mode=False,
         ).result.metadata.id
 
     @deprecated(
