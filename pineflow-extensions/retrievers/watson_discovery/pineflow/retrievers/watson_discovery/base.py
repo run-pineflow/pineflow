@@ -72,7 +72,7 @@ class WatsonDiscoveryRetriever:
         Example:
             .. code-block:: python
 
-                docs = doc_retriever.query("What's Pineflow?")
+                docs = doc_retriever.search_documents("What's Pineflow?")
         """
         from ibm_watson.discovery_v2 import QueryLargePassages
 
