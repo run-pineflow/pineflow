@@ -60,7 +60,7 @@ class DoclingReader(BaseReader):
                 documents.append(
                     Document(
                         text=table_text,
-                        metadata={"source": input_file, "table_index": i},
+                        metadata={"source": input_file, "table_index": i, "table": True},
                     ),
                 )
 
