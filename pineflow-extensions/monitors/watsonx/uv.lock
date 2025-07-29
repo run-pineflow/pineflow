@@ -764,7 +764,7 @@ wheels = [
 
 [[package]]
 name = "pineflow-monitors-watsonx"
-version = "0.7.4"
+version = "0.7.5"
 source = { editable = "." }
 dependencies = [
     { name = "certifi" },
