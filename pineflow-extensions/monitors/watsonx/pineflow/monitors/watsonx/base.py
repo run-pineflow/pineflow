@@ -165,29 +165,30 @@ class IntegratedSystemCredentials(BaseModel):
         password (str, optional): The password for Basic Authentication.
         token_url (str, optional): The URL of the authentication endpoint used to request a Bearer token.
         token_method (str, optional): The HTTP method (e.g., "POST", "GET") used to request the Bearer token.
+            Defaults to "POST".
         token_headers (Dict, optional): Optional headers to include when requesting the Bearer token.
             Defaults to `None`.
-        token_payload (str, optional): The body or payload to send when requesting the Bearer token.
-            Can be a string (e.g., raw JSON).
+        token_payload (str | dict, optional): The body or payload to send when requesting the Bearer token.
+            Can be a string (e.g., raw JSON). Defaults to `None`.
     """
 
     auth_type: Literal["basic", "bearer"]
     username: Optional[str]  # basic
     password: Optional[str]  # basic
     token_url: Optional[str]  # bearer
-    token_method: Optional[str]  # bearer
-    token_headers: Optional[Dict]  # bearer
-    token_payload: Optional[Union[str, Dict]]  # bearer
+    token_method: Optional[str] = "POST"  # bearer
+    token_headers: Optional[Dict] = {}  # bearer
+    token_payload: Optional[Union[str, Dict]] = None  # bearer
 
     def __init__(
         self,
         auth_type: Literal["basic", "bearer"],
         username: str = None,
         password: str = None,
-        url: str = None,
-        headers: Dict = {},
-        payload: Union[str, Dict] = "",
-        method: str = None,
+        token_url: str = None,
+        token_method: str = "POST",
+        token_headers: Dict = {},
+        token_payload: Union[str, Dict] = None,
     ) -> None:
         if auth_type == "basic":
             if not username or not password:
@@ -195,19 +196,19 @@ class IntegratedSystemCredentials(BaseModel):
                     "`username` and `password` are required for auth_type = 'basic'.",
                 )
         elif auth_type == "bearer":
-            if not url or not method:
+            if not token_url:
                 raise ValueError(
-                    "`url` and `method` are required for auth_type = 'bearer'.",
+                    "`token_url` are required for auth_type = 'bearer'.",
                 )
 
         super().__init__(
             auth_type=auth_type,
             username=username,
             password=password,
-            url=url,
-            headers=headers,
-            payload=payload,
-            method=method,
+            token_url=token_url,
+            token_method=token_method,
+            token_headers=token_headers,
+            token_payload=token_payload,
         )
 
     def to_dict(self) -> Dict:
@@ -219,9 +220,9 @@ class IntegratedSystemCredentials(BaseModel):
         elif self.auth_type == "bearer":
             integrated_system_creds["token_info"] = {
                 "url": self.token_url,
+                "method": self.token_method,
                 "headers": self.token_headers,
                 "payload": self.token_payload,
-                "method": self.token_method,
             }
 
         return integrated_system_creds
