@@ -58,7 +58,9 @@ class LiteLLM(BaseLLM):
         """
         all_kwargs = self._get_all_kwargs(**kwargs)
 
-        response = litellm.text_completion(prompt=prompt, **all_kwargs).model_dump(exclude_none=True)
+        response = litellm.text_completion(prompt=prompt, **all_kwargs).model_dump(
+            exclude_none=True
+        )
 
         return GenerateResponse(
             text=response["choices"][0]["text"],
@@ -75,7 +77,9 @@ class LiteLLM(BaseLLM):
         """
         all_kwargs = self._get_all_kwargs(**kwargs)
 
-        response = litellm.text_completion(prompt=prompt, **all_kwargs).model_dump(exclude_none=True)
+        response = litellm.text_completion(prompt=prompt, **all_kwargs).model_dump(
+            exclude_none=True
+        )
 
         return response["choices"][0]["text"]
 
