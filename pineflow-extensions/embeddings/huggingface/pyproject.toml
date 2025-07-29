@@ -9,6 +9,7 @@ description = "pineflow embeddings huggingface extension"
 authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
 license = { text = "MIT" }
 readme = "README.md"
+requires-python = ">=3.10,<4.0"
 dependencies = [
     "accelerate>=1.7.0,<2.0.0",
     "sentence-transformers>=4.1.0,<5.0.0",
