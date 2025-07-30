@@ -23,6 +23,7 @@ Pineflow is a data framework to load any data in one line of code and connect wi
     Schema <schema>
 
 .. toctree::
+    :caption:  
     :hidden:
     :maxdepth: 2
 
