@@ -5,15 +5,15 @@ from pineflow.core.monitors.types import PayloadRecord
 from pineflow.core.prompts import PromptTemplate
 
 
-class BaseObservability(ABC):
+class BaseMonitor(ABC):
     """An interface for observability."""
 
     @classmethod
     def class_name(cls) -> str:
-        return "BaseObservability"
+        return "BaseMonitor"
 
 
-class ModelObservability(BaseObservability):
+class ModelMonitor(BaseMonitor):
     """An interface for model observability."""
 
     def __init__(self, prompt_template: Optional[PromptTemplate] = None) -> None:
@@ -21,16 +21,16 @@ class ModelObservability(BaseObservability):
 
     @classmethod
     def class_name(cls) -> str:
-        return "ModelObservability"
+        return "ModelMonitor"
 
     @abstractmethod
     def __call__(self, payload: PayloadRecord) -> None:
-        """ModelObservability."""
+        """ModelMonitor."""
 
 
-class TelemetryObservability(BaseObservability):
+class TelemetryMonitor(BaseMonitor):
     """An interface for telemetry observability."""
 
     @classmethod
     def class_name(cls) -> str:
-        return "TelemetryObservability"
+        return "TelemetryMonitor"
