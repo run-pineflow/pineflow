@@ -23,7 +23,7 @@ class LiteLLM(BaseLLM):
         additional_kwargs (Dict[str, Any], optional): A dictionary of additional parameters passed
             to the LLM during completion. This allows customization of the request beyond
             the standard parameters.
-        callback_manager: (ModelObservability, optional): The callback manager is used for observability.
+        callback_manager: (ModelMonitor, optional): The callback manager is used for observability.
     """
 
     model: str
