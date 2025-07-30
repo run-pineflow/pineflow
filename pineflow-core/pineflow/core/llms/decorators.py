@@ -5,7 +5,7 @@ from logging import getLogger
 from typing import Callable
 
 from pineflow.core.llms.types import ChatMessage
-from pineflow.core.observability.types import PayloadRecord
+from pineflow.core.monitors.types import PayloadRecord
 
 logger = getLogger(__name__)
 
