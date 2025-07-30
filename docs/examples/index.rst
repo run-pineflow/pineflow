@@ -5,4 +5,4 @@ Examples
 .. toctree::
     :maxdepth: 1
     
-     Setup built-in observability <ibm_watsonx_governance>
+     Setup built-in observability <built_in_observability>
