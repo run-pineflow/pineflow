@@ -1728,7 +1728,7 @@ wheels = [
 
 [[package]]
 name = "pineflow"
-version = "0.7.2"
+version = "0.7.3"
 source = { editable = "." }
 dependencies = [
     { name = "pineflow-core" },
@@ -1753,10 +1753,10 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "furo", marker = "extra == 'docs'", specifier = ">=2024.8.6" },
-    { name = "pineflow-core", specifier = ">=0.7.5,<0.8.0" },
+    { name = "pineflow-core", specifier = ">=0.7.7,<0.8.0" },
     { name = "pineflow-embeddings-huggingface", specifier = ">=0.7.1,<0.8.0" },
-    { name = "pineflow-llms-litellm", specifier = ">=0.7.1,<0.8.0" },
-    { name = "pineflow-readers-docling", specifier = ">=0.7.2,<0.8.0" },
+    { name = "pineflow-llms-litellm", specifier = ">=0.7.2,<0.8.0" },
+    { name = "pineflow-readers-docling", specifier = ">=0.7.3,<0.8.0" },
     { name = "pineflow-readers-file", specifier = ">=0.7.1,<0.8.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.13" },
     { name = "sphinx", marker = "extra == 'docs'", specifier = ">=8.1.3" },
@@ -1767,7 +1767,7 @@ provides-extras = ["dev", "docs"]
 
 [[package]]
 name = "pineflow-core"
-version = "0.7.5"
+version = "0.7.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "deprecated" },
@@ -1776,9 +1776,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "tiktoken" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/88/74/8bc339efe75fcdc920d5b3c1c52402f11c5e191f81db48be9b2fc15cc2ea/pineflow_core-0.7.5.tar.gz", hash = "sha256:b13b41ce706f8d3ee7613151b4d1c5c3e3cee163dd7bcbc014f5fb109bc94731", size = 13599, upload-time = "2025-07-15T13:37:06.879Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4a/8e/07d7e22e7dd3717026da1d2aeb08692178e6eb48a630ce8c664e410d49e1/pineflow_core-0.7.7.tar.gz", hash = "sha256:5db4bdb42a00be5a5ea634b00f13fbd58d52961eaa8107fb7f79a43aaac97bf0", size = 13644, upload-time = "2025-07-29T18:04:43.491Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/32/6d60fe4dae4526c1f5f2d378736a1ab2f8850d13295b36a79577d29c86f9/pineflow_core-0.7.5-py3-none-any.whl", hash = "sha256:089162039333060bb1e0755f2821fe292acfb7b3de8de1003bfb3368b302e783", size = 24033, upload-time = "2025-07-15T13:37:05.886Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/f5/c0a9cfc41ccb7cb512c78da4736e65f367ec8e75d9d7eeb7443b85f246cb/pineflow_core-0.7.7-py3-none-any.whl", hash = "sha256:8ee6e7b136b74b43d558312bf20a62e5150a4b9ab5f7c048406d0478e92abb3b", size = 24143, upload-time = "2025-07-29T18:04:42.46Z" },
 ]
 
 [[package]]
@@ -1798,28 +1798,29 @@ wheels = [
 
 [[package]]
 name = "pineflow-llms-litellm"
-version = "0.7.1"
+version = "0.7.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "litellm" },
     { name = "pineflow-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/68/87/e4f2ff248f255cc5b02652d212023d2db7fffd0c0ffbf0c5829e5a3be949/pineflow_llms_litellm-0.7.1.tar.gz", hash = "sha256:752dd1f82f3762266630e61df8104d38936c3724bbf25e770c6f877c6272d484", size = 2692, upload-time = "2025-07-15T13:51:02.879Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/38/18/bd13e528a3eab55a2f615ae1e62456a0ea64931b804de00cbcec543f597c/pineflow_llms_litellm-0.7.2.tar.gz", hash = "sha256:9750d592633f24488eea2941d11b7f249d9697792a449d395bdbe7a67ce39f24", size = 2734, upload-time = "2025-07-29T13:58:28.249Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/92/2cfa245c2160847c11f3dea0ce19bae121ae1b53dc9607ff6f3ecd7f29e6/pineflow_llms_litellm-0.7.1-py2.py3-none-any.whl", hash = "sha256:52d81745879bf3bc0b6198834df1c952aa774d48624361c80104dae6b641107c", size = 2743, upload-time = "2025-07-15T13:51:01.719Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/c3/632ab67093af29cfbae26d2921f9ed84765a9c1238b3b6a69abdde075804/pineflow_llms_litellm-0.7.2-py3-none-any.whl", hash = "sha256:c2ecf753cae16821b149aed55e68c2e5c6a8be88c798ddb5e2d7a585d2be2bf4", size = 2771, upload-time = "2025-07-29T13:58:27.191Z" },
 ]
 
 [[package]]
 name = "pineflow-readers-docling"
-version = "0.7.2"
+version = "0.7.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docling" },
     { name = "pineflow-core" },
+    { name = "torch" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ea/fd/f0a6b81471e999e32210567ee312d0baa8a0133d5bd3f47f3fe1a7d66326/pineflow_readers_docling-0.7.2.tar.gz", hash = "sha256:73b631c02a31efdefd4180664cc0e8b1a63f8315b1ef5a0b68930a7b7b6af71d", size = 1750, upload-time = "2025-06-21T20:40:48.013Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/76/d94fe49e34b889035aa53f6d6a9ac9cb09e89d2b9081895ff2111307a623/pineflow_readers_docling-0.7.3.tar.gz", hash = "sha256:54c0e90d0571ab5bf33beee67c0540816efeeda49f27e10cbc24715ad1425965", size = 2451, upload-time = "2025-07-29T14:13:55.805Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/55/86/0680fd9095dc132d8a41bcaa3df3a8fd9f0fd5290affcd8c329a05bab698/pineflow_readers_docling-0.7.2-py2.py3-none-any.whl", hash = "sha256:d0e8be881a7f177f92fb6fde9e5f5569362ffaf8100343343b0c3474f17218e0", size = 2550, upload-time = "2025-06-21T20:40:46.042Z" },
+    { url = "https://files.pythonhosted.org/packages/79/fe/ec83b1734d85e0c6fbd067d2cc2af2672fff1d008e77fcdb63d6d0b8b951/pineflow_readers_docling-0.7.3-py3-none-any.whl", hash = "sha256:cd7a220da204690ba40645dc014fa74129fee040c1ad2b26e156f20d9cac7e01", size = 2523, upload-time = "2025-07-29T14:13:52.13Z" },
 ]
 
 [[package]]
