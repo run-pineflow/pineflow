@@ -15,13 +15,13 @@ Observability
 .. autoclass:: pineflow.monitors.watsonx.WatsonxExternalPromptMonitor
     :members:
 
-Custom Metrics
+watsonx Custom Metrics
 ---------------------
 
 .. autoclass:: pineflow.monitors.watsonx.WatsonxCustomMetric
     :members:
 
-Credentials
+watsonx Credentials
 ---------------------
 
 .. autoclass:: pineflow.monitors.watsonx.CloudPakforDataCredentials
@@ -30,7 +30,7 @@ Credentials
 .. autoclass:: pineflow.monitors.watsonx.IntegratedSystemCredentials
     :members:
 
-Supporting Classes
+watsonx Supporting Classes
 ---------------------
 
 .. autoclass:: pineflow.monitors.watsonx.WatsonxMetric
