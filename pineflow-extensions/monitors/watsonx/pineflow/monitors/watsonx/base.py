@@ -8,8 +8,8 @@ from typing import Any, Dict, List, Literal, Optional, Union
 
 import certifi
 from deprecated import deprecated
-from pineflow.core.observability import ModelObservability
-from pineflow.core.observability.types import PayloadRecord
+from pineflow.core.monitors import ModelMonitor
+from pineflow.core.monitors.types import PayloadRecord
 from pineflow.core.prompts.utils import extract_template_vars
 from pydantic.v1 import BaseModel
 
@@ -228,8 +228,8 @@ class IntegratedSystemCredentials(BaseModel):
         return integrated_system_creds
 
 
-# ===== Observability Classes =====
-class WatsonxExternalPromptMonitor(ModelObservability):
+# ===== Monitor Classes =====
+class WatsonxExternalPromptMonitor(ModelMonitor):
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring external LLMs.
 
@@ -736,7 +736,7 @@ class WatsonxExternalPromptMonitor(ModelObservability):
             self.store_payload_records([{**payload.model_dump(), **template_vars}])
 
 
-class WatsonxPromptMonitor(ModelObservability):
+class WatsonxPromptMonitor(ModelMonitor):
     """
     Provides functionality to interact with IBM watsonx.governance for monitoring IBM watsonx.ai LLMs.
 

@@ -748,7 +748,7 @@ wheels = [
 
 [[package]]
 name = "pineflow-core"
-version = "0.7.5"
+version = "0.7.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "deprecated" },
@@ -757,14 +757,14 @@ dependencies = [
     { name = "pydantic" },
     { name = "tiktoken" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/88/74/8bc339efe75fcdc920d5b3c1c52402f11c5e191f81db48be9b2fc15cc2ea/pineflow_core-0.7.5.tar.gz", hash = "sha256:b13b41ce706f8d3ee7613151b4d1c5c3e3cee163dd7bcbc014f5fb109bc94731", size = 13599, upload-time = "2025-07-15T13:37:06.879Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c9/dd/79077b1826a11b795d1e7ce391e46d603afc8acbeb8e46798a54cf8167fb/pineflow_core-0.7.8.tar.gz", hash = "sha256:2f9a2930f1666c99e9f5e73bd2083b62e03b6d5f727b84afa877af6b8b92d124", size = 13866, upload-time = "2025-07-30T18:14:09.345Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/32/6d60fe4dae4526c1f5f2d378736a1ab2f8850d13295b36a79577d29c86f9/pineflow_core-0.7.5-py3-none-any.whl", hash = "sha256:089162039333060bb1e0755f2821fe292acfb7b3de8de1003bfb3368b302e783", size = 24033, upload-time = "2025-07-15T13:37:05.886Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/77/b4fd2d14a7e7b7bafe81d3b5983539b4aa98491748b2d36c0619bf04d4d1/pineflow_core-0.7.8-py3-none-any.whl", hash = "sha256:3ad529f35aae745edc0aa1867f61cb423f9ffbf49be5a4987396bf33035b0992", size = 24989, upload-time = "2025-07-30T18:14:08.132Z" },
 ]
 
 [[package]]
 name = "pineflow-monitors-watsonx"
-version = "0.7.5"
+version = "0.7.6"
 source = { editable = "." }
 dependencies = [
     { name = "certifi" },
@@ -787,7 +787,7 @@ requires-dist = [
     { name = "ibm-watson-openscale", specifier = ">=3.0.47,<3.1.0" },
     { name = "ibm-watsonx-ai", specifier = ">=1.3.26,<2.0.0" },
     { name = "ipython", specifier = "==8.37.0" },
-    { name = "pineflow-core", specifier = ">=0.7.5,<0.8.0" },
+    { name = "pineflow-core", specifier = ">=0.7.8,<0.8.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.13" },
 ]
 provides-extras = ["dev"]
