@@ -414,7 +414,13 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
         self,
         name: str,
         model_id: str,
-        task_id: Literal["extraction", "generation", "question_answering","retrieval_augmented_generation", "summarization"],
+        task_id: Literal[
+            "extraction",
+            "generation",
+            "question_answering",
+            "retrieval_augmented_generation",
+            "summarization",
+        ],
         detached_model_provider: str,
         description: str = "",
         model_parameters: Dict = None,
@@ -473,10 +479,12 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
                 "Invalid configuration: Neither was provided: please set either 'project_id' or 'space_id'. "
                 "Both were provided: 'project_id' and 'space_id' cannot be set at the same time."
             )
-        
+
         if task_id == "retrieval_augmented_generation":
             if not context_fields or not question_field:
-                raise ValueError("For 'retrieval_augmented_generation' task, requires non-empty 'context_fields' and 'question_field'.")
+                raise ValueError(
+                    "For 'retrieval_augmented_generation' task, requires non-empty 'context_fields' and 'question_field'."
+                )
 
         prompt_metadata = locals()
         # Remove unused vars from dict
@@ -927,7 +935,13 @@ class WatsonxPromptMonitor(ModelMonitor):
         self,
         name: str,
         model_id: str,
-        task_id: Literal["extraction", "generation", "question_answering","retrieval_augmented_generation", "summarization"],
+        task_id: Literal[
+            "extraction",
+            "generation",
+            "question_answering",
+            "retrieval_augmented_generation",
+            "summarization",
+        ],
         description: str = "",
         model_parameters: Dict = None,
         prompt_variables: List[str] = None,
@@ -973,12 +987,13 @@ class WatsonxPromptMonitor(ModelMonitor):
                 "Invalid configuration: Neither was provided: please set either 'project_id' or 'space_id'. "
                 "Both were provided: 'project_id' and 'space_id' cannot be set at the same time."
             )
-        
+
         if task_id == "retrieval_augmented_generation":
             if not context_fields or not question_field:
-                raise ValueError("For 'retrieval_augmented_generation' task, requires non-empty 'context_fields' and 'question_field'.")
+                raise ValueError(
+                    "For 'retrieval_augmented_generation' task, requires non-empty 'context_fields' and 'question_field'."
+                )
 
-        
         prompt_metadata = locals()
         # Remove unused vars from dict
         prompt_metadata.pop("self", None)
