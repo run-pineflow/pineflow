@@ -414,7 +414,13 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
         self,
         name: str,
         model_id: str,
-        task_id: Literal["retrieval_augmented_generation", "summarization"],
+        task_id: Literal[
+            "extraction",
+            "generation",
+            "question_answering",
+            "retrieval_augmented_generation",
+            "summarization",
+        ],
         detached_model_provider: str,
         description: str = "",
         model_parameters: Dict = None,
@@ -423,6 +429,7 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
         detached_prompt_url: str = None,
         detached_prompt_additional_info: Dict = None,
         prompt_variables: List[str] = None,
+        locale: str = None,
         input_text: str = None,
         context_fields: List[str] = None,
         question_field: str = None,
@@ -442,6 +449,7 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
             detached_prompt_url (str, optional): The URL of the external prompt.
             detached_prompt_additional_info (Dict, optional): Additional information related to the external prompt.
             prompt_variables (List[str], optional): Values for the prompt variables.
+            locale (str, optional): Locale code for the input/output language. eg. "en", "pt", "es".
             input_text (str, optional): The input text for the prompt.
             context_fields (List[str], optional): A list of fields that will provide context to the prompt.
                 Applicable only for "retrieval_augmented_generation" task type.
@@ -472,11 +480,18 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
                 "Both were provided: 'project_id' and 'space_id' cannot be set at the same time."
             )
 
+        if task_id == "retrieval_augmented_generation":
+            if not context_fields or not question_field:
+                raise ValueError(
+                    "For 'retrieval_augmented_generation' task, requires non-empty 'context_fields' and 'question_field'."
+                )
+
         prompt_metadata = locals()
         # Remove unused vars from dict
         prompt_metadata.pop("self", None)
         prompt_metadata.pop("context_fields", None)
         prompt_metadata.pop("question_field", None)
+        prompt_metadata.pop("locale", None)
 
         # Update name of keys to aigov_facts api
         prompt_metadata["input"] = prompt_metadata.pop("input_text", None)
@@ -576,6 +591,8 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
                         question_field=question_field,
                         operational_space_id=self._deployment_stage,
                         problem_type=task_id,
+                        data_input_locale=[locale],
+                        generated_output_locale=[locale],
                         input_data_type="unstructured_text",
                         supporting_monitors=monitors,
                         background_mode=False,
@@ -918,10 +935,17 @@ class WatsonxPromptMonitor(ModelMonitor):
         self,
         name: str,
         model_id: str,
-        task_id: Literal["retrieval_augmented_generation", "summarization"],
+        task_id: Literal[
+            "extraction",
+            "generation",
+            "question_answering",
+            "retrieval_augmented_generation",
+            "summarization",
+        ],
         description: str = "",
         model_parameters: Dict = None,
         prompt_variables: List[str] = None,
+        locale: str = None,
         input_text: str = None,
         context_fields: List[str] = None,
         question_field: str = None,
@@ -936,6 +960,7 @@ class WatsonxPromptMonitor(ModelMonitor):
             description (str, optional): A description of the Prompt Template Asset.
             model_parameters (Dict, optional): A dictionary of model parameters and their respective values.
             prompt_variables (List[str], optional): A list of values for prompt input variables.
+            locale (str, optional): Locale code for the input/output language. eg. "en", "pt", "es".
             input_text (str, optional): The input text for the prompt.
             context_fields (List[str], optional): A list of fields that will provide context to the prompt.
                 Applicable only for the `retrieval_augmented_generation` task type.
@@ -963,11 +988,18 @@ class WatsonxPromptMonitor(ModelMonitor):
                 "Both were provided: 'project_id' and 'space_id' cannot be set at the same time."
             )
 
+        if task_id == "retrieval_augmented_generation":
+            if not context_fields or not question_field:
+                raise ValueError(
+                    "For 'retrieval_augmented_generation' task, requires non-empty 'context_fields' and 'question_field'."
+                )
+
         prompt_metadata = locals()
         # Remove unused vars from dict
         prompt_metadata.pop("self", None)
         prompt_metadata.pop("context_fields", None)
         prompt_metadata.pop("question_field", None)
+        prompt_metadata.pop("locale", None)
 
         # Update name of keys to aigov_facts api
         prompt_metadata["input"] = prompt_metadata.pop("input_text", None)
@@ -1047,6 +1079,8 @@ class WatsonxPromptMonitor(ModelMonitor):
                         question_field=question_field,
                         operational_space_id=self._deployment_stage,
                         problem_type=task_id,
+                        data_input_locale=[locale],
+                        generated_output_locale=[locale],
                         input_data_type="unstructured_text",
                         supporting_monitors=monitors,
                         background_mode=False,
