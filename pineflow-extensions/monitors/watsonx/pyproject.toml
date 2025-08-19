@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pineflow-monitors-watsonx"
-version = "0.7.6"
+version = "0.7.7"
 description = "pineflow monitors watsonx extension"
 authors = [{ name = "Leonardo Furnielis", email = "leonardofurnielis@outlook.com" }]
 license = { text = "MIT" }
