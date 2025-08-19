@@ -440,7 +440,7 @@ class WatsonxExternalPromptMonitor(ModelMonitor):
         Args:
             name (str): The name of the External Prompt Template Asset.
             model_id (str): The ID of the model associated with the prompt.
-            task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
+            task_id (str): The task identifier.
             detached_model_provider (str): The external model provider.
             description (str, optional): A description of the External Prompt Template Asset.
             model_parameters (Dict, optional): Model parameters and their respective values.
@@ -956,7 +956,7 @@ class WatsonxPromptMonitor(ModelMonitor):
         Args:
             name (str): The name of the Prompt Template Asset.
             model_id (str): The ID of the model associated with the prompt.
-            task_id (str): The task identifier. Currently supports "retrieval_augmented_generation" and "summarization" tasks.
+            task_id (str): The task identifier.
             description (str, optional): A description of the Prompt Template Asset.
             model_parameters (Dict, optional): A dictionary of model parameters and their respective values.
             prompt_variables (List[str], optional): A list of values for prompt input variables.
