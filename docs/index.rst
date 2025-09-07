@@ -2,6 +2,10 @@
 Welcome to Beekeeper documentation!
 ============================================
 
+.. important::
+
+   This project has moved, see `official documentation <https://beekeeper-ai.github.io/beekeeper>`_.
+
 Beekeeper is a data framework to load any data in one line of code and connect with AI applications.
 
 .. toctree::
