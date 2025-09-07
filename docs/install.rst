@@ -1,9 +1,12 @@
 Installation
 ============================================
 
-.. important::
+.. attention::
 
-   This project has moved, see `official documentation <https://beekeeper-ai.github.io/beekeeper>`_.
+   This project has moved! Please visit the new repository at:
+   `official documentation <https://beekeeper-ai.github.io/beekeeper>`_.
+
+   This repository is no longer maintained.
 
 The Beekeeper (formerly Pineflow) Python library is publicly available on PyPI: https://pypi.org/project/beekeeper-ai/
 
