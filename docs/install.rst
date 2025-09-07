@@ -1,7 +1,7 @@
 Installation
 ============================================
 
-.. note::
+.. important::
 
    This project has moved, see `official documentation <https://beekeeper-ai.github.io/beekeeper>`_.
 
